@@ -1,0 +1,100 @@
+
+*{
+    background-color: #FFF9F1;
+    
+}
+.left{
+    /* 买家导航 */
+    width: 287px;
+    height: 1023px;
+    background-color: rgba(61, 61, 61, 0.33);
+    position: relative;
+    float: left;
+}
+.head1{
+    background-color: rgba(61, 61, 61, 0);
+    position: relative;
+    top: 30px;
+    left: 70px;
+}
+.daohang{
+    background-color: rgba(0, 0, 0, 0);
+    width: 200px;/*格子宽度*/
+    height: 600px;/*格子高度*/
+    position: relative;
+    top: 50px;
+    left: 30px;
+}
+.head2{
+    background-color: rgba(61, 61, 61, 0.33);
+    text-align: center;
+    vertical-align: top;
+    font-size:36px;
+    color: white;
+    height: 100px;/*格子高度*/
+}
+.head4{
+    background-color: rgba(61, 61, 61, 0.33);
+    text-align: center;
+    height: 100px;/*格子高度*/
+}
+.head4-1{
+    background-color: rgba(61, 61, 61, 0);
+    text-decoration: none;
+    color: #ffffff;
+    font-size:28px;
+    font-weight: bold;
+}
+.head5{
+    background-color: rgba(61, 61, 61, 0.33);
+    text-align: center;
+    vertical-align: bottom;
+    height: 450px;/*格子高度*/
+}
+.head5-1{
+    background-color: rgba(61, 61, 61, 0);
+    text-decoration: none;
+    color: #585655;
+    font-size:28px;
+    font-weight: bold;
+}
+
+/* 商品 */
+.right{
+    /* 商品显示 */
+    width: 1340px;
+    height: 1023px;
+    /* background-color: aquamarine; */
+    position: absolute;/*绝对定位*/
+    left: 287px; 
+    float: right;
+}
+table.good-list{
+    width: 1340px;/*格子宽度*/
+    height: 1023px;/*格子高度*/
+    color: rgb(57, 77, 70);
+
+}
+.show-1{
+    position: relative;
+    /* top: 30px;*/
+    left: 50px; 
+    width: 400px;
+    height: 300px;
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+}
+.show-2{
+    width: 400px;/*格子宽度*/
+    height: 300px;/*格子高度*/
+    /* background-color: #585655; */
+
+}
+.picture{
+    text-align: center;/* 图片居中 */
+}
+.price{
+    font-size:20px;
+    /* width: 100px; */
+    height: 20px;
+}
