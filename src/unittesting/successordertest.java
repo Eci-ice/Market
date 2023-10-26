@@ -32,11 +32,19 @@ public class successordertest {
 
 	@Test
 	public void test01() {
-		assertEquals("success",new successorderfortesting().success(1));
+		assertEquals("success",new successorderfortesting().success("1"));
 	}
 	
 	@Test
 	public void test02() {
-		assertEquals("该商品无法售出",new successorderfortesting().success(-1));
+		assertEquals("订单ID无效",new successorderfortesting().success("-1"));
+	}
+	@Test
+	public void test03() {
+		assertEquals("订单ID无效",new successorderfortesting().success("0"));
+	}
+	@Test
+	public void test04() {
+		assertEquals("订单ID不能为空",new successorderfortesting().success(" "));
 	}
 }

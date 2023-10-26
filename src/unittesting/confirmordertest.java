@@ -32,11 +32,19 @@ public class confirmordertest {
 
 	@Test
 	public void test01() {
-		assertEquals("success",new confirmorderfortesting().confirm(1));
+		assertEquals("success",new confirmorderfortesting().confirm("1"));
 	}
 	
 	@Test
 	public void test02() {
-		assertEquals("该商品无法冻结",new confirmorderfortesting().confirm(-1));
+		assertEquals("该商品无法冻结",new confirmorderfortesting().confirm("-1"));
+	}
+	@Test
+	public void test03() {
+		assertEquals("fail2",new confirmorderfortesting().confirm("aaaaa"));
+	}
+	@Test
+	public void test04() {
+		assertEquals("fail1",new confirmorderfortesting().confirm(" "));
 	}
 }
