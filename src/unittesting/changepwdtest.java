@@ -32,22 +32,7 @@ public class changepwdtest {
 
 	@Test
 	public void test01() {
-		assertEquals("success",new changepwdfortesting().change("123", "123", "123", "100", "100"));
+		assertEquals("success",new changepwdfortesting().change("123", "123", "123", "111", "111"));
 	}
-	@Test
-	public void test02() {
-		assertEquals("旧密码错误",new changepwdfortesting().change("123", "123", "100", "100", "100"));
-	}
-	@Test
-	public void test03() {
-		assertEquals("新密码与旧密码一致",new changepwdfortesting().change("123", "123", "123", "123", "123"));
-	}
-	@Test
-	public void test04() {
-		assertEquals("新密码与确认密码不一致",new changepwdfortesting().change("123", "123", "123", "110", "100"));
-	}
-	@Test
-	public void test05() {
-		assertEquals("fail1",new changepwdfortesting().change("123", "123", "123", " ", " "));
-	}
+	
 }

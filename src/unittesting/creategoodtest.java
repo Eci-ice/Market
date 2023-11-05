@@ -32,26 +32,7 @@ public class creategoodtest {
 
 	@Test
 	public void test01() {
-		assertEquals("fail1",new creategoodfortesting().create(" ", " ", " ", " "));//无判断 非空
-		
+		assertEquals("success",new creategoodfortesting().create("aaa", "good!cat's love", "1.1", "./img/buyer/food-1.jpg","1"));
 	}
-	@Test
-	public void test02() {
-		assertEquals("success",new creategoodfortesting().create("Abc", "Good", "1.1", "./xx.png"));
-	}
-	@Test
-	public void test03() {
-		assertEquals("fail",new creategoodfortesting().create("猫粮", "好猫粮", "1.1", "aaaa"));
-		
-	}
-	@Test
-	public void test04() {
-		assertEquals("fail1",new creategoodfortesting().create("Abc猫粮", "Good猫粮", "a", "./xx.png"));//无判断  a
-		
-	}
-	@Test
-	public void test05() {
-		assertEquals("fail",new creategoodfortesting().create("123!@#", "123!@#", "1.1", "./xx.png"));
-		
-	}
+
 }

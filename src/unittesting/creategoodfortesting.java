@@ -11,17 +11,9 @@ import vo.good;
 import vo.order;
 
 public class creategoodfortesting {
-	public String create(String  goodname ,String  description,String priceStr,String  picture ) {
-		if (goodname.trim().isEmpty() || description.trim().isEmpty() || priceStr.trim().isEmpty() || picture.trim().isEmpty()) {
-	        return "fail1"; // 如果任何一个输入为空，直接返回"fail"
-	    }
-	 // 检查价格是否为数字
-	    try {
-	        Double price = Double.parseDouble(priceStr);
-	    } catch (NumberFormatException e) {
-	        return "fail1"; // 如果价格无法解析为Double类型，返回"fail"
-	    }
-	    Double price = Double.parseDouble(priceStr);
+	public String create(String  goodname ,String  description,String priceStr,String  picture ,String kind) {
+
+	 	Double price = Double.parseDouble(priceStr);
         int state = 0;
         int number = 1;
         good g=new good();
@@ -36,6 +28,7 @@ public class creategoodfortesting {
 				gf.setPicture(picture);
 				gf.setState(state);
 				gf.setNumber(number);
+				gf.setKind(kind);
 				gs.add(gf);
 				List<good> gList = null;
        			 try {

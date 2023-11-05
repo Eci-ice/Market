@@ -42,7 +42,7 @@ public class goodsqlimpl implements goodsql{
 		try {
 			Class.forName("org.sqlite.JDBC");
 	         Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
-	         String sql = "insert into good(goodname,description,price,picture,state,number) values(?,?,?,?,?,?)";
+	         String sql = "insert into MLgood(goodname,description,price,picture,state,number,kind) values(?,?,?,?,?,?,?)";
 	         PreparedStatement ps  = conn.prepareStatement(sql);
 	         ps.setString(1, good.getGoodname());
 	         ps.setString(2, good.getDescription());
@@ -50,6 +50,7 @@ public class goodsqlimpl implements goodsql{
 	         ps.setString(4, good.getPicture());
 	         ps.setInt(5, good.getState());
 	         ps.setInt(6, good.getNumber());
+	         ps.setString(7, good.getKind());
 	         ps.executeUpdate();
 	         ps.close();
 	         conn.close();
@@ -69,7 +70,7 @@ public class goodsqlimpl implements goodsql{
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
 	        PreparedStatement ps = null;
-	        String sql = "DELETE FROM good WHERE goodid = ?";
+	        String sql = "DELETE FROM MLgood WHERE goodid = ?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, goodid);
 			int rowsDeleted = ps.executeUpdate();
@@ -92,7 +93,7 @@ public class goodsqlimpl implements goodsql{
 		try {
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
-            String sql = "SELECT * FROM good WHERE state=0";
+            String sql = "SELECT * FROM MLgood WHERE state=0";
             PreparedStatement ps = conn.prepareStatement(sql);
    			ResultSet rs=ps.executeQuery();
    			if(rs.next()) {
@@ -118,7 +119,7 @@ public class goodsqlimpl implements goodsql{
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
             PreparedStatement ps = null;
-            String sql = "UPDATE good SET state = ? WHERE goodid = ?";
+            String sql = "UPDATE MLgood SET state = ? WHERE goodid = ?";
 	        ps = conn.prepareStatement(sql);
 	        ps.setInt(1, tostate);
 	        ps.setInt(2, goodid);
@@ -136,7 +137,7 @@ public class goodsqlimpl implements goodsql{
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
             PreparedStatement ps = null;
-			String sql = "select goodid,goodname,description,price,picture,state,number from good where state=0";
+			String sql = "select goodid,goodname,description,price,picture,state,number,kind from MLgood where state=0";
 			ps=conn.prepareStatement(sql);
 				
 			ResultSet rs=ps.executeQuery();
@@ -172,7 +173,7 @@ public class goodsqlimpl implements goodsql{
 		try {
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
-            String sql = "SELECT * FROM good WHERE goodid=?";
+            String sql = "SELECT * FROM MLgood WHERE goodid=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, goodid);
    			ResultSet rs=ps.executeQuery();
@@ -211,7 +212,7 @@ public class goodsqlimpl implements goodsql{
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
             PreparedStatement ps = null;
-			String sql = "select * from good";
+			String sql = "select * from MLgood";
 			ps=conn.prepareStatement(sql);
 				
 			ResultSet rs=ps.executeQuery();

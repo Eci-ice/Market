@@ -30,7 +30,7 @@ public class usersqlimpl implements usersql{
 	        PreparedStatement ps = null;
 	        user u=null;
 	        
-			String sql = "select * from user where username=?";
+			String sql = "select * from MLuser where username=?";
 			//System.out.print(sql);
 			ps = conn.prepareStatement(sql);
 	        ps.setString(1, username);
@@ -58,7 +58,7 @@ public class usersqlimpl implements usersql{
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
             PreparedStatement ps = null;
-            String sql = "UPDATE user SET pwd =? WHERE username =?" ;
+            String sql = "UPDATE MLuser SET pwd =? WHERE username =?" ;
             ps = conn.prepareStatement(sql);
             ps.setString(1,pwd);
             ps.setString(2,username);

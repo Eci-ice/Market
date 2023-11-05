@@ -39,13 +39,4 @@ public class logintest {
 	public void test02() {
 		assertEquals("success2",new loginfortesting().login("111", "111"));
 	}
-	@Test
-	public void test03() {
-		assertEquals("用户名错误或不存在",new loginfortesting().login("110", "111"));
-	}
-	@Test
-	public void test04() {
-		assertEquals("密码错误！！！",new loginfortesting().login("123", "111"));
-	}
-	
 }

@@ -8,15 +8,67 @@ public class good {
 	private String picture;
 	private int state;
 	private int number;
+	private String kind;
 	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
-		return super.hashCode();
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + goodid;
+		result = prime * result + ((goodname == null) ? 0 : goodname.hashCode());
+		result = prime * result + ((kind == null) ? 0 : kind.hashCode());
+		result = prime * result + number;
+		result = prime * result + ((picture == null) ? 0 : picture.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(price);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + state;
+		return result;
+	}
+	public String getKind() {
+		return kind;
+	}
+	public void setKind(String kind) {
+		this.kind = kind;
 	}
 	@Override
 	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-		return super.equals(obj);
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		good other = (good) obj;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (goodid != other.goodid)
+			return false;
+		if (goodname == null) {
+			if (other.goodname != null)
+				return false;
+		} else if (!goodname.equals(other.goodname))
+			return false;
+		if (kind == null) {
+			if (other.kind != null)
+				return false;
+		} else if (!kind.equals(other.kind))
+			return false;
+		if (number != other.number)
+			return false;
+		if (picture == null) {
+			if (other.picture != null)
+				return false;
+		} else if (!picture.equals(other.picture))
+			return false;
+		if (Double.doubleToLongBits(price) != Double.doubleToLongBits(other.price))
+			return false;
+		if (state != other.state)
+			return false;
+		return true;
 	}
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
@@ -25,8 +77,8 @@ public class good {
 	}
 	@Override
 	public String toString() {
-		return "good [goodid=" + goodid + ", goodname=" + goodname + ", desciption=" + description + ", price=" + price
-				+ ", picture=" + picture + ", state=" + state + ", number=" + number + "]";
+		return "good [goodid=" + goodid + ", goodname=" + goodname + ", description=" + description + ", price=" + price
+				+ ", picture=" + picture + ", state=" + state + ", number=" + number + ", kind=" + kind + "]";
 	}
 	@Override
 	protected void finalize() throws Throwable {
