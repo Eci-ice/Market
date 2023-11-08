@@ -88,8 +88,9 @@ public class goodsqlimpl implements goodsql{
         return 0;
 	}
 
+	//查找商品名是否唯一
 	@Override
-	public int unique() throws SQLException {
+	public int unique(String name) throws SQLException {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
@@ -97,9 +98,12 @@ public class goodsqlimpl implements goodsql{
             PreparedStatement ps = conn.prepareStatement(sql);
    			ResultSet rs=ps.executeQuery();
    			if(rs.next()) {
-   		        ps.close();
-   		        conn.close();
-   	            return 0;
+   		        while(rs.next()) {
+   		        	if(rs.getString(1).equals(name)) {
+   		        		return 0;
+   		        	}
+   		        }
+   		        return 1;
    	         }else {
    	            return 1;
    	         }
@@ -204,7 +208,39 @@ public class goodsqlimpl implements goodsql{
 	}
 	
 
-
+	@Override
+	public List<good> searchls(String keyword) throws SQLException {
+	    try {
+	        Class.forName("org.sqlite.JDBC");
+	        Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+	        String sql = "SELECT * FROM MLgood WHERE goodname LIKE ?";
+	        PreparedStatement ps = conn.prepareStatement(sql);
+	        // 添加 '%' 来匹配任何以关键词开头的商品名称
+	        ps.setString(1, keyword + "%");
+	        ResultSet rs = ps.executeQuery();
+	        List<good> gL=new ArrayList<good>();
+			good g=null;
+			while(rs.next()) {
+				g=new good();
+				g.setGoodid(rs.getInt(1));
+				g.setGoodname(rs.getString(2));
+				g.setDescription(rs.getString(3));
+				g.setPrice(rs.getDouble(4));
+				g.setPicture(rs.getString(5));
+				g.setState(rs.getInt(6));
+				g.setNumber(rs.getInt(7));
+				gL.add(g);
+			}
+	        ps.close();
+	        conn.close();
+	        return gL;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } catch (ClassNotFoundException e) {
+	        e.printStackTrace();
+	    }
+	    return null;
+	}
 
 	@Override
 	public List<good> showall() throws SQLException {

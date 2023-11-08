@@ -1,0 +1,216 @@
+三月 14, 2023 1:06:20 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Server.服务器版本: Apache Tomcat/7.0.108
+三月 14, 2023 1:06:20 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 服务器构建:        Jan 28 2021 09:12:57 UTC
+三月 14, 2023 1:06:20 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 服务器版本号:      7.0.108.0
+三月 14, 2023 1:06:20 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 操作系统名称:      Windows 10
+三月 14, 2023 1:06:20 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: OS.版本:           10.0
+三月 14, 2023 1:06:20 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 架构:              amd64
+三月 14, 2023 1:06:20 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Java 环境变量:     C:\Program Files\Java\jre1.8.0_291
+三月 14, 2023 1:06:20 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Java虚拟机版本:    1.8.0_291-b10
+三月 14, 2023 1:06:20 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: JVM.供应商:        Oracle Corporation
+三月 14, 2023 1:06:20 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: CATALINA_BASE:     C:\apache-tomcat-7.0.108
+三月 14, 2023 1:06:20 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: CATALINA_HOME:     C:\apache-tomcat-7.0.108
+三月 14, 2023 1:06:20 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Djava.util.logging.config.file=C:\apache-tomcat-7.0.108\conf\logging.properties
+三月 14, 2023 1:06:20 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+三月 14, 2023 1:06:20 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Djdk.tls.ephemeralDHKeySize=2048
+三月 14, 2023 1:06:20 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Dignore.endorsed.dirs=
+三月 14, 2023 1:06:20 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Dcatalina.base=C:\apache-tomcat-7.0.108
+三月 14, 2023 1:06:20 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Dcatalina.home=C:\apache-tomcat-7.0.108
+三月 14, 2023 1:06:20 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Djava.io.tmpdir=C:\apache-tomcat-7.0.108\temp
+三月 14, 2023 1:06:20 下午 org.apache.catalina.core.AprLifecycleListener lifecycleEvent
+信息: 在java.library.path:[C:\Program Files\Java\jre1.8.0_291\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;D:\Program Files (x86)\VMware\VMware Workstation\bin\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Common Files\Autodesk Shared\;I:\bkzbk\Program Files\nodejs\;I:\bkzbk\Tencent Files\微信web开发者工具\dll;C:\Pro;ram Files (x86)\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\;C:\Program Files\Azure Data Studio\bin;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\;I:\bkzbk\Program Files\Git\cmd;C:\Users\lenovo\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\lenovo\AppData\Local\Programs\Python\Python310\;C:\Users\lenovo\AppData\Local\Microsoft\WindowsApps;C:\Users\lenovo\.dotnet\tools;".;D:\Program Files\Java\jdk-17.0.1\bin;D:\Program Files\Java\jdk-17.0.1\jre\bin";I:\bkzbk\Program Files (x86)\mitmproxy\bin;I:\bkzbk\Program Files (x86)\Microsoft VS Code\bin;D:\Program Files\msys64\mingw64\bin;D:\Program Files\Mingw64\bin;C:\Users\lenovo\AppData\Roaming\npm;C:\Program Files\Azure Data Studio\bin;I:\bkzbk\Program Files(x86)\PyCharm Community Edition 2022.2.4\bin;;C:\Users\lenovo\AppData\Local\Programs\Fiddler;.]上找不到基于APR的Apache Tomcat本机库，该库允许在生产环境中获得最佳性能
+三月 14, 2023 1:06:20 下午 org.apache.coyote.AbstractProtocol init
+信息: 初始化协议处理器 ["http-bio-8080"]
+三月 14, 2023 1:06:20 下午 org.apache.catalina.startup.Catalina load
+信息: Initialization processed in 470 ms
+三月 14, 2023 1:06:20 下午 org.apache.catalina.core.StandardService startInternal
+信息: 正在启动服务[Catalina]
+三月 14, 2023 1:06:20 下午 org.apache.catalina.core.StandardEngine startInternal
+信息: Starting Servlet Engine: Apache Tomcat/7.0.108
+三月 14, 2023 1:06:20 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: 把web 应用程序部署到目录 [C:\apache-tomcat-7.0.108\webapps\docs]
+三月 14, 2023 1:06:22 下午 org.apache.catalina.util.SessionIdGeneratorBase createSecureRandom
+警告: 使用[SHA1PRNG]创建会话ID生成的SecureRandom实例花费了[1,728]毫秒。
+三月 14, 2023 1:06:22 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Web应用程序目录[C:\apache-tomcat-7.0.108\webapps\docs]的部署已在[1,998]毫秒内完成
+三月 14, 2023 1:06:22 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: 把web 应用程序部署到目录 [C:\apache-tomcat-7.0.108\webapps\examples]
+三月 14, 2023 1:06:23 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Web应用程序目录[C:\apache-tomcat-7.0.108\webapps\examples]的部署已在[435]毫秒内完成
+三月 14, 2023 1:06:23 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: 把web 应用程序部署到目录 [C:\apache-tomcat-7.0.108\webapps\host-manager]
+三月 14, 2023 1:06:23 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Web应用程序目录[C:\apache-tomcat-7.0.108\webapps\host-manager]的部署已在[73]毫秒内完成
+三月 14, 2023 1:06:23 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: 把web 应用程序部署到目录 [C:\apache-tomcat-7.0.108\webapps\manager]
+三月 14, 2023 1:06:23 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Web应用程序目录[C:\apache-tomcat-7.0.108\webapps\manager]的部署已在[64]毫秒内完成
+三月 14, 2023 1:06:23 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: 把web 应用程序部署到目录 [C:\apache-tomcat-7.0.108\webapps\ROOT]
+三月 14, 2023 1:06:23 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Web应用程序目录[C:\apache-tomcat-7.0.108\webapps\ROOT]的部署已在[50]毫秒内完成
+三月 14, 2023 1:06:23 下午 org.apache.coyote.AbstractProtocol start
+信息: 开始协议处理句柄["http-bio-8080"]
+三月 14, 2023 1:06:23 下午 org.apache.catalina.startup.Catalina start
+信息: Server startup in 2718 ms
+三月 14, 2023 1:07:02 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Server.服务器版本: Apache Tomcat/7.0.108
+三月 14, 2023 1:07:02 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 服务器构建:        Jan 28 2021 09:12:57 UTC
+三月 14, 2023 1:07:02 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 服务器版本号:      7.0.108.0
+三月 14, 2023 1:07:02 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 操作系统名称:      Windows 10
+三月 14, 2023 1:07:02 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: OS.版本:           10.0
+三月 14, 2023 1:07:02 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 架构:              amd64
+三月 14, 2023 1:07:02 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Java 环境变量:     C:\Program Files\Java\jre1.8.0_291
+三月 14, 2023 1:07:02 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Java虚拟机版本:    1.8.0_291-b10
+三月 14, 2023 1:07:02 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: JVM.供应商:        Oracle Corporation
+三月 14, 2023 1:07:02 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: CATALINA_BASE:     C:\apache-tomcat-7.0.108
+三月 14, 2023 1:07:02 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: CATALINA_HOME:     C:\apache-tomcat-7.0.108
+三月 14, 2023 1:07:02 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Djava.util.logging.config.file=C:\apache-tomcat-7.0.108\conf\logging.properties
+三月 14, 2023 1:07:02 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+三月 14, 2023 1:07:02 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Djdk.tls.ephemeralDHKeySize=2048
+三月 14, 2023 1:07:02 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Dignore.endorsed.dirs=
+三月 14, 2023 1:07:02 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Dcatalina.base=C:\apache-tomcat-7.0.108
+三月 14, 2023 1:07:02 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Dcatalina.home=C:\apache-tomcat-7.0.108
+三月 14, 2023 1:07:02 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Djava.io.tmpdir=C:\apache-tomcat-7.0.108\temp
+三月 14, 2023 1:07:02 下午 org.apache.catalina.core.AprLifecycleListener lifecycleEvent
+信息: 在java.library.path:[C:\Program Files\Java\jre1.8.0_291\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;D:\Program Files (x86)\VMware\VMware Workstation\bin\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Common Files\Autodesk Shared\;I:\bkzbk\Program Files\nodejs\;I:\bkzbk\Tencent Files\微信web开发者工具\dll;C:\Pro;ram Files (x86)\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\;C:\Program Files\Azure Data Studio\bin;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\;I:\bkzbk\Program Files\Git\cmd;C:\Users\lenovo\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\lenovo\AppData\Local\Programs\Python\Python310\;C:\Users\lenovo\AppData\Local\Microsoft\WindowsApps;C:\Users\lenovo\.dotnet\tools;".;D:\Program Files\Java\jdk-17.0.1\bin;D:\Program Files\Java\jdk-17.0.1\jre\bin";I:\bkzbk\Program Files (x86)\mitmproxy\bin;I:\bkzbk\Program Files (x86)\Microsoft VS Code\bin;D:\Program Files\msys64\mingw64\bin;D:\Program Files\Mingw64\bin;C:\Users\lenovo\AppData\Roaming\npm;C:\Program Files\Azure Data Studio\bin;I:\bkzbk\Program Files(x86)\PyCharm Community Edition 2022.2.4\bin;;C:\Users\lenovo\AppData\Local\Programs\Fiddler;.]上找不到基于APR的Apache Tomcat本机库，该库允许在生产环境中获得最佳性能
+三月 14, 2023 1:07:02 下午 org.apache.coyote.AbstractProtocol init
+信息: 初始化协议处理器 ["http-bio-8080"]
+三月 14, 2023 1:07:02 下午 org.apache.catalina.startup.Catalina load
+信息: Initialization processed in 448 ms
+三月 14, 2023 1:07:02 下午 org.apache.catalina.core.StandardService startInternal
+信息: 正在启动服务[Catalina]
+三月 14, 2023 1:07:02 下午 org.apache.catalina.core.StandardEngine startInternal
+信息: Starting Servlet Engine: Apache Tomcat/7.0.108
+三月 14, 2023 1:07:03 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: 把web 应用程序部署到目录 [C:\apache-tomcat-7.0.108\webapps\docs]
+三月 14, 2023 1:07:04 下午 org.apache.catalina.util.SessionIdGeneratorBase createSecureRandom
+警告: 使用[SHA1PRNG]创建会话ID生成的SecureRandom实例花费了[1,694]毫秒。
+三月 14, 2023 1:07:04 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Web应用程序目录[C:\apache-tomcat-7.0.108\webapps\docs]的部署已在[1,930]毫秒内完成
+三月 14, 2023 1:07:04 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: 把web 应用程序部署到目录 [C:\apache-tomcat-7.0.108\webapps\examples]
+三月 14, 2023 1:07:05 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Web应用程序目录[C:\apache-tomcat-7.0.108\webapps\examples]的部署已在[397]毫秒内完成
+三月 14, 2023 1:07:05 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: 把web 应用程序部署到目录 [C:\apache-tomcat-7.0.108\webapps\host-manager]
+三月 14, 2023 1:07:05 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Web应用程序目录[C:\apache-tomcat-7.0.108\webapps\host-manager]的部署已在[71]毫秒内完成
+三月 14, 2023 1:07:05 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: 把web 应用程序部署到目录 [C:\apache-tomcat-7.0.108\webapps\manager]
+三月 14, 2023 1:07:05 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Web应用程序目录[C:\apache-tomcat-7.0.108\webapps\manager]的部署已在[64]毫秒内完成
+三月 14, 2023 1:07:05 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: 把web 应用程序部署到目录 [C:\apache-tomcat-7.0.108\webapps\ROOT]
+三月 14, 2023 1:07:05 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Web应用程序目录[C:\apache-tomcat-7.0.108\webapps\ROOT]的部署已在[49]毫秒内完成
+三月 14, 2023 1:07:05 下午 org.apache.coyote.AbstractProtocol start
+信息: 开始协议处理句柄["http-bio-8080"]
+三月 14, 2023 1:07:05 下午 org.apache.catalina.startup.Catalina start
+信息: Server startup in 2585 ms
+三月 14, 2023 2:36:29 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Server.服务器版本: Apache Tomcat/7.0.108
+三月 14, 2023 2:36:29 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 服务器构建:        Jan 28 2021 09:12:57 UTC
+三月 14, 2023 2:36:29 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 服务器版本号:      7.0.108.0
+三月 14, 2023 2:36:29 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 操作系统名称:      Windows 10
+三月 14, 2023 2:36:29 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: OS.版本:           10.0
+三月 14, 2023 2:36:29 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 架构:              amd64
+三月 14, 2023 2:36:29 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Java 环境变量:     C:\Program Files\Java\jre1.8.0_144
+三月 14, 2023 2:36:29 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Java虚拟机版本:    1.8.0_144-b01
+三月 14, 2023 2:36:29 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: JVM.供应商:        Oracle Corporation
+三月 14, 2023 2:36:29 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: CATALINA_BASE:     C:\apache-tomcat-7.0.108
+三月 14, 2023 2:36:29 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: CATALINA_HOME:     C:\apache-tomcat-7.0.108
+三月 14, 2023 2:36:29 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Djava.util.logging.config.file=C:\apache-tomcat-7.0.108\conf\logging.properties
+三月 14, 2023 2:36:29 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+三月 14, 2023 2:36:29 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Djdk.tls.ephemeralDHKeySize=2048
+三月 14, 2023 2:36:29 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Dignore.endorsed.dirs=
+三月 14, 2023 2:36:29 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Dcatalina.base=C:\apache-tomcat-7.0.108
+三月 14, 2023 2:36:29 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Dcatalina.home=C:\apache-tomcat-7.0.108
+三月 14, 2023 2:36:29 下午 org.apache.catalina.startup.VersionLoggerListener log
+信息: 命令行参数：       -Djava.io.tmpdir=C:\apache-tomcat-7.0.108\temp
+三月 14, 2023 2:36:29 下午 org.apache.catalina.core.AprLifecycleListener lifecycleEvent
+信息: 在java.library.path:[C:\Program Files\Java\jre1.8.0_144\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;D:\Program Files (x86)\VMware\VMware Workstation\bin\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Common Files\Autodesk Shared\;I:\bkzbk\Program Files\nodejs\;I:\bkzbk\Tencent Files\微信web开发者工具\dll;C:\Pro;ram Files (x86)\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\;C:\Program Files\Azure Data Studio\bin;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\;I:\bkzbk\Program Files\Git\cmd;C:\Users\lenovo\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\lenovo\AppData\Local\Programs\Python\Python310\;C:\Users\lenovo\AppData\Local\Microsoft\WindowsApps;C:\Users\lenovo\.dotnet\tools;".;D:\Program Files\Java\jdk-17.0.1\bin;D:\Program Files\Java\jdk-17.0.1\jre\bin";I:\bkzbk\Program Files (x86)\mitmproxy\bin;I:\bkzbk\Program Files (x86)\Microsoft VS Code\bin;D:\Program Files\msys64\mingw64\bin;D:\Program Files\Mingw64\bin;C:\Users\lenovo\AppData\Roaming\npm;C:\Program Files\Azure Data Studio\bin;I:\bkzbk\Program Files(x86)\PyCharm Community Edition 2022.2.4\bin;C:\Users\lenovo\AppData\Local\Programs\Fiddler;".;C:\Program Files\Java\jre1.8.0_144\bin;C:\Program Files\Java\jdk1.8.0_144\jre\bin";;.]上找不到基于APR的Apache Tomcat本机库，该库允许在生产环境中获得最佳性能
+三月 14, 2023 2:36:30 下午 org.apache.coyote.AbstractProtocol init
+信息: 初始化协议处理器 ["http-bio-8080"]
+三月 14, 2023 2:36:30 下午 org.apache.catalina.startup.Catalina load
+信息: Initialization processed in 428 ms
+三月 14, 2023 2:36:30 下午 org.apache.catalina.core.StandardService startInternal
+信息: 正在启动服务[Catalina]
+三月 14, 2023 2:36:30 下午 org.apache.catalina.core.StandardEngine startInternal
+信息: Starting Servlet Engine: Apache Tomcat/7.0.108
+三月 14, 2023 2:36:30 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: 把web 应用程序部署到目录 [C:\apache-tomcat-7.0.108\webapps\docs]
+三月 14, 2023 2:36:32 下午 org.apache.catalina.util.SessionIdGeneratorBase createSecureRandom
+警告: 使用[SHA1PRNG]创建会话ID生成的SecureRandom实例花费了[1,791]毫秒。
+三月 14, 2023 2:36:32 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Web应用程序目录[C:\apache-tomcat-7.0.108\webapps\docs]的部署已在[2,022]毫秒内完成
+三月 14, 2023 2:36:32 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: 把web 应用程序部署到目录 [C:\apache-tomcat-7.0.108\webapps\examples]
+三月 14, 2023 2:36:32 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Web应用程序目录[C:\apache-tomcat-7.0.108\webapps\examples]的部署已在[409]毫秒内完成
+三月 14, 2023 2:36:32 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: 把web 应用程序部署到目录 [C:\apache-tomcat-7.0.108\webapps\host-manager]
+三月 14, 2023 2:36:32 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Web应用程序目录[C:\apache-tomcat-7.0.108\webapps\host-manager]的部署已在[63]毫秒内完成
+三月 14, 2023 2:36:32 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: 把web 应用程序部署到目录 [C:\apache-tomcat-7.0.108\webapps\manager]
+三月 14, 2023 2:36:32 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Web应用程序目录[C:\apache-tomcat-7.0.108\webapps\manager]的部署已在[59]毫秒内完成
+三月 14, 2023 2:36:32 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: 把web 应用程序部署到目录 [C:\apache-tomcat-7.0.108\webapps\ROOT]
+三月 14, 2023 2:36:32 下午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Web应用程序目录[C:\apache-tomcat-7.0.108\webapps\ROOT]的部署已在[43]毫秒内完成
+三月 14, 2023 2:36:32 下午 org.apache.coyote.AbstractProtocol start
+信息: 开始协议处理句柄["http-bio-8080"]
+三月 14, 2023 2:36:32 下午 org.apache.catalina.startup.Catalina start
+信息: Server startup in 2642 ms

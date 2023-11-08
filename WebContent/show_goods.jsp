@@ -57,6 +57,7 @@ a{
     th, td {
         border: 1px solid #ccc;
         padding: 10px;
+        
         text-align: left;
     }
 
@@ -110,41 +111,91 @@ a{
 	    display: flex;
 	    align-items: center;
 	}
-</style>
-<script>
-    // 当前页面的页数
-    let currentPage = 1;
-    const totalPages = 5; // 总页数，可以根据您的需求进行调整
+	form {
+    display: flex; /* 让表单内的元素在同一行显示 */
+	}
+	
+	input[type="text"] {
+	    flex-grow: 1; /* 让搜索框占据剩余的空间 */
+	}
+	input[name="keyword"] {
+	    width: 100%;
+	    padding: 10px; 
+	    border: 1px solid #ccc; 
+	    border-radius: 4px;
+	}	
+	#search_list {
+		position: fixed;
+		top: 140px;
+		left: 12%;
+		width: 70%;
+		background-color: white;
+	}
 
-    document.querySelector('.prev').addEventListener('click', function() {
+	
+	#search_list div {
+	    border-bottom: 1px solid black; 
+	}
+		
+</style>
+<%
+    int currentPage = 1;
+    if (request.getParameter("currentPage") != null) {
+        currentPage = Integer.parseInt(request.getParameter("currentPage"));
+    }
+    request.setAttribute("currentPage", currentPage);
+%>
+<script>
+    var currentPage = ${requestScope.currentPage};
+    var totalItems = ${sessionScope.gL.size()}; // 商品总数
+    var itemsPerPage = 5; // 每页显示的商品数量
+    var totalPages = Math.ceil(totalItems / itemsPerPage); 
+    
+    function goToPrevPage() {
         if (currentPage > 1) {
             currentPage--;
-            updatePage();
+            location.href = "show_goods.jsp?currentPage=" + currentPage;
         }
-    });
-
-    document.querySelector('.next').addEventListener('click', function() {
-        if (currentPage < totalPages) {
-            currentPage++;
-            updatePage();
-        }
-    });
-
-    function updatePage() {
-        // 这里可以进行AJAX调用，从数据库获取相应页数的商品数据，并更新页面
-        document.querySelector('.pagination span').textContent = `${currentPage}/${totalPages}`;
     }
 
-    document.querySelector('.history-btn').addEventListener('click', function() {
-        window.history.back(); // 返回上一个浏览过的页面
-    });
+    function goToNextPage() {
+        if (currentPage < totalPages) {
+            currentPage++;
+            console.log(currentPage);
+            location.href = "show_goods.jsp?currentPage=" + currentPage;
+        }
+    }
+    
+    function search() {
+    	var keyword = document.getElementsByName('keyword')[0].value;
+        var xhr = new XMLHttpRequest();// 使用Ajax发送请求
+        xhr.open('GET', 'searchgoodservlet?keyword=' + keyword, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var results= JSON.parse(xhr.responseText);// 当请求成功时，使用返回的数据更新搜索结果列表
+                var resultsDiv = document.getElementById('search_list');
+                resultsDiv.innerHTML = '';
+                for (var i = 0; i < results.length; i++) {
+                    var div = document.createElement('div');
+                    div.textContent = results[i];
+                    resultsDiv.appendChild(div);
+                }
+            }
+        };
+        xhr.send();
+    }
 </script>
 
 <c:if test="${not empty sessionScope.admin }">
 <div id="a">
 <div class="container">
-        <center>
+    <center>
 	<h2>全部商品信息</h2>
+	<form action="successsearchservlet" method="post">
+		<input type="text" name="keyword" placeholder="搜索商品"  oninput="search()">
+		<input type="submit" value="搜索">
+	</form>
+	<div id="search_list"></div>
 	</center>
 	<table border="1px" align=center cellspacing="0">
 	    <tr>
@@ -160,7 +211,7 @@ a{
 	    <th>最终购买人</th>
 	    --%>
 	    </tr>
-		<c:forEach items="${sessionScope.gL}" var="g">
+		<c:forEach items="${sessionScope.gL}" var="g" begin="${(currentPage-1)*5}" end="${currentPage*5-1}">
 		<tr>
 		<td>${g.goodid}</td>
 		<td>${g.goodname}</td>
@@ -178,36 +229,12 @@ a{
 	    </tr>
 	    </c:forEach>
 	</table>
-
-        <!-- 获取当前页码，默认为1 -->
-		<c:set var="currentPage" value="${param.page != null ? param.page : '1'}" />
-		<%--
-		<script>
-		    function goToPrevPage() {
-		        var currentPage = parseInt('<c:out value="${currentPage}"/>');
-		        if (currentPage > 1) {
-		            window.location.href = 'orders.jsp?page=' + (currentPage - 1);
-		        }
-		    }
-		
-		    function goToNextPage() {
-		        var currentPage = parseInt('<c:out value="${currentPage}"/>');
-		        if (currentPage < 1) {//上限为1
-		            window.location.href = 'orders.jsp?page=' + (currentPage + 1);
-		        }
-		    }
-		</script>
-		 --%>
         <div class="pagination">
-            <button class="prev">上一页</button>
-            <span>${currentPage} / 1</span>
-            <button class="next">下一页</button>
-        </div>
-        <%--
-        <div class="left-btn-container">
-		    <button class="history-btn"><a href="goods.jsp">取消查看</a></button>
+		    <button class="prev" onclick="goToPrevPage()">上一页</button>
+		    <span id="page-info">第${currentPage}页 </span>
+		    <%-- 当前页码小于总页数时，才显示“下一页”按钮 --%>
+		   	<button class="next" onclick="goToNextPage()">下一页</button>
 		</div>
-        --%>
     </div>
 
 </div>

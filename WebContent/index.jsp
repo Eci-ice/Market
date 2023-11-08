@@ -95,6 +95,7 @@ left:50%;
 transform:translate(-50%,-50%);
 width:400px;
 padding:30px;
+padding-bottom:20px;
 background: rgba(224,224,224,.8);
 box-sizing:border-box;
 box-shadow: 0px 15px 25px rgba(0,0,0,.5);
@@ -200,7 +201,8 @@ border-radius:10px;
 					<div class="image-buttons">
 					    <input class="input-image-button" type="image" src="img/login.png" alt="登录" title="登录" name="action" value="登录"><br>
 					    <!-- <input class="input-image-button" type="image" src="img/register.png" alt="注册" title="注册" name="action" value="注册"><br> -->
-					    <a href="sellinggoodservlet"><img src="img/shop.png" alt="购物" title="直接访问购物界面" /></a>
+					    <a href="register.jsp"><img src="img/register.png" alt="注册" title="注册" /></a>
+					    <a href="sellinggoodservlet"><img src="img/shop.png" alt="购物" title="直接访问购物界面"  style="margin-top: 20px;"/></a>
 					    <br>
 					</div>
 				</form>

@@ -210,13 +210,19 @@ button{
             	<input type="text" name="goodname" required="required" placeholder="请输入商品名称">
             	<br><br></center>
             <center><span>商品价格：</span><input type="text" name="price" required="required" placeholder="请输入商品价格"><br><br></center>
-            <center><span>商品库存：</span><input type="text" name="number" required="required" placeholder="1"  disabled="disabled"/><br><br></center>
+            <center><span>商品库存：</span><input type="text" name="number" required="required" placeholder="1" /><br><br></center>
             <center><span>商品描述：</span><input type="text" name="description" required="required" placeholder="请输入商品描述"><br><br></center>
             <input type="submit" class="submit-button-container" value="确认发布" >
         </div>
     </div>
 </form>
 </div>
+<!-- <script>
+	var isDuplicate = ${isDuplicate}; // 获取Java代码中设置的标志值
+	if (isDuplicate) {
+	    alert("名称错误"); // 弹出提示框
+	}
+</script> -->
 
 <div id="b">
 <c:if test="${not empty requestScope.err }">

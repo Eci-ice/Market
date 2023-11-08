@@ -4,6 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,7 +38,6 @@ a{
 <style>
 body{
 margin:0px;
-padding:10px;
 font-family:sans-serif;
 background-image: url("img/beijing2.jpg");
 background-repeat: no-repeat;
@@ -164,6 +164,12 @@ justify-content: center;  /* 新增：使内容水平居中 */
 align-items: center;  /* 新增：使内容垂直居中 */
 flex-direction: column;
 }
+.nav-info {
+color: #000000;
+display: flex;        /* 新增：使用flex布局 */
+align-items: center;  /* 新增：使内容垂直居中 */
+flex-direction: column;
+}
 .nav-content > a {
 display: block;
 width: 100%;
@@ -278,36 +284,35 @@ overflow: hidden;
 	<div class = "content">
         <!--左侧导航栏-->
 		<div class = "content-left">
-        <div class="user-info">
-		<div class="user-image" style="background-image: url('img/catbackground.png');"></div>
-		<div class="username">${sessionScope.admin.username}</div>
-		<img src="img/line.png" alt="分割线" class="separator-line"> <!-- 新增图片 -->
-	</div>
+		   
                
-	<!--菜单栏导航-->
-               
-    <div class = "nav">
-    	<!--每一个菜单栏项-->
-        	<div class = "nav-menu">
-            	<!--主标题-->
-            	<!--子标题-->
-            	<div class = "nav-content">
-                	<h3><a href = "update_pwd.jsp" target="main" class="black-text">修改密码</a></h3>
-	             	<h3><a href = "upload_goods.jsp" target="main" class="black-text">发布商品</a></h3>
-	             	 <%-- <h3><a href = "update_pwd.jsp" target="main" class="black-text">修改商品</a></h3> --%>	
-	             	<h3><a href = "allorderservlet" target="main" class="black-text">查看意向订单</a></h3>
-	             <%-- <h3><a href = "history.jsp" target="main" class="black-text">查看历史订单</a></h3> --%>	
-	             	<h3><a href = "allgoodservlet" target="main" class="black-text">查看全部商品</a></h3>
-            	</div>
-        	</div>
-    	</div>
-	</div>
-
-    <!--右侧内容区-->
-    <div class="my">
-		<iframe name="main" width="100%" height="100%" src="show_goods.jsp" frameborder="0" seamless></iframe>
-	</div>
-	 
+			<!--菜单栏导航-->
+	    	<div class = "nav">
+	    	<!--每一个菜单栏项-->
+	        	<div class = "nav-menu">
+	            	<!--主标题-->
+	            	 <div class="nav-info">
+						<div class="user-image" style="background-image: url('img/catbackground.png'); margin-right: 80px;"></div>
+						<div class="username" style="margin-right: 100px;">${sessionScope.admin.username}</div>
+						<img src="img/line.png" alt="分割线" class="separator-line"> <!-- 新增图片 -->
+					</div>
+	            	<!--子标题-->
+	            	<div class = "nav-content">
+	                	<h3><a href = "update_pwd.jsp" target="main" class="black-text">修改密码</a></h3>
+		             	<h3><a href = "upload_goods.jsp" target="main" class="black-text">发布商品</a></h3>
+		             	<!-- <h3><a href = "show_goods.jsp" target="main" class="black-text">修改商品</a></h3>	 -->
+		             	<h3><a href = "allorderservlet" target="main" class="black-text">查看意向订单</a></h3>
+		             	<!-- <h3><a href = "history.jsp" target="main" class="black-text">查看历史订单</a></h3> -->
+		             	<h3><a href = "upload_moregoods.jsp" target="main" class="black-text">发布多个商品</a></h3>		
+		             	<h3><a href = "allgoodservlet" target="main" class="black-text">查看全部商品</a></h3>
+	            	</div>
+	        	</div>
+	    	</div>
+		</div>
+	    <!--右侧内容区-->
+	    <div class="my">
+			<iframe name="main" width="100%" height="100%" src="show_goods.jsp" frameborder="0" seamless></iframe>
+		</div>
 	</div>
 	
 	

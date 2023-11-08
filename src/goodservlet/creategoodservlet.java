@@ -64,7 +64,7 @@ public class creategoodservlet extends HttpServlet {
 	        goodsql gs = new goodsqlimpl();
 			good gf = null;
 	        try {
-				if(gs.unique()==1) {
+				if(gs.unique(goodname)==1) {
 					gf=new good();
 					gf.setGoodname(goodname);
 					gf.setDescription(description);
