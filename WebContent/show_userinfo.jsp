@@ -125,33 +125,34 @@ a{
             background-color: tomato;
      }
 </style>
-<script>
-    // 当前页面的页数
-    let currentPage = 1;
-    const totalPages = 5; // 总页数，可以根据您的需求进行调整
-
-    document.querySelector('.prev').addEventListener('click', function() {
-        if (currentPage > 1) {
-            currentPage--;
-            updatePage();
-        }
-    });
-
-    document.querySelector('.next').addEventListener('click', function() {
-        if (currentPage < totalPages) {
-            currentPage++;
-            updatePage();
-        }
-    });
-
-    function updatePage() {
-        // 这里可以进行AJAX调用，从数据库获取相应页数的商品数据，并更新页面
-        document.querySelector('.pagination span').textContent = `${currentPage}/${totalPages}`;
+<%
+    int currentPage = 1;
+    if (request.getParameter("currentPage") != null) {
+        currentPage = Integer.parseInt(request.getParameter("currentPage"));
     }
+    request.setAttribute("currentPage", currentPage);
+%>
+<script>
+	var currentPage = ${requestScope.currentPage};
+	var totalItems = ${sessionScope.gL.size()}; // 商品总数
+	var itemsPerPage = 5; // 每页显示的商品数量
+	var totalPages = Math.ceil(totalItems / itemsPerPage); 
+	
+	function goToPrevPage() {
+	    if (currentPage > 1) {
+	        currentPage--;
+	        location.href = "show_userinfo.jsp?currentPage=" + currentPage;
+	    }
+	}
+	
+	function goToNextPage() {
+	    if (currentPage < totalPages) {
+	        currentPage++;
+	        console.log(currentPage);
+	        location.href = "show_userinfo.jsp?currentPage=" + currentPage;
+	    }
+	}
 
-    document.querySelector('.history-btn').addEventListener('click', function() {
-        window.history.back(); // 返回上一个浏览过的页面
-    });
 </script>
 
 <c:if test="${not empty sessionScope.admin }">
@@ -195,36 +196,12 @@ a{
 	    </tr>
 	    </c:forEach>
 	</table>
-
-        <!-- 获取当前页码，默认为1 -->
-		<c:set var="currentPage" value="${param.page != null ? param.page : '1'}" />
-		<%--
-		<script>
-		    function goToPrevPage() {
-		        var currentPage = parseInt('<c:out value="${currentPage}"/>');
-		        if (currentPage > 1) {
-		            window.location.href = 'orders.jsp?page=' + (currentPage - 1);
-		        }
-		    }
-		
-		    function goToNextPage() {
-		        var currentPage = parseInt('<c:out value="${currentPage}"/>');
-		        if (currentPage < 1) {//上限为1
-		            window.location.href = 'orders.jsp?page=' + (currentPage + 1);
-		        }
-		    }
-		</script>
-		 --%>
         <div class="pagination">
-            <button class="prev">上一页</button>
-            <span>${currentPage} / 1</span>
-            <button class="next">下一页</button>
-        </div>
-        <%--
-        <div class="left-btn-container">
-		    <button class="history-btn"><a href="goods.jsp">取消查看</a></button>
+		    <button class="prev" onclick="goToPrevPage()">上一页</button>
+		    <span id="page-info">第${currentPage}页 </span>
+		    <%-- 当前页码小于总页数时，才显示“下一页”按钮 --%>
+		   	<button class="next" onclick="goToNextPage()">下一页</button>
 		</div>
-        --%>
     </div>
 
 </div>

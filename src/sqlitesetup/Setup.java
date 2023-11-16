@@ -47,8 +47,8 @@ public class Setup{
       statement.executeUpdate("DROP TABLE IF EXISTS `MLuser`");
       statement.executeUpdate("CREATE TABLE `MLuser`  (\r\n" + 
       		"  `userid` INTEGER PRIMARY KEY AUTOINCREMENT,\r\n" + 
-      		"  `pwd` char(15) NOT NULL,\r\n" + 
       		"  `username` char(10) NOT NULL,\r\n" + 
+      		"  `pwd` char(15) NOT NULL,\r\n" + 
       		"  `power` int NOT NULL )" 
         		) ;
       

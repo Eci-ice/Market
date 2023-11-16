@@ -37,7 +37,7 @@ public class creategoodtest {
 	}
 	@Test
 	public void test02() {
-		assertEquals("success",new creategoodfortesting().create("Abc", "Good", "1.1", "./xx.png"));
+		assertEquals("success",new creategoodfortesting().create("Abc", "Good", "1.1", "./img/buyer/food-1.jpg"));
 	}
 	@Test
 	public void test03() {

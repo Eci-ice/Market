@@ -11,7 +11,7 @@ import vo.good;
 import vo.order;
 
 public class creategoodfortesting {
-	public String create(String  goodname ,String  description,String priceStr,String  picture ) {
+	public String create(String  goodname ,String  description,String priceStr,String  picture) {
 		if (goodname.trim().isEmpty() || description.trim().isEmpty() || priceStr.trim().isEmpty() || picture.trim().isEmpty()) {
 	        return "fail1"; // 如果任何一个输入为空，直接返回"fail"
 	    }
@@ -24,11 +24,12 @@ public class creategoodfortesting {
 	    Double price = Double.parseDouble(priceStr);
         int state = 0;
         int number = 1;
+        String kind = "guti";
         good g=new good();
         goodsql gs = new goodsqlimpl();
 		good gf = null;
         try {
-			if(gs.unique()==1) {
+			if(gs.unique("aaa")==1) {
 				gf=new good();
 				gf.setGoodname(goodname);
 				gf.setDescription(description);
@@ -36,6 +37,7 @@ public class creategoodfortesting {
 				gf.setPicture(picture);
 				gf.setState(state);
 				gf.setNumber(number);
+				gf.setKind(kind);;
 				gs.add(gf);
 				List<good> gList = null;
        			 try {
