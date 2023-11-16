@@ -32,7 +32,19 @@ public class deletegoodtest {
 
 	@Test
 	public void test01() {
-		assertEquals("success",new deletegoodfortesting().delete(1));
+		assertEquals("success",new deletegoodfortesting().delete("2"));
+	}
+	@Test
+	public void test02() {
+		assertEquals("商品不存在",new deletegoodfortesting().delete("100000"));
+	}
+	@Test
+	public void test03() {
+		assertEquals("fail1",new deletegoodfortesting().delete(" "));
+	}
+	@Test
+	public void test04() {
+		assertEquals("fail1",new deletegoodfortesting().delete("Abc"));
 	}
 	
 }
