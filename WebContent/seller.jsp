@@ -303,7 +303,7 @@ overflow: hidden;
 		             	<!-- <h3><a href = "show_goods.jsp" target="main" class="black-text">修改商品</a></h3>	 -->
 		             	<h3><a href = "allorderservlet" target="main" class="black-text">查看意向订单</a></h3>
 		             	<!-- <h3><a href = "history.jsp" target="main" class="black-text">查看历史订单</a></h3> -->
-		             	<h3><a href = "upload_moregoods.jsp" target="main" class="black-text">发布多个商品</a></h3>		
+		            <!--非基线	<h3><a href = "upload_moregoods.jsp" target="main" class="black-text">发布多个商品</a></h3>	 -->	
 		             	<h3><a href = "allhistorygoodservlet" target="main" class="black-text">查看历史商品</a></h3>		
 		             	<h3><a href = "allgoodservlet" target="main" class="black-text">查看全部商品</a></h3>
 	            	</div>

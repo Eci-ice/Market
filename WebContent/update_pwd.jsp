@@ -175,17 +175,17 @@ button:hover a {
 	   		<h1>修改密码</h1>
 		   	<center>
 		   	<span>旧&nbsp;密&nbsp;码:&nbsp;</span>
-		     <input type="password" name="oldpwd">
+		     <input type="password" name="oldpwd" required="required" >
 		     </center>
 	   	<br>
 		   	<center>
 		     <span>新&nbsp;密&nbsp;码:&nbsp;</span>
-		     <input type="password" name="newpwd">
+		     <input type="password" name="newpwd" required="required" >
 		   	</center>
 	    <br>
 		    <center>
 		     <span>确认密码:&nbsp;</span>
-		     <input type="password" name="newpwd1">
+		     <input type="password" name="newpwd1" required="required" >
 		    </center>
 	    <br>
 		    <center>

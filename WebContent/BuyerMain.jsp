@@ -26,7 +26,7 @@ body {
 .left{
     /* 买家导航 */
     width: 287px;
-    height:100%;
+    height:100vh;
     background-color: rgba(61, 61, 61, 0.33);
     position: relative;
     float: left;
@@ -67,8 +67,9 @@ body {
 .head5{
     background-color: rgba(61, 61, 61, 0.33);
     text-align: center;
-    vertical-align: bottom;
-    height: 450px;/*格子高度*/
+    height: 100px;/*格子高度*/
+    bottom: 0;
+    
 }
 .head5-1{
     background-color: rgba(61, 61, 61, 0);
@@ -80,56 +81,119 @@ body {
 
 /* 商品 */
 .right{
-    /* 商品显示 */
-    width: 1340px;
-    height: 100%;
+    /* 商品显示 
+    width: 1340px;*/
+    height: 100vh;
     /* background-color: aquamarine; */
     position: absolute;/*绝对定位*/
     left: 350px; 
     
     float: right;
 }
-/*商品排列*/
-#goods {
-  display: grid;
-  border:50px;
-  grid-template-columns: 25% 25% 25% 25%;
-  grid-template-rows: 50% 50% ;
+
+
+.goods {
+    display: flex; /*使用flex布局*/
+    flex-wrap: wrap; /*允许元素换行*/
+    justify-content: space-between; /*元素之间留有空隙*/
+    border: 1px solid #000; /*添加边框*/
 }
 
-/*table.good-list{
-    width: 100%;格子宽度
-    height: 100%;格子高度
-    color: rgb(57, 77, 70);
+.show-1 {
+    flex: 0 0 30%; /*每个元素占用30%的宽度，这样每行就可以放3个元素*/
+    border: 1px solid #000; /*添加边框*/
+    margin-bottom: 10px; /*添加底部边距*/
+}
 
+.picture {
+    text-align: center; /*图片居中*/
 }
-.show-1{
-    position: relative;
-     top: 30px;
-    left: 50px; 
-    width: 400px;
-    height: 300px;
-    text-decoration: none;
-    color: rgb(0, 0, 0);
-}
-.show-2{
-    width: 400px;格子宽度
-    height: 300px;格子高度
-     background-color: #585655; 
 
-}*/
-.picture{
-    text-align: center;/* 图片居中 */
-}
-.price{
-    font-size:20px;
-    /* width: 100px; */
+.price {
+    font-size: 20px;
     height: 20px;
 }
+.pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .prev, .next {
+    	background-color: rgb(237, 196, 110);
+    }
+form {
+    display: flex; /* 让表单内的元素在同一行显示 */
+	}
+	input[type="text"] {
+	    flex-grow: 1; /* 让搜索框占据剩余的空间 */
+	}
+	input[name="keyword"] {
+	    width: 100%;
+	    padding: 10px; 
+	    border: 1px solid #ccc; 
+	    border-radius: 4px;
+	}	
+	#search_list {
+		position: fixed;
+		top: 110px;
+		left: 350px;
+		width: 400px;
+		background-color: white;
+	}
 
-
+	
+	#search_list div {
+	    border-bottom: 1px solid black; 
+	}
 </style>
-
+<%
+    int currentPage = 1;
+    if (request.getParameter("currentPage") != null) {
+        currentPage = Integer.parseInt(request.getParameter("currentPage"));
+    }
+    request.setAttribute("currentPage", currentPage);
+%>
+<script >
+	var currentPage = ${requestScope.currentPage};
+	var totalItems = ${sessionScope.gL.size()}; // 商品总数
+	var itemsPerPage = 5; // 每页显示的商品数量
+	var totalPages = Math.ceil(totalItems / itemsPerPage); 
+	
+	function goToPrevPage() {
+	    if (currentPage > 1) {
+	        currentPage--;
+	        location.href = "show_goods.jsp?currentPage=" + currentPage;
+	    }
+	}
+	
+	function goToNextPage() {
+	    if (currentPage < totalPages) {
+	        currentPage++;
+	        console.log(currentPage);
+	        location.href = "show_goods.jsp?currentPage=" + currentPage;
+	    }
+	}
+	
+	function search() {
+		var keyword = document.getElementsByName('keyword')[0].value;
+	    var xhr = new XMLHttpRequest();// 使用Ajax发送请求
+	    xhr.open('GET', 'searchgoodservlet?keyword=' + keyword, true);
+	    xhr.onreadystatechange = function() {
+	        if (xhr.readyState == 4 && xhr.status == 200) {
+	            var results= JSON.parse(xhr.responseText);// 当请求成功时，使用返回的数据更新搜索结果列表
+	            var resultsDiv = document.getElementById('search_list');
+	            resultsDiv.innerHTML = '';
+	            for (var i = 0; i < results.length; i++) {
+	                var div = document.createElement('div');
+	                div.textContent = results[i];
+	                resultsDiv.appendChild(div);
+	            }
+	        }
+	    };
+	    xhr.send();
+	}
+</script>
 <body style="margin: 0px;">
 	<div class="left" ><!-- 买家导航 -->
 	    <!-- <hr class="head3" color=#FFF2E1 width="230px" size="2px" > -->
@@ -164,37 +228,31 @@ body {
 	
 	</div>
 	
-	<div class="right" style="height:100%">
-<%-- 	    <table class="good-list" style="height:100%">
-	        <tr>
-	            <td>
-		            <c:forEach items="${sessionScope.gL}" var="g">
-		                <a href="showgoodservlet?goodid=${g.goodid}" class="show-1">
-		                    <table class="show-2">
-			                        <tr><td colspan="3" class="picture">
-			                            <img src="${g.picture}" alt="" width="174">
-			                        </td></tr>
-			                        <tr>
-			                            <td class="price" style="text-align: center;">${g.goodname}<br>超值价：${g.price}元</td>
-			                        </tr>
-		                    </table>
-		                </a>
-		            </c:forEach>
-	            </td> 
-	        </tr>
-	    </table> --%>
+	<div class="right">
+		<center>
+			<h2>欢迎来到猫咪美食坊！</h2>
+       <!--非基线<form action="successsearchservlet" method="post">
+				<input type="text" name="keyword" placeholder="搜索商品"  oninput="search()">
+				<input type="submit" value="搜索">
+			</form>
+			<div id="search_list"></div>-->
+		</center>
 	    <div class="goods">
 	    	<c:forEach items="${sessionScope.gL}" var="g">
 	    		<a href="showgoodservlet?goodid=${g.goodid}" class="show-1">
 		    		<div>
 		    			<img src="${g.picture}" alt="aa" width="200">
-		    			<p>${g.goodname}<br>超值价：${g.price}元</p>
+		    			<p>商品名：${g.goodname}<br>超值价：${g.price}元</p>
 		    		</div>
 	    		</a>
 	    	</c:forEach>
 	    </div>
-	
-	
+	    <div class="pagination">
+		    <button class="prev" onclick="goToPrevPage()">上一页</button>
+		    <span id="page-info">第${currentPage}页 </span>
+		    <%-- 当前页码小于总页数时，才显示“下一页”按钮 --%>
+		   	<button class="next" onclick="goToNextPage()">下一页</button>
+		</div>
 	</div>
 </body>
 </html>

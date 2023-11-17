@@ -244,11 +244,15 @@ public class goodsqlimpl implements goodsql{
 	
 
 	@Override
-	public List<good> searchls(String keyword) throws SQLException {
+	public List<good> searchls(String keyword,int power) throws SQLException {
 	    try {
 	        Class.forName("org.sqlite.JDBC");
 	        Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+	        
 	        String sql = "SELECT * FROM MLgood WHERE goodname LIKE ?";
+	        if(0==power) {//买家
+	        	sql = "SELECT * FROM MLgood WHERE goodname LIKE ? AND state = 0";
+	        }
 	        PreparedStatement ps = conn.prepareStatement(sql);
 	        // 添加 '%' 来匹配任何以关键词开头的商品名称
 	        ps.setString(1, keyword + "%");

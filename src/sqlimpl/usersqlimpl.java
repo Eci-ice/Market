@@ -48,7 +48,8 @@ public class usersqlimpl implements usersql{
 	        	String phone =null;
 	        	String address=null;
 	        	if(0==rs.getInt(4)) {//买家
-		        	sql = "select * from where userid=?";
+		        	sql = "select * from MLinfo where userid=?";
+		        	//System.out.print(id);
 		            ps = conn.prepareStatement(sql);
 			        ps.setInt(1, id);
 			        rs = ps.executeQuery();

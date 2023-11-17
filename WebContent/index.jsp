@@ -213,11 +213,12 @@ border-radius:10px;
 						<input type="password" name="pwd"><br><br>
 					</div>
 					<!-- 登录注册根据action和value在同一个servlet中检测 -->
+					<a href="forgetpassword.jsp" alt="忘记密码" title="忘记密码" >忘记密码</a>
 					<div class="image-buttons">
 					    <input class="butt-1" type="submit" alt="登录" title="登录" name="action" value="登录" >
-					    <a href="choose_register.jsp" alt="注册" title="注册" class="butt-1">注册</a>
-					    <a href="sellinggoodservlet"alt="游客访问" title="游客访问" class="butt-1">直接访问登录界面</a>
-					    <a href="forgetpassword.jsp"alt="忘记密码" title="忘记密码" class="butt-1">忘记密码</a>
+					  <!--非基线<a href="choose_register.jsp" alt="注册" title="注册" class="butt-1">注册</a>-->
+					    <a href="sellinggoodservlet"alt="游客访问" title="游客访问" class="butt-1">游客访问</a>
+					    
 					</div>
 				</form>
 				

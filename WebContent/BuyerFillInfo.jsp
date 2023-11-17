@@ -120,6 +120,7 @@ input[type="text"]{
 
 </style>
 <script >
+	
 	function validateForm() {
 	    var buyername = document.getElementsByName("buyername")[0].value;
 	    var telephone = document.getElementsByName("telephone")[0].value;
@@ -144,6 +145,7 @@ input[type="text"]{
 	
 	    return true;
 	}
+	
 </script>
 <body>
 <hr class="cline" color=#BBBBBB width=1 size=900>
@@ -177,9 +179,9 @@ input[type="text"]{
     <form action="createorderservlet" method="post" name="myform" class="buy-imf" onsubmit="return validateForm()">
 		<input type="hidden" name="goodid" value="${nowg.goodid}"/><br/>
         <label class="username">
-            用户名：<input type="text" name="buyername" value="${sessionScope.admin.username}"><br><br>
-	        电话：<input type="text" name="telephone" value="${sessionScope.admin.username}"><br><br>
-	        交易地点：<input type="text" name="address" placeholder="默认地址" value="${sessionScope.admin.address}"><br><br>
+                   姓名：<input type="text" name="buyername" value="${sessionScope.admin.username}" required="required" ><br><br>
+	        电话：<input type="text" name="telephone" value="${sessionScope.admin.phone}" required="required" ><br><br>
+	        交易地点：<input type="text" name="address" value="${sessionScope.admin.address}" required="required" ><br><br>
         </label>
        <input type="submit"  class="butt-2" value="确认购买" >
     </form>

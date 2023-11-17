@@ -18,6 +18,7 @@ import sql.usersql;
 import sqlimpl.goodsqlimpl;
 import sqlimpl.usersqlimpl;
 import vo.good;
+import vo.user;
 
 public class successsearchservlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -27,12 +28,17 @@ public class successsearchservlet extends HttpServlet {
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();    
+    	user u = (user)session.getAttribute("admin");
+    	int power=0;
+    	if(null!=u) {
+    		power=u.getPower();
+    	}
 		String keyword = request.getParameter("keyword");
 	        // 查询数据库
 	    goodsql gs = new goodsqlimpl();
 	        List<good> goods = null;
 	        try {
-	        	goods = gs.searchls(keyword);
+	        	goods = gs.searchls(keyword,power);
 	        	System.out.print(keyword);
 	        } catch (SQLException e) {
 	            e.printStackTrace();
@@ -41,7 +47,12 @@ public class successsearchservlet extends HttpServlet {
 	        
 	        session.setAttribute("sL", goods);
 	        // 重定向到search_list.jsp页面
-	        response.sendRedirect("search_list.jsp");
+	        if(1==power) {
+	        	response.sendRedirect("search_list.jsp");
+	        }
+	        else if(0==power){
+		        response.sendRedirect("BuyerSearch.jsp");
+	        }
 	    
 	}
 	

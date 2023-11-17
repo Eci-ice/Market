@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import sql.goodsql;
 import sqlimpl.goodsqlimpl;
 import vo.good;
+import vo.user;
 
 /**
  * Servlet implementation class creatgoodservlet
@@ -26,9 +27,15 @@ import vo.good;
 public class searchgoodservlet extends HttpServlet {
 	    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	        // 获取搜索关键词
+	    	HttpSession session = request.getSession();
+	    	user u = (user)session.getAttribute("admin");
+	    	int power=0;
+	    	if(null!=u) {
+	    		power=u.getPower();
+	    	}
 	        String keyword = request.getParameter("keyword");
 	        // 查询数据库
-	        List<String> results = searchDatabase(keyword);
+	        List<String> results = searchDatabase(keyword,power);
 	        // 将结果转换为JSON
 	        String json = new Gson().toJson(results);
 	        // 返回JSON响应
@@ -37,11 +44,12 @@ public class searchgoodservlet extends HttpServlet {
 	        response.getWriter().write(json);
 	    }
 
-	    private List<String> searchDatabase(String keyword) {
+	    private List<String> searchDatabase(String keyword,int power) {
 	        goodsql gs = new goodsqlimpl();
+	        
 	        try {
 	            // 调用search方法获取匹配的商品
-	            List<good> goods = gs.searchls(keyword);
+	            List<good> goods = gs.searchls(keyword,power);
 	            // 提取商品名称
 	            List<String> names = new ArrayList<>();
 	            for (good g : goods) {
