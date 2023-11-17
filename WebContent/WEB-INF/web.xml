@@ -132,6 +132,27 @@
 		<servlet-name>registerservlet</servlet-name>
 		<servlet-class>registerservlet.registerservlet</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>allhistorygoodservlet</display-name>
+		<servlet-name>allhistorygoodservlet</servlet-name>
+		<servlet-class>goodservlet.allhistorygoodservlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>chooseregisterservlet</display-name>
+		<servlet-name>chooseregisterservlet</servlet-name>
+		<servlet-class>registerservlet.chooseregisterservlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>forgetservlet</display-name>
+		<servlet-name>forgetservlet</servlet-name>
+		<servlet-class>forgetservlet.forgetservlet</servlet-class>
+	</servlet>
 
 
 
@@ -206,6 +227,18 @@
 	<servlet-mapping>
 		<servlet-name>searchgoodservlet</servlet-name>
 		<url-pattern>/searchgoodservlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>allhistorygoodservlet</servlet-name>
+		<url-pattern>/allhistorygoodservlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>chooseregisterservlet</servlet-name>
+		<url-pattern>/chooseregisterservlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>forgetservlet</servlet-name>
+		<url-pattern>/forgetservlet</url-pattern>
 	</servlet-mapping>
 
 

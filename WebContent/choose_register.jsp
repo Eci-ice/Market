@@ -35,6 +35,7 @@ a{
 <style>
 body{
 margin:0px;
+padding:10px;
 font-family:sans-serif;
 background-image: url("img/beijing2.jpg");
 background-repeat: no-repeat;
@@ -69,7 +70,9 @@ position: relative;
 </style>
 <style type="text/css">
 ul{
+width:100%;
 height:80px;
+padding:10;
 list-style-type:none;
 background-color:rgba(255,250,250,0.5);
 display:block;
@@ -84,40 +87,26 @@ h2{
 	padding-left:20px;
 	font-family:Heiti;
 }
-.registration-title {
-            text-align: center;
-            font-family: Heiti;
-            margin: 0;
-            padding: 0;
-            font-size: 26px;
-            margin-top: 20px;
-        }
-
 </style>
 
 <!-- 登录框 -->
 <style>
 .login{
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
 position:absolute;
-top:55%;
+top:65%;
 left:50%;
 transform:translate(-50%,-50%);
-width:500px;
+width:400px;
 padding:30px;
 padding-bottom:20px;
 background: rgba(224,224,224,.8);
 box-sizing:border-box;
 box-shadow: 0px 15px 25px rgba(0,0,0,.5);
 border-radius:20px;
+display: flex;
+align-items: center; /* 子元素水平居中 */
+justify-content: center; /* 子元素垂直居中 */
 }
-.login h3{
-margin:0px;
-color:＃696969;
-}
-
 .login h4{
 margin:0 0 30px;
 padding:0;
@@ -201,13 +190,10 @@ border-radius:10px;
     margin: 0;
     padding: 0;
     font-size: 26px;
-    display:flex;
+    margin-left: 650px;
     margin-top:20px;
     text-align: center;
-    justify-content: center;
 }
-
-
 
 .title-container a {
     text-decoration: none;
@@ -218,118 +204,39 @@ border-radius:10px;
     margin-top:20px;
     font-weight: bold;
 }
+.butt-1 {
+  position: flex;
+  border-radius: 10px;
+  margin:10px;
+  margin-left:20px;
+  border:1px;
+  color:white;
+  background-color: orange;
+  font-size: 25px;
+  padding: 10px 20px; /* 调整字体与边框的距离 */
+  cursor: pointer; /* 设置悬停时的鼠标样式为手型 */
+}
 </style>
-<script>
-	function validateForm() {
-		var type = document.getElementsByName("type")[0].value;
-	    var newusername = document.getElementsByName("newusername")[0].value;
-	    
-	    var newquestion = document.getElementsByName("newquestion")[0].value;
-	    var newanswer = document.getElementsByName("newanswer")[0].value;
-	    var newpwd = document.getElementsByName("newpwd")[0].value;
-	    var phoneRegex = /^[0-9]{11}$/;
 
-	    
-	    if("0" == type){
-		    var newphone = document.getElementsByName("newphone")[0].value;
-		    var newaddress = document.getElementsByName("newaddress")[0].value;
-		    if (!phoneRegex.test(newphone) || null === newphone) {
-		        alert("电话号码需要是11位数字！");
-		        return false;
-		    }
-		    if (newaddress.length > 99) {
-		        alert("地址不能超过99个字符！");
-		        return false;
-		    }
-	    }
-	    
-	    if (newpwd.length > 15) {
-	        alert("密码不能超过15个字符！");
-	        return false;
-	    }
-
-	
-	    if (newusername.length > 10) {
-	        alert("用户名不能超过10个字符！");
-	        return false;
-	    }
-	
-	    
-	    if (newquestion.length > 50) {
-	        alert("地址不能超过50个字符！");
-	        return false;
-	    }
-	    if (newanswer.length > 30) {
-	        alert("地址不能超过30个字符！");
-	        return false;
-	    }
-	
-	
-	    return true;
-	}
-</script>
 
 </head>
 	<body>
-	<!-- 设置session值 -->
-	<%
-		String type=request.getParameter("registeruser");
-		session.setAttribute("registeruser", type);
-	%>
-	<!-- 0为买家 -->
-		
-			<ul class="daohang" >
-				<div class="title-container">
-				    <h2 class="registration-title">请您注册！</h2>
-				    <a href="index.jsp">返回初始页面</a>
-				</div>
-			</ul>
-			<div class="login" style="top:50%;">
-				<c:if test="${sessionScope.registeruser eq 1}">
-					<h2>请您注册卖家账户！</h2>
-				</c:if>
-				<c:if test="${sessionScope.registeruser eq 0}">
-					<h2>请您注册买家账户！</h2>
-				</c:if>
-				<form action="registerservlet" method="post" required="required" onsubmit="return validateForm()">
-					<!-- 账号框 -->
-					<input type="hidden" name="type" value="${sessionScope.registeruser}"/><br/>
-					<div class="input">
-						<h3>用户名</h3>
-						<input type="text" name="newusername" required="required">
-					</div>
-					<c:if test="${sessionScope.registeruser eq 0}">
-						<!-- 电话框 -->
-						<div class="input">
-							<h3>联系电话</h3>
-							<input type="text" name="newphone" required="required">
-						</div>
-						<!-- 地址框 -->
-						<div class="input">
-							<h3>默认收货地址</h3>
-							<input type="text" name="newaddress" required="required">
-						</div>	
-					</c:if>
-					<!-- 密码框 -->
-					<div class="input">
-						<h3>密码</h3>
-						<input type="password" name="newpwd" required="required">
-					</div>
-					<div class="input">
-						<h3>设置密保问题</h3>
-						<input type="text" name="newquestion" required="required">
-					</div>
-					<div class="input">
-						<h3>设置答案</h3>
-						<input type="text" name="newanswer" required="required"><br><br>
-					</div>
-					<!-- 登录注册根据action和value在同一个servlet中检测 -->
-					<div class="image-buttons">
-					    <input class="input-image-button" type="image" src="img/register.png" alt="登录" title="登录" name="action" value="登录"><br>
-					    <br>
-					</div>
-				</form>
+		<ul class="daohang">
+			<div class="title-container">
+			    <h2>请您注册！</h2>
+			    <a href="index.jsp">返回初始页面</a>
 			</div>
-
+			<div class="cat-background"></div>
+		</ul>
+		<div class="login">
+			<a href="register.jsp?registeruser=0" alt="" title="购买"><button class="butt-1" >我是买家</button></a>
+			<a href="register.jsp?registeruser=1" alt="" title="购买"><button class="butt-1" >我是卖家</button></a> 
+		</div>
+		<div id="b">
+			<c:if test="${not empty requestScope.err}">
+				${requestScope.err}
+			</c:if>
+		</div>
+	
 	</body>
 </html>

@@ -112,6 +112,29 @@
                 description: description,
                 picture: pictureUrl
             };
+            var fileExtension = pictureFile.split('.').pop().toLowerCase();
+
+
+    	    if (isNaN(price)) {
+    	        alert("价格需要输入数字！");
+    	        return;
+    	    }
+
+    	    if (goodname.length > 20) {
+    	        alert("商品名称不能超过20个字符！");
+    	        return;
+    	    }
+
+    	    if (description.length > 100) {
+    	        alert("商品描述不能超过100个字符！");
+    	        return;
+    	    }
+
+    	    if(fileExtension != "png" && fileExtension != "jpg") {
+    	        alert("图片只能上传png或jpg格式！");
+    	        return;
+    	    }
+
 
             productList.push(product);
             displayProducts();

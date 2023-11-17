@@ -53,6 +53,16 @@ public class goodsqlimpl implements goodsql{
 	         ps.setString(7, good.getKind());
 	         ps.executeUpdate();
 	         ps.close();
+	         String sql1 = "insert into MLhistorygood(goodname,description,price,picture,number,kind) values(?,?,?,?,?,?)";
+	         PreparedStatement ps1  = conn.prepareStatement(sql1);
+	         ps1.setString(1, good.getGoodname());
+	         ps1.setString(2, good.getDescription());
+	         ps1.setDouble(3, good.getPrice());
+	         ps1.setString(4, good.getPicture());
+	         ps1.setInt(5, good.getNumber());
+	         ps1.setString(6, good.getKind());
+	         ps1.executeUpdate();
+	         ps1.close();
 	         conn.close();
 		} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -116,6 +126,29 @@ public class goodsqlimpl implements goodsql{
 		}
 		return 0;
 	}
+	//查找商品是否唯一
+		@Override
+		public int oldunique() throws SQLException {
+			try {
+				Class.forName("org.sqlite.JDBC");
+				Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+	            String sql = "SELECT * FROM MLgood WHERE state=0";
+	            PreparedStatement ps = conn.prepareStatement(sql);
+	   			ResultSet rs=ps.executeQuery();
+	   			if(rs.next()) {
+	   		        return 0;
+	   	         }else {
+	   	            return 1;
+	   	         }
+	   		} catch (SQLException e) {
+	   				// TODO Auto-generated catch block
+	   				e.printStackTrace();
+	   		} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return 0;
+		}
 	
 	@Override
 	public void modifystate(int goodid,int tostate) throws SQLException {
@@ -156,6 +189,7 @@ public class goodsqlimpl implements goodsql{
 					g.setPicture(rs.getString(5));
 					g.setState(rs.getInt(6));
 					g.setNumber(rs.getInt(7));
+					g.setKind(rs.getString(8));
 					gL.add(g);
 			}
 	         ps.close();
@@ -191,6 +225,7 @@ public class goodsqlimpl implements goodsql{
 				g.setPicture(rs.getString(5));
 				g.setState(rs.getInt(6));
 				g.setNumber(rs.getInt(7));
+				g.setKind(rs.getString(8));
 				ps.close();
 		        conn.close();
 				return g;
@@ -229,6 +264,7 @@ public class goodsqlimpl implements goodsql{
 				g.setPicture(rs.getString(5));
 				g.setState(rs.getInt(6));
 				g.setNumber(rs.getInt(7));
+				g.setKind(rs.getString(8));
 				gL.add(g);
 			}
 	        ps.close();
@@ -263,6 +299,42 @@ public class goodsqlimpl implements goodsql{
 				g.setPicture(rs.getString(5));
 				g.setState(rs.getInt(6));
 				g.setNumber(rs.getInt(7));
+				g.setKind(rs.getString(8));
+				gL.add(g);
+			}
+			ps.close();
+	        conn.close();
+			return gL;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	public List<good> showhistoryall() throws SQLException {
+		try {
+			Class.forName("org.sqlite.JDBC");
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+            PreparedStatement ps = null;
+			String sql = "select * from MLhistorygood";
+			ps=conn.prepareStatement(sql);
+				
+			ResultSet rs=ps.executeQuery();
+			List<good> gL=new ArrayList<good>();
+			good g=null;
+			while(rs.next()) {
+				g=new good();
+				g.setGoodid(rs.getInt(1));
+				g.setGoodname(rs.getString(2));
+				g.setDescription(rs.getString(3));
+				g.setPrice(rs.getDouble(4));
+				g.setPicture(rs.getString(5));
+				g.setNumber(rs.getInt(6));
+				g.setKind(rs.getString(7));
 				gL.add(g);
 			}
 			ps.close();

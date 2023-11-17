@@ -189,13 +189,44 @@ button{
 	        reader.readAsDataURL(input.files[0]);
 	    }
 	}
+	
+	function validateForm() {
+	    var price = document.getElementsByName("price")[0].value;
+	    var goodname = document.getElementsByName("goodname")[0].value;
+	    var description = document.getElementsByName("description")[0].value;
+	    var pictureInput = document.getElementsByName("picture")[0].value;
+	    var fileExtension = pictureInput.split('.').pop().toLowerCase();
+
+
+	    if (isNaN(price)) {
+	        alert("价格需要输入数字！");
+	        return false;
+	    }
+
+	    if (goodname.length > 20) {
+	        alert("商品名称不能超过20个字符！");
+	        return false;
+	    }
+
+	    if (description.length > 100) {
+	        alert("商品描述不能超过100个字符！");
+	        return false;
+	    }
+
+	    if(fileExtension != "png" && fileExtension != "jpg") {
+	        alert("图片只能上传png或jpg格式！");
+	        return false;
+	    }
+
+	    return true;
+	}
 
 </script>
 
 <c:if test="${not empty sessionScope.admin }">
 <div class="main">
 <h1>请发布商品</h1>
-<form action="creategoodservlet" method="post">
+<form action="creategoodservlet" method="post" onsubmit="return validateForm()">
  <div class="container">
         <div class="left-div" style="height: 300px;"> <!-- 左侧div -->
         	<span style="padding-left: 50px;">&nbsp;&nbsp;商品图片：</span><br><br>
@@ -210,7 +241,7 @@ button{
             	<input type="text" name="goodname" required="required" placeholder="请输入商品名称">
             	<br><br></center>
             <center><span>商品价格：</span><input type="text" name="price" required="required" placeholder="请输入商品价格"><br><br></center>
-            <center><span>商品库存：</span><input type="text" name="number" required="required" placeholder="1" /><br><br></center>
+            <center><span>商品库存：</span><input type="text" name="number" required="required" value="1" disabled="disabled"/><br><br></center>
             <center><span>商品描述：</span><input type="text" name="description" required="required" placeholder="请输入商品描述"><br><br></center>
             <input type="submit" class="submit-button-container" value="确认发布" >
         </div>

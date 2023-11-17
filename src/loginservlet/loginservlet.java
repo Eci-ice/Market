@@ -57,6 +57,7 @@ public class loginservlet extends HttpServlet {
 
 		usersql us = new usersqlimpl();
 		user ut = null;
+		System.out.print(username);
 		try {
 			ut = us.search(username);
 		} catch (SQLException e) {
@@ -68,7 +69,6 @@ public class loginservlet extends HttpServlet {
              if(pwd.equals(ut.getPwd())){ //密码存在且与数据库的密码一致则跳转
                 	HttpSession session = request.getSession();
                 	session.setAttribute("admin", ut);
-                	int currentPage=1;
                 	if (ut.getPower() == 0) {
                              // 买家权限，进入商品首页
                 			 goodsql gs=new goodsqlimpl();
@@ -79,7 +79,6 @@ public class loginservlet extends HttpServlet {
                 				e.printStackTrace();
                 			 }
                 			 session.setAttribute("gL", gList);
-                			 request.setAttribute("currentPage",currentPage);
                              request.getRequestDispatcher("BuyerMain.jsp").forward(request, response);
                     } else if (ut.getPower() == 1) {
                              // 卖家权限，进入后台管理all商品页面
@@ -91,20 +90,22 @@ public class loginservlet extends HttpServlet {
 		           				e.printStackTrace();
 		           			 }
 		           			session.setAttribute("gL", gList);
-		           			request.setAttribute("currentPage",currentPage);
                              request.getRequestDispatcher("seller.jsp").forward(request, response);
                      } else {
                              // 处理其他权限或错误情况
                              request.setAttribute("err", "未知权限");
+                             request.setAttribute("to", "index");
                              request.getRequestDispatcher("error.jsp").forward(request, response);
                     }      
             }else{
                   request.setAttribute("err","密码错误！！！");
+                  request.setAttribute("to", "index");
                    request.getRequestDispatcher("error.jsp").forward(request,response);
             }
         }
 		else{
             request.setAttribute("err","用户名错误或不存在");
+            request.setAttribute("to", "index");
             request.getRequestDispatcher("error.jsp").forward(request,response);
 		}
 	}
