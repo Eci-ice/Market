@@ -231,11 +231,11 @@ form {
 	<div class="right">
 		<center>
 			<h2>欢迎来到猫咪美食坊！</h2>
-       <!--非基线<form action="successsearchservlet" method="post">
+        <form action="successsearchservlet" method="post">
 				<input type="text" name="keyword" placeholder="搜索商品"  oninput="search()">
 				<input type="submit" value="搜索">
 			</form>
-			<div id="search_list"></div>-->
+			<div id="search_list"></div>
 		</center>
 	    <div class="goods">
 	    	<c:forEach items="${sessionScope.gL}" var="g">
