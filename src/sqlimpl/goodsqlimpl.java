@@ -42,7 +42,7 @@ public class goodsqlimpl implements goodsql{
 		try {
 			Class.forName("org.sqlite.JDBC");
 	         Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
-	         String sql = "insert into MLgood(goodname,description,price,picture,state,number,kind,subkind,owner) values(?,?,?,?,?,?,?,?,?)";
+	         String sql = "insert into MLgood(goodname,description,price,picture,state,number,kind,subkind) values(?,?,?,?,?,?,?,?)";
 	         PreparedStatement ps  = conn.prepareStatement(sql);
 	         ps.setString(1, good.getGoodname());
 	         ps.setString(2, good.getDescription());
@@ -52,10 +52,10 @@ public class goodsqlimpl implements goodsql{
 	         ps.setInt(6, good.getNumber());
 	         ps.setString(7, good.getKind());
 	         ps.setString(8, good.getSubkind());
-	         ps.setInt(9, good.getOwner());
 	         ps.executeUpdate();
 	         ps.close();
-	         String sql1 = "insert into MLhistorygood(goodname,description,price,picture,number,kind,subkind,owner) values(?,?,?,?,?,?,?,?)";
+//	         下面是加入历史商品，历史商品中去掉了state
+	         String sql1 = "insert into MLhistorygood(goodname,description,price,picture,number,kind,subkind) values(?,?,?,?,?,?,?)";
 	         PreparedStatement ps1  = conn.prepareStatement(sql1);
 	         ps1.setString(1, good.getGoodname());
 	         ps1.setString(2, good.getDescription());
@@ -63,8 +63,7 @@ public class goodsqlimpl implements goodsql{
 	         ps1.setString(4, good.getPicture());
 	         ps1.setInt(5, good.getNumber());
 	         ps1.setString(6, good.getKind());
-	         ps.setString(7, good.getSubkind());
-	         ps.setInt(8, good.getOwner());
+	         ps1.setString(7, good.getSubkind());
 	         ps1.executeUpdate();
 	         ps1.close();
 	         conn.close();
@@ -102,13 +101,13 @@ public class goodsqlimpl implements goodsql{
         return 0;
 	}
 
-	//查找商品名是否唯一
+	//查找商品名是否唯一，如果有商品名唯一返回1，否则返回0
 	@Override
 	public int unique(String name) throws SQLException {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
-            String sql = "SELECT * FROM MLgood WHERE state=0";//在售
+            String sql = "SELECT * FROM MLgood WHERE state=0";
             PreparedStatement ps = conn.prepareStatement(sql);
    			ResultSet rs=ps.executeQuery();
    			if(rs.next()) {
@@ -130,7 +129,7 @@ public class goodsqlimpl implements goodsql{
 		}
 		return 0;
 	}
-	//查找商品是否唯一
+	//查找商品是否唯一(基线部分的unique），如果商品名唯一返回1，否则返回0
 		@Override
 		public int oldunique() throws SQLException {
 			try {
@@ -178,7 +177,7 @@ public class goodsqlimpl implements goodsql{
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
             PreparedStatement ps = null;
-			String sql = "select goodid,goodname,description,price,picture,state,number,kind,subkind,owner from MLgood where state=0";
+			String sql = "select goodid,goodname,description,price,picture,state,number,kind from MLgood where state=0";
 			ps=conn.prepareStatement(sql);
 				
 			ResultSet rs=ps.executeQuery();
@@ -194,8 +193,6 @@ public class goodsqlimpl implements goodsql{
 					g.setState(rs.getInt(6));
 					g.setNumber(rs.getInt(7));
 					g.setKind(rs.getString(8));
-					g.setSubkind(rs.getString(9));
-					g.setOwner(rs.getInt(10));
 					gL.add(g);
 			}
 	         ps.close();
@@ -232,8 +229,6 @@ public class goodsqlimpl implements goodsql{
 				g.setState(rs.getInt(6));
 				g.setNumber(rs.getInt(7));
 				g.setKind(rs.getString(8));
-				g.setSubkind(rs.getString(9));
-				g.setOwner(rs.getInt(10));
 				ps.close();
 		        conn.close();
 				return g;
@@ -252,22 +247,18 @@ public class goodsqlimpl implements goodsql{
 	
 
 	@Override
-	public List<good> searchls(String keyword,int power,int userid) throws SQLException {
+	public List<good> searchls(String keyword,int power) throws SQLException {
 	    try {
 	        Class.forName("org.sqlite.JDBC");
 	        Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
 	        
-	        String sql = "SELECT * FROM MLgood WHERE goodname LIKE ? AND owner = ?";
+	        String sql = "SELECT * FROM MLgood WHERE goodname LIKE ?";
 	        if(0==power) {//买家
 	        	sql = "SELECT * FROM MLgood WHERE goodname LIKE ? AND state = 0";
 	        }
-	        
 	        PreparedStatement ps = conn.prepareStatement(sql);
 	        // 添加 '%' 来匹配任何以关键词开头的商品名称
 	        ps.setString(1, keyword + "%");
-	        if(1==power) {
-	        	ps.setInt(2, userid);
-	        }
 	        ResultSet rs = ps.executeQuery();
 	        List<good> gL=new ArrayList<good>();
 			good g=null;
@@ -282,7 +273,6 @@ public class goodsqlimpl implements goodsql{
 				g.setNumber(rs.getInt(7));
 				g.setKind(rs.getString(8));
 				g.setSubkind(rs.getString(9));
-				g.setOwner(rs.getInt(10));
 				gL.add(g);
 			}
 	        ps.close();
@@ -297,14 +287,14 @@ public class goodsqlimpl implements goodsql{
 	}
 
 	@Override
-	public List<good> showall(int userid) throws SQLException {
+	public List<good> showall() throws SQLException {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
             PreparedStatement ps = null;
-			String sql = "select * from MLgood WHERE owner = ?";
+			String sql = "select * from MLgood";
 			ps=conn.prepareStatement(sql);
-			ps.setInt(1, userid);
+				
 			ResultSet rs=ps.executeQuery();
 			List<good> gL=new ArrayList<good>();
 			good g=null;
@@ -318,8 +308,6 @@ public class goodsqlimpl implements goodsql{
 				g.setState(rs.getInt(6));
 				g.setNumber(rs.getInt(7));
 				g.setKind(rs.getString(8));
-				g.setSubkind(rs.getString(9));
-				g.setOwner(rs.getInt(10));
 				gL.add(g);
 			}
 			ps.close();
@@ -335,14 +323,14 @@ public class goodsqlimpl implements goodsql{
 		
 		return null;
 	}
-	public List<good> showhistoryall(int userid) throws SQLException {
+	public List<good> showhistoryall() throws SQLException {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
             PreparedStatement ps = null;
-			String sql = "select * from MLhistorygood WHERE owner = ?";
+			String sql = "select * from MLhistorygood";
 			ps=conn.prepareStatement(sql);
-			ps.setInt(1, userid);
+				
 			ResultSet rs=ps.executeQuery();
 			List<good> gL=new ArrayList<good>();
 			good g=null;
@@ -356,7 +344,6 @@ public class goodsqlimpl implements goodsql{
 				g.setNumber(rs.getInt(6));
 				g.setKind(rs.getString(7));
 				g.setSubkind(rs.getString(8));
-				g.setOwner(rs.getInt(9));
 				gL.add(g);
 			}
 			ps.close();

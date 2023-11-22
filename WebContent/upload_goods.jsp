@@ -227,26 +227,83 @@ button{
 <div class="main">
 <h1>请发布商品</h1>
 <form action="creategoodservlet" method="post" onsubmit="return validateForm()">
- <div class="container">
-        <div class="left-div" style="height: 300px;"> <!-- 左侧div -->
-        	<span style="padding-left: 50px;">&nbsp;&nbsp;商品图片：</span><br><br>
+    <div class="container">
+        <div class="left-div" style="height: 300px;">
+            <!-- 左侧div -->
+            <span style="padding-left: 50px;">&nbsp;&nbsp;商品图片：</span><br><br>
             <center><img id="imagePreview"><br></center>
             <input type="file" name="picture" id="pictureInput" onchange="showPreview(this);">
             <button><a href="show_good.jsp">取消发布</a></button></center>
         </div>
 
-        <div class="right-div"> <!-- 右侧div -->
+        <div class="right-div">
+            <!-- 右侧div -->
             <center>
-            	<span>商品名称：</span>
-            	<input type="text" name="goodname" required="required" placeholder="请输入商品名称">
-            	<br><br></center>
-            <center><span>商品价格：</span><input type="text" name="price" required="required" placeholder="请输入商品价格"><br><br></center>
-            <center><span>商品库存：</span><input type="text" name="number" required="required" value="1" disabled="disabled"/><br><br></center>
-            <center><span>商品描述：</span><input type="text" name="description" required="required" placeholder="请输入商品描述"><br><br></center>
-            <input type="submit" class="submit-button-container" value="确认发布" >
+                <span>商品大类：</span>
+                <select name="kind" id="kind" required="required" onchange="updateSubcategories()">
+                    <option value="猫咪主粮">猫咪主粮</option>
+                    <option value="猫咪零食">猫咪零食</option>
+                    <option value="猫咪日用">猫咪日用</option>
+                </select><br><br>
+            </center>
+            <center>
+                <span>商品子类：</span>
+                <select name="subkind" id="subkind" required="required">
+                    <!-- 放置在下方script部分 -->
+                </select><br><br>
+            </center>
+            <center>
+                <span>商品名称：</span>
+                <input type="text" name="goodname" required="required" placeholder="请输入商品名称"><br><br>
+            </center>
+            <center>
+                <span>商品价格：</span>
+                <input type="text" name="price" required="required" placeholder="请输入商品价格"><br><br>
+            </center>
+            <center>
+                <span>商品库存：</span>
+                <input type="text" name="number" required="required" placeholder="请输入商品库存" /><br><br>
+            </center>
+            <center>
+                <span>商品描述：</span>
+                <input type="text" name="description" required="required" placeholder="请输入商品描述"><br><br>
+            </center>
+            <input type="submit" class="submit-button-container" value="确认发布">
         </div>
     </div>
+
+    <script>
+    function updateSubcategories() {
+        var categorySelect = document.getElementById("kind");
+        var subcategorySelect = document.getElementById("subkind");
+        subcategorySelect.innerHTML = ""; // Clear existing options
+
+        if (categorySelect.value === "猫咪主粮") {
+            addOption(subcategorySelect, "猫干粮");
+            addOption(subcategorySelect, "猫湿粮");
+        } else if (categorySelect.value === "猫咪零食") {
+            addOption(subcategorySelect, "饼干");
+            addOption(subcategorySelect, "罐头");
+            addOption(subcategorySelect, "猫条");
+        } else if (categorySelect.value === "猫咪日用") {
+            addOption(subcategorySelect, "猫砂盆");
+            addOption(subcategorySelect, "猫小窝");
+            addOption(subcategorySelect, "猫沙发");
+            addOption(subcategorySelect, "清洁除味");
+        }
+    }
+    function addOption(selectElement, optionValue) {
+        var option = document.createElement("option");
+        option.value = optionValue;
+        option.text = optionValue;
+        selectElement.add(option);
+    }
+
+        // Call updateSubcategories initially to set up the initial state
+        updateSubcategories();
+    </script>
 </form>
+
 </div>
 <!-- <script>
 	var isDuplicate = ${isDuplicate}; // 获取Java代码中设置的标志值

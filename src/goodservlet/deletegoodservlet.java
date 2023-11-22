@@ -18,7 +18,6 @@ import sqlimpl.goodsqlimpl;
 import sqlimpl.ordersqlimpl;
 import vo.good;
 import vo.order;
-import vo.user;
 
 /**
  * Servlet implementation class deletegoodservlet
@@ -33,7 +32,6 @@ public class deletegoodservlet extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		user u = (user)session.getAttribute("admin");
 		int   goodid = Integer.parseInt(request.getParameter("goodid"));
 		goodsql gs = new goodsqlimpl();
 	    try {
@@ -44,8 +42,8 @@ public class deletegoodservlet extends HttpServlet {
 				List<order> orList = null;
 				List<good> gList = null;
       			 try {
-      				    orList = ors.showall(u.getUserid());
-      					gList = gs.showall(u.getUserid());
+      				    orList = ors.showall();
+      					gList = gs.showall();
       			 } catch (SQLException e) {
       				e.printStackTrace();
       			 }

@@ -12,5 +12,5 @@ public interface ordersql {
 	public void deleteorder(int orderid) throws SQLException;
 	public void modifystate(int orderid,int tostate) throws SQLException;
 	public int searchid(int orderid) throws SQLException;
-	public List<order> showall(int userid) throws SQLException;
+	public List<order> showall() throws SQLException;
 }

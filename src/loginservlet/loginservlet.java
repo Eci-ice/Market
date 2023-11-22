@@ -85,7 +85,7 @@ public class loginservlet extends HttpServlet {
 	                    	goodsql gs=new goodsqlimpl();
 		           			 List<good> gList = null;
 		           			 try {
-		           					gList = gs.showall(ut.getUserid());
+		           					gList = gs.showall();
 		           			 } catch (SQLException e) {
 		           				e.printStackTrace();
 		           			 }

@@ -20,13 +20,12 @@ public class ordersqlimpl implements ordersql{
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
 	         PreparedStatement pstmt = null;
-	         String sql = "insert into MLorder(address,telephone,buyername,goodid,orderstate,owner) values(?,?,?,?,0,?)";
+	         String sql = "insert into MLorder(address,telephone,buyername,goodid,orderstate) values(?,?,?,?,0)";
 	         PreparedStatement ps  = conn.prepareStatement(sql);
 	         ps.setString(1, order.getAddress());
 	         ps.setString(2, order.getTelephone());
 	         ps.setString(3, order.getBuyername());
 	         ps.setInt(4, order.getGoodid());
-	         ps.setInt(4, order.getOwner());
 	         ps.executeUpdate();
 	         ps.close();
 	         conn.close();
@@ -112,15 +111,15 @@ public class ordersqlimpl implements ordersql{
 	}
 
 	@Override
-	public List<order> showall(int userid) throws SQLException {
+	public List<order> showall() throws SQLException {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
             PreparedStatement ps = null;
-			String sql = "select * from MLgood WHERE owner = ?";
-			ps=conn.prepareStatement(sql);
-			ps.setInt(1, userid);
+			String sql = "select * from MLorder";
+			ps =conn.prepareStatement(sql);
 			ResultSet rs=ps.executeQuery();
+
 			List<order> orL=new ArrayList<order>();
 			order or=null;
 			while(rs.next()) {
@@ -131,7 +130,6 @@ public class ordersqlimpl implements ordersql{
 				or.setBuyername(rs.getString(4));
 				or.setGoodid(rs.getInt(5));
 				or.setOrderstate(rs.getInt(6));
-				or.setOwner(rs.getInt(7));
 				orL.add(or);
 			}
 			ps.close();

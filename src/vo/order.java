@@ -7,10 +7,6 @@ public class order {
 	private String buyername;
 	private int goodid;
 	private int orderstate;
-	private int owner;
-	
-
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -20,7 +16,6 @@ public class order {
 		result = prime * result + goodid;
 		result = prime * result + orderid;
 		result = prime * result + orderstate;
-		result = prime * result + owner;
 		result = prime * result + ((telephone == null) ? 0 : telephone.hashCode());
 		return result;
 	}
@@ -49,8 +44,6 @@ public class order {
 			return false;
 		if (orderstate != other.orderstate)
 			return false;
-		if (owner != other.owner)
-			return false;
 		if (telephone == null) {
 			if (other.telephone != null)
 				return false;
@@ -58,11 +51,20 @@ public class order {
 			return false;
 		return true;
 	}
-	public int getOwner() {
-		return owner;
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return super.clone();
 	}
-	public void setOwner(int owner) {
-		this.owner = owner;
+	@Override
+	public String toString() {
+		return "order [orderid=" + orderid + ", address=" + address + ", telephone=" + telephone + ", buyername="
+				+ buyername + ", goodid=" + goodid + ", orderstate=" + orderstate + "]";
+	}
+	@Override
+	protected void finalize() throws Throwable {
+		// TODO Auto-generated method stub
+		super.finalize();
 	}
 	public int getOrderid() {
 		return orderid;

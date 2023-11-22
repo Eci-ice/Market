@@ -17,7 +17,6 @@ import javax.swing.JOptionPane;
 import sql.goodsql;
 import sqlimpl.goodsqlimpl;
 import vo.good;
-import vo.user;
 
 /**
  * Servlet implementation class creatgoodservlet
@@ -35,12 +34,16 @@ public class creategoodservlet extends HttpServlet {
 	
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			HttpSession session = request.getSession();    
-			user u = (user)session.getAttribute("admin");	
+			request.setCharacterEncoding("UTF-8");
+			response.setCharacterEncoding("UTF-8");
+			HttpSession session = request.getSession(); 	
 			String  goodname = request.getParameter("goodname");
 		 	String  description = request.getParameter("description");
 		 	String priceStr = request.getParameter("price");
+		 	String kind = request.getParameter("kind");
+		 	String subkind = request.getParameter("subkind");
 		 	double price =0.0;
+//		 	检测价格是否为浮点数
 		 	try {
 		 	    price = Double.parseDouble(priceStr);
 		 	    System.out.print(price);
@@ -50,17 +53,16 @@ public class creategoodservlet extends HttpServlet {
 		 	    } catch (NumberFormatException ex) {
 		 	    	System.out.println("error");
   	 	    	    request.getRequestDispatcher("upload_goods.jsp").forward(request,response); 
-//				    return;
 		 	    }
 		 	}
+//		 	设置图片
 		 	String  picture = request.getParameter("picture");
 	        int state = 0;
 	        int number = 1;
-	        String kind = "Maoliang";
-	        int owner = u.getUserid();//userid为owner
 	        if(null==picture) {
 	        	picture="./img/buyer/food-1.png";//设置默认值
 	        }
+//	        上传商品
 	        good g=new good();
 	        goodsql gs = new goodsqlimpl();
 			good gf = null;
@@ -75,11 +77,11 @@ public class creategoodservlet extends HttpServlet {
 					gf.setState(state);
 					gf.setNumber(number);
 					gf.setKind(kind);
-					gf.setOwner(owner);
+					gf.setSubkind(subkind);
 					gs.add(gf);
 					List<good> gList = null;
 	       			 try {
-	       					gList = gs.showall(u.getUserid());
+	       					gList = gs.showall();
 	       			 } catch (SQLException e) {
 	       				e.printStackTrace();
 	       			 }
@@ -92,7 +94,7 @@ public class creategoodservlet extends HttpServlet {
 //					boolean isDuplicate = true;
 //					request.setAttribute("isDuplicate", isDuplicate);
 
-		 	    	request.setAttribute("err","请勿上传重名商品！");
+		 	    	request.setAttribute("err","只能上架一个商品，请先下架当前商品！");
 				    request.setAttribute("to","upload_goods");
 				    request.getRequestDispatcher("error.jsp").forward(request,response);
 					

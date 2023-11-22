@@ -74,7 +74,16 @@
             <br>
             <label>商品描述:</label>
             <input type="text" name="description">
-            <br>
+            <label>商品大类：</label>
+            <select name="kind" id="kind" required="required" onchange="updateSubcategories()">
+                <option value="猫咪主粮">猫咪主粮</option>
+                <option value="猫咪零食">猫咪零食</option>
+                <option value="猫咪日用">猫咪日用</option>
+            </select><br><br>
+            <label>商品子类：</label>
+            <select name="subkind" id="subkind" required="required">
+                <!-- 放置在下方script部分 -->
+            </select><br><br>
             <label>商品图片:</label>
             <input type="file" name="picture">
             <br>
@@ -87,6 +96,8 @@
                     <th>价格</th>
                     <th>描述</th>
                     <th>图片</th>
+                    <th>商品类别</th>
+                    <th>子类别</th>
                 </tr>
             </thead>
         </table>
@@ -106,6 +117,8 @@
             var description = document.querySelector("input[name='description']").value;
             var pictureFile = document.querySelector("input[name='picture']").files[0];
             var pictureUrl = "";
+            var kind = document.querySelector("select[name='kind']").value;
+            var subkind = document.querySelector("select[name='subkind']").value;
             if (pictureFile) {
                 pictureUrl = URL.createObjectURL(pictureFile);
             }
@@ -113,7 +126,9 @@
                 goodname: goodname,
                 price: price,
                 description: description,
-                picture: pictureUrl
+                picture: pictureUrl,
+                kind: kind,
+                subkind: subkind
             };
             var fileExtension = pictureFile ? pictureFile.name.split('.').pop().toLowerCase() : "";
 
@@ -145,8 +160,10 @@
             document.querySelector("input[name='price']").value = "";
             document.querySelector("input[name='description']").value = "";
             document.querySelector("input[name='picture']").value = "";
+            document.querySelector("select[name='kind']").value = "";
+            document.querySelector("select[name='subkind']").value = "";
         }
-
+		/* 将待添加的内容显示在表格中 */
         function displayProducts() {
             var table = document.getElementById("productTable");
 
@@ -162,17 +179,22 @@
                 var cell2 = row.insertCell(1);
                 var cell3 = row.insertCell(2);
                 var cell4 = row.insertCell(3);
+                var cell5 = row.insertCell(4);
+                var cell6 = row.insertCell(5);
 
                 cell1.innerHTML = product.goodname;
                 cell2.innerHTML = product.price;
                 cell3.innerHTML = product.description;
-
+               
                 var img = document.createElement("img");
                 img.src = product.picture;  // 直接使用product.picture作为图片的URL
                 img.width = 100;
                 img.height = 100;
                 img.style.objectFit = "contain";
                 cell4.appendChild(img);
+                
+                cell5.innerHTML = product.kind; 
+                cell6.innerHTML = product.subkind; 
             }
         }
 
@@ -186,7 +208,37 @@
             var form = document.getElementById("productForm");
             form.submit();
         }
+    </script>
+    <!-- 这一段script实现二级管理的下拉框功能 -->
+    <script>
+        function updateSubcategories() {
+            var categorySelect = document.getElementById("kind");
+            var subcategorySelect = document.getElementById("subkind");
+            subcategorySelect.innerHTML = ""; // Clear existing options
 
+            if (categorySelect.value === "猫咪主粮") {
+                addOption(subcategorySelect, "猫干粮");
+                addOption(subcategorySelect, "猫湿粮");
+            } else if (categorySelect.value === "猫咪零食") {
+                addOption(subcategorySelect, "饼干");
+                addOption(subcategorySelect, "罐头");
+                addOption(subcategorySelect, "猫条");
+            } else if (categorySelect.value === "猫咪日用") {
+                addOption(subcategorySelect, "猫砂盆");
+                addOption(subcategorySelect, "猫小窝");
+                addOption(subcategorySelect, "猫沙发");
+                addOption(subcategorySelect, "清洁除味");
+            }
+        }
+        function addOption(selectElement, optionValue) {
+            var option = document.createElement("option");
+            option.value = optionValue;
+            option.text = optionValue;
+            selectElement.add(option);
+        }
+
+        // Call updateSubcategories initially to set up the initial state
+        updateSubcategories();
     </script>
 </body>
 </html>

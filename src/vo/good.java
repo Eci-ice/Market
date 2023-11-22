@@ -10,20 +10,21 @@ public class good {
 	private int number;
 	private String kind;
 	private String subkind;
-	private int owner;
-
-
-	public String getSubkind() {
-		return subkind;
-	}
-	public void setSubkind(String subkind) {
-		this.subkind = subkind;
-	}
-	public int getOwner() {
-		return owner;
-	}
-	public void setOwner(int owner) {
-		this.owner = owner;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + goodid;
+		result = prime * result + ((goodname == null) ? 0 : goodname.hashCode());
+		result = prime * result + ((kind == null) ? 0 : kind.hashCode());
+		result = prime * result + number;
+		result = prime * result + ((picture == null) ? 0 : picture.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(price);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + state;
+		return result;
 	}
 	public String getKind() {
 		return kind;
@@ -75,14 +76,10 @@ public class good {
 		// TODO Auto-generated method stub
 		return super.clone();
 	}
-	
-	
-
 	@Override
 	public String toString() {
 		return "good [goodid=" + goodid + ", goodname=" + goodname + ", description=" + description + ", price=" + price
-				+ ", picture=" + picture + ", state=" + state + ", number=" + number + ", kind=" + kind + ", subkind="
-				+ subkind + ", owner=" + owner + "]";
+				+ ", picture=" + picture + ", state=" + state + ", number=" + number + ", kind=" + kind + ", subkind=" + subkind +"]";
 	}
 	@Override
 	protected void finalize() throws Throwable {
@@ -131,5 +128,14 @@ public class good {
 	public void setNumber(int number) {
 		this.number = number;
 	}
+	public String getSubkind() {
+		return subkind;
+	}
+	public void setSubkind(String subkind) {
+		this.subkind = subkind;
+	}
+	
+	
+	
 	
 }

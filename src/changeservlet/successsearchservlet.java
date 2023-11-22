@@ -38,7 +38,7 @@ public class successsearchservlet extends HttpServlet {
 	    goodsql gs = new goodsqlimpl();
 	        List<good> goods = null;
 	        try {
-	        	goods = gs.searchls(keyword,power,u.getUserid());
+	        	goods = gs.searchls(keyword,power);
 	        	System.out.print(keyword);
 	        } catch (SQLException e) {
 	            e.printStackTrace();

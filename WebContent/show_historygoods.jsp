@@ -187,60 +187,57 @@ a{
 </script>
 
 <c:if test="${not empty sessionScope.admin }">
-<div id="a">
-<div class="container">
-    <center>
-	<h2>全部商品信息</h2>
-	<form action="successsearchservlet" method="post">
-		<input type="text" name="keyword" placeholder="搜索商品"  oninput="search()">
-		<input type="submit" value="搜索">
-	</form>
-	<div id="search_list"></div>
-	</center>
-	<table border="1px" align=center cellspacing="0">
-	    <tr>
-	    <th>ID</th>
-	    <th>名称</th>
-	    <th>描述</th>
-	    <th>单价</th>
-	    <th>图片</th>
-	    <th>状态</th>
-	    <%--
-	    <th>意向人数</th>
-	    <th>最终购买人</th>
-	    --%>
-	    </tr>
-		<c:forEach items="${sessionScope.gL}" var="g" begin="${(currentPage-1)*5}" end="${currentPage*5-1}">
-		<tr>
-		<td>${g.goodid}</td>
-		<td>${g.goodname}</td>
-		<td>${g.description}</td>
-		<td>${g.price}</td>
-		<td>
-            <img src="${g.picture}" alt="" width="174">
-        </td>
-		<td><c:if test="${g.state eq 0}">上架</c:if>
-		<c:if test="${g.state eq 1}">冻结</c:if>
-		<c:if test="${g.state eq 2}">售出</c:if>
-		</td>
-	    </tr>
-	    </c:forEach>
-	</table>
-        <div class="pagination">
-		    <button class="prev" onclick="goToPrevPage()">上一页</button>
-		    <span id="page-info">第${currentPage}页 </span>
-		    <%-- 当前页码小于总页数时，才显示“下一页”按钮 --%>
-		   	<button class="next" onclick="goToNextPage()">下一页</button>
-		</div>
-    </div>
-
-</div>
-
+	<div id="a">
+		<div class="container">
+		    <center>
+			<h2>历史商品信息</h2>
+			<form action="successsearchservlet" method="post">
+				<input type="text" name="keyword" placeholder="搜索商品"  oninput="search()">
+				<input type="submit" value="搜索">
+			</form>
+			<div id="search_list"></div>
+			</center>
+			<table border="1px" align=center cellspacing="0">
+			    <tr>
+			    <th>ID</th>
+			    <th>名称</th>
+			    <th>描述</th>
+			    <th>单价</th>
+			    <th>图片</th>
+			    <th>类别</th>
+			    <th>子类别</th>
+			    <%--
+			    <th>意向人数</th>
+			    <th>最终购买人</th>
+			    --%>
+			    </tr>
+					<c:forEach items="${sessionScope.gHL}" var="g" begin="${(currentPage-1)*5}" end="${currentPage*5-1}">
+				<tr>
+				<td>${g.goodid}</td>
+				<td>${g.goodname}</td>
+				<td>${g.description}</td>
+				<td>${g.price}</td>
+				<td>
+		            <img src="${g.picture}" alt="" width="174">
+		        </td>
+		        <td>${g.kind}</td>
+				<td>${g.subkind}</td>
+			    </tr>
+			    </c:forEach>
+			</table>
+	        <div class="pagination">
+			    <button class="prev" onclick="goToPrevPage()">上一页</button>
+			    <span id="page-info">第${currentPage}页 </span>
+			    <%-- 当前页码小于总页数时，才显示“下一页”按钮 --%>
+			   	<button class="next" onclick="goToNextPage()">下一页</button>
+			</div>
+	    </div>
+	</div>
 </c:if>
 <c:if test="${empty sessionScope.admin }">
-<div class="else">
-<span>您还未登录，请先<a href="index.jsp">登录</a></span>
-</div>
+	<div class="else">
+	<span>您还未登录，请先<a href="index.jsp">登录</a></span>
+	</div>
 </c:if>
 
 </body>
