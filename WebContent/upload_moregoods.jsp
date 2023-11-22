@@ -105,15 +105,17 @@
             var price = document.querySelector("input[name='price']").value;
             var description = document.querySelector("input[name='description']").value;
             var pictureFile = document.querySelector("input[name='picture']").files[0];
-            var pictureUrl = URL.createObjectURL(pictureFile);
+            var pictureUrl = "";
+            if (pictureFile) {
+                pictureUrl = URL.createObjectURL(pictureFile);
+            }
             var product = {
                 goodname: goodname,
                 price: price,
                 description: description,
                 picture: pictureUrl
             };
-            var fileExtension = pictureFile.split('.').pop().toLowerCase();
-
+            var fileExtension = pictureFile ? pictureFile.name.split('.').pop().toLowerCase() : "";
 
     	    if (isNaN(price)) {
     	        alert("价格需要输入数字！");

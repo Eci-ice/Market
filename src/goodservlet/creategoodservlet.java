@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import sql.goodsql;
 import sqlimpl.goodsqlimpl;
 import vo.good;
+import vo.user;
 
 /**
  * Servlet implementation class creatgoodservlet
@@ -34,7 +35,8 @@ public class creategoodservlet extends HttpServlet {
 	
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			HttpSession session = request.getSession(); 	
+			HttpSession session = request.getSession();    
+			user u = (user)session.getAttribute("admin");	
 			String  goodname = request.getParameter("goodname");
 		 	String  description = request.getParameter("description");
 		 	String priceStr = request.getParameter("price");
@@ -55,6 +57,7 @@ public class creategoodservlet extends HttpServlet {
 	        int state = 0;
 	        int number = 1;
 	        String kind = "Maoliang";
+	        int owner = u.getUserid();//userid为owner
 	        if(null==picture) {
 	        	picture="./img/buyer/food-1.png";//设置默认值
 	        }
@@ -63,7 +66,7 @@ public class creategoodservlet extends HttpServlet {
 			good gf = null;
 	        try {
 	        	//检测商品名称是否唯一
-				if(gs.oldunique()==1) {
+				if(gs.unique(goodname)==1) {
 					gf=new good();
 					gf.setGoodname(goodname);
 					gf.setDescription(description);
@@ -72,10 +75,11 @@ public class creategoodservlet extends HttpServlet {
 					gf.setState(state);
 					gf.setNumber(number);
 					gf.setKind(kind);
+					gf.setOwner(owner);
 					gs.add(gf);
 					List<good> gList = null;
 	       			 try {
-	       					gList = gs.showall();
+	       					gList = gs.showall(u.getUserid());
 	       			 } catch (SQLException e) {
 	       				e.printStackTrace();
 	       			 }
@@ -88,7 +92,7 @@ public class creategoodservlet extends HttpServlet {
 //					boolean isDuplicate = true;
 //					request.setAttribute("isDuplicate", isDuplicate);
 
-		 	    	request.setAttribute("err","只能上架一个商品，请先下架当前商品！");
+		 	    	request.setAttribute("err","请勿上传重名商品！");
 				    request.setAttribute("to","upload_goods");
 				    request.getRequestDispatcher("error.jsp").forward(request,response);
 					
