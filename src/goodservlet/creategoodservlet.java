@@ -14,6 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.*;
+
 import sql.goodsql;
 import sqlimpl.goodsqlimpl;
 import vo.good;
@@ -42,7 +46,18 @@ public class creategoodservlet extends HttpServlet {
 		 	String priceStr = request.getParameter("price");
 		 	String kind = request.getParameter("kind");
 		 	String subkind = request.getParameter("subkind");
+		 // 检查subkind是否为空或空字符串
+		 	if (subkind == null || subkind.isEmpty()) {
+		 	    // 如果subkind为空或空字符串，则提供一个默认值
+		 	    subkind = "默认子类"; // 这里可以设置为你想要的默认值
+		 	}
 		 	double price =0.0;
+		 	System.out.println("Received POST request for creating a good.");
+		    System.out.println("Good Name: " + goodname);
+		    System.out.println("Description: " + description);
+		    System.out.println("Price: " + price);
+		    System.out.println("Kind: " + kind);
+		    System.out.println("Subkind: " + subkind);
 //		 	检测价格是否为浮点数
 		 	try {
 		 	    price = Double.parseDouble(priceStr);
@@ -79,6 +94,7 @@ public class creategoodservlet extends HttpServlet {
 					gf.setKind(kind);
 					gf.setSubkind(subkind);
 					gs.add(gf);
+					System.out.println("add?????????????????????????????????");
 					List<good> gList = null;
 	       			 try {
 	       					gList = gs.showall();
@@ -86,7 +102,7 @@ public class creategoodservlet extends HttpServlet {
 	       				e.printStackTrace();
 	       			 }
 	       			session.setAttribute("gL", gList);
-	       			System.out.println("pic"+gf.getPicture());
+	       			System.out.println("pic:.."+gf.getPicture());
 					request.getRequestDispatcher("show_goods.jsp").forward(request,response); 
 				}
 				else {

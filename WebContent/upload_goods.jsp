@@ -226,7 +226,7 @@ button{
 <c:if test="${not empty sessionScope.admin }">
 <div class="main">
 <h1>请发布商品</h1>
-<form action="creategoodservlet" method="post" onsubmit="return validateForm()">
+
     <div class="container">
         <div class="left-div" style="height: 300px;">
             <!-- 左侧div -->
@@ -253,25 +253,97 @@ button{
                 </select><br><br>
             </center>
             <center>
-                <span>商品名称：</span>
-                <input type="text" name="goodname" required="required" placeholder="请输入商品名称"><br><br>
+                <label>商品名称:</label>
+            <input type="text" name="goodname"><br><br>
             </center>
             <center>
-                <span>商品价格：</span>
-                <input type="text" name="price" required="required" placeholder="请输入商品价格"><br><br>
+                <label>商品价格:</label>
+            <input type="text" name="price"><br><br>
             </center>
             <center>
-                <span>商品库存：</span>
-                <input type="text" name="number" required="required" placeholder="请输入商品库存" /><br><br>
+                <label>商品库存：</label>
+                <input type="text" name="number"><br><br>
             </center>
             <center>
-                <span>商品描述：</span>
-                <input type="text" name="description" required="required" placeholder="请输入商品描述"><br><br>
+                <label>商品描述：</label>
+                <input type="text" name="description"><br><br>
             </center>
-            <input type="submit" class="submit-button-container" value="确认发布">
+            <button type="button" onclick="addProduct()" class="submit-button-container">添加商品</button>
+        	
         </div>
     </div>
 
+        <form id="productForm" action="createmoregoodservlet" method="post">
+          	<input type="hidden" id="productListInput" name="productList">
+        	
+         </form>
+<script>
+        var productList = [];
+
+        function addProduct() {
+            var goodname = document.querySelector("input[name='goodname']").value;
+            var price = document.querySelector("input[name='price']").value;
+            var description = document.querySelector("input[name='description']").value;
+            var pictureFile = document.querySelector("input[name='picture']").files[0];
+            var pictureUrl = "";
+            var kind = document.querySelector("select[name='kind']").value;
+            var subkind = document.querySelector("select[name='subkind']").value;
+            if (pictureFile) {
+                pictureUrl = URL.createObjectURL(pictureFile);
+            }
+            var product = {
+                goodname: goodname,
+                price: price,
+                description: description,
+                picture: pictureUrl,
+                kind: kind,
+                subkind: subkind
+            };
+            var fileExtension = pictureFile ? pictureFile.name.split('.').pop().toLowerCase() : "";
+
+    	    if (isNaN(price)) {
+    	        alert("价格需要输入数字！");
+    	        return;
+    	    }
+
+    	    if (goodname.length > 20) {
+    	        alert("商品名称不能超过20个字符！");
+    	        return;
+    	    }
+
+    	    if (description.length > 100) {
+    	        alert("商品描述不能超过100个字符！");
+    	        return;
+    	    }
+
+    	    if(fileExtension != "png" && fileExtension != "jpg") {
+    	        alert("图片只能上传png或jpg格式！");
+    	        return;
+    	    }
+
+
+            productList.push(product);
+
+            document.querySelector("input[name='goodname']").value = "";
+            document.querySelector("input[name='price']").value = "";
+            document.querySelector("input[name='description']").value = "";
+            document.querySelector("input[name='picture']").value = "";
+            document.querySelector("select[name='kind']").value = "";
+            document.querySelector("select[name='subkind']").value = "";
+            submitProducts();
+        }
+	
+        
+        function submitProducts() {
+            var productListInput = document.getElementById("productListInput");
+            productListInput.value = JSON.stringify(productList);
+            console.log(JSON.stringify(productList));
+            
+         // 手动提交表单
+            var form = document.getElementById("productForm");
+            form.submit();
+        }
+    </script>
     <script>
     function updateSubcategories() {
         var categorySelect = document.getElementById("kind");

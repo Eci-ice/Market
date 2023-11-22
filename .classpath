@@ -17,5 +17,13 @@
 	<classpathentry kind="lib" path="I:/Program Files (x86)/eclipse-workspace/maoliang_test/WebContent/WEB-INF/lib/junit.jar"/>
 	<classpathentry kind="lib" path="I:/Program Files (x86)/eclipse-workspace/maoliang_test/WebContent/WEB-INF/lib/org.hamcrest.core_1.3.0.v20180420-1519.jar"/>
 	<classpathentry kind="lib" path="I:/Program Files (x86)/eclipse-workspace/maoliang_test/WebContent/WEB-INF/lib/gson-2.8.2.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/gson-2.8.2.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jstl.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/junit.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/org.hamcrest.core_1.3.0.v20180420-1519.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/slf4j-api-1.7.36.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/slf4j-simple-1.6.2.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/sqlite-jdbc-3.43.2.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/standard.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -219,15 +219,18 @@
             if (categorySelect.value === "猫咪主粮") {
                 addOption(subcategorySelect, "猫干粮");
                 addOption(subcategorySelect, "猫湿粮");
+                subcategorySelect.selectedIndex = 0;
             } else if (categorySelect.value === "猫咪零食") {
                 addOption(subcategorySelect, "饼干");
                 addOption(subcategorySelect, "罐头");
                 addOption(subcategorySelect, "猫条");
+                subcategorySelect.selectedIndex = 0;
             } else if (categorySelect.value === "猫咪日用") {
                 addOption(subcategorySelect, "猫砂盆");
                 addOption(subcategorySelect, "猫小窝");
                 addOption(subcategorySelect, "猫沙发");
                 addOption(subcategorySelect, "清洁除味");
+                subcategorySelect.selectedIndex = 0;
             }
         }
         function addOption(selectElement, optionValue) {
