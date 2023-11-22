@@ -14,13 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.swing.JOptionPane;
 
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.fileupload.*;
-
 import sql.goodsql;
 import sqlimpl.goodsqlimpl;
 import vo.good;
+import vo.user;
 
 /**
  * Servlet implementation class creatgoodservlet
@@ -39,26 +36,13 @@ public class creategoodservlet extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			request.setCharacterEncoding("UTF-8");
-			response.setCharacterEncoding("UTF-8");
-			HttpSession session = request.getSession(); 	
+			response.setCharacterEncoding("UTF-8");	
+			HttpSession session = request.getSession();    
+			user u = (user)session.getAttribute("admin");	
 			String  goodname = request.getParameter("goodname");
 		 	String  description = request.getParameter("description");
 		 	String priceStr = request.getParameter("price");
-		 	String kind = request.getParameter("kind");
-		 	String subkind = request.getParameter("subkind");
-		 // 检查subkind是否为空或空字符串
-		 	if (subkind == null || subkind.isEmpty()) {
-		 	    // 如果subkind为空或空字符串，则提供一个默认值
-		 	    subkind = "默认子类"; // 这里可以设置为你想要的默认值
-		 	}
 		 	double price =0.0;
-		 	System.out.println("Received POST request for creating a good.");
-		    System.out.println("Good Name: " + goodname);
-		    System.out.println("Description: " + description);
-		    System.out.println("Price: " + price);
-		    System.out.println("Kind: " + kind);
-		    System.out.println("Subkind: " + subkind);
-//		 	检测价格是否为浮点数
 		 	try {
 		 	    price = Double.parseDouble(priceStr);
 		 	    System.out.print(price);
@@ -68,16 +52,23 @@ public class creategoodservlet extends HttpServlet {
 		 	    } catch (NumberFormatException ex) {
 		 	    	System.out.println("error");
   	 	    	    request.getRequestDispatcher("upload_goods.jsp").forward(request,response); 
+//				    return;
 		 	    }
 		 	}
-//		 	设置图片
 		 	String  picture = request.getParameter("picture");
 	        int state = 0;
 	        int number = 1;
+	        String kind = request.getParameter("kind");
+		 	String subkind = request.getParameter("subkind");
+		 // 检查subkind是否为空或空字符串
+		 	if (subkind == null || subkind.isEmpty()) {
+		 	    // 如果subkind为空或空字符串，则提供一个默认值
+		 	    subkind = "默认子类"; // 这里可以设置为你想要的默认值
+		 	}
+	        int owner = u.getUserid();//userid为owner
 	        if(null==picture) {
 	        	picture="./img/buyer/food-1.png";//设置默认值
 	        }
-//	        上传商品
 	        good g=new good();
 	        goodsql gs = new goodsqlimpl();
 			good gf = null;
@@ -93,11 +84,11 @@ public class creategoodservlet extends HttpServlet {
 					gf.setNumber(number);
 					gf.setKind(kind);
 					gf.setSubkind(subkind);
+					gf.setOwner(owner);
 					gs.add(gf);
-					System.out.println("add?????????????????????????????????");
 					List<good> gList = null;
 	       			 try {
-	       					gList = gs.showall();
+	       					gList = gs.showall(u.getUserid());
 	       			 } catch (SQLException e) {
 	       				e.printStackTrace();
 	       			 }
@@ -110,7 +101,7 @@ public class creategoodservlet extends HttpServlet {
 //					boolean isDuplicate = true;
 //					request.setAttribute("isDuplicate", isDuplicate);
 
-		 	    	request.setAttribute("err","只能上架一个商品，请先下架当前商品！");
+		 	    	request.setAttribute("err","请勿上传重名商品！");
 				    request.setAttribute("to","upload_goods");
 				    request.getRequestDispatcher("error.jsp").forward(request,response);
 					

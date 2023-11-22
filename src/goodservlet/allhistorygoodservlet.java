@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import sql.goodsql;
 import sqlimpl.goodsqlimpl;
 import vo.good;
+import vo.user;
 
 /**
  * Servlet implementation class allhistorygoodservlet
@@ -39,11 +40,13 @@ public class allhistorygoodservlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession(); 
+		HttpSession session = request.getSession();    
+    	user u = (user)session.getAttribute("admin");
 		goodsql gs=new goodsqlimpl();
 		 List<good> gList = null;
+		// System.out.println("yesyes");
 		 try {
-				gList = gs.showhistoryall();
+				gList = gs.showhistoryall(u.getUserid());
 		 } catch (SQLException e) {
 			e.printStackTrace();
 		 }
