@@ -27,7 +27,7 @@ public class test{
       PreparedStatement ps=null;
       
       //show user
-//      String sql = "select * from user";
+//      String sql = "select * from MLuser";
 //	  ps = conn.prepareStatement(sql);
 //      ResultSet rs = ps.executeQuery();
 //    while(rs.next())
@@ -88,7 +88,7 @@ public class test{
       
 
     //show good
-//          String sql2 = "select * from good";
+//          String sql2 = "select * from MLgood";
 //		  ps=conn.prepareStatement(sql2);
 //				
 //			ResultSet rs=ps.executeQuery();

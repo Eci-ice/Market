@@ -176,86 +176,135 @@ button{
 }
 </style>
 <script>
-function showPreview(input) {
-    // 获取文件输入框
-    var fileInput = input;
+	function showPreview(input) {
+	    if (input.files && input.files[0]) {
+	        var reader = new FileReader();  
+	        
+	        reader.onload = function (e) {
+	            var imagePreview = document.getElementById('imagePreview');
+	            imagePreview.src = e.target.result;  
+	            imagePreview.style.opacity = '1';  // 设置图片为不透明
+	        };
+	        
+	        reader.readAsDataURL(input.files[0]);
+	    }
+	}
+	
+	function validateForm() {
+	    var price = document.getElementsByName("price")[0].value;
+	    var goodname = document.getElementsByName("goodname")[0].value;
+	    var description = document.getElementsByName("description")[0].value;
+	    var pictureInput = document.getElementsByName("picture")[0].value;
+	    var fileExtension = pictureInput.split('.').pop().toLowerCase();
 
-    // 检查是否有选择文件
-    if (fileInput.files && fileInput.files[0]) {
-        // 获取文件信息
-        var file = fileInput.files[0];
 
-        // 检查文件类型
-        var fileType = file.type;
-        if (fileType !== 'image/jpeg' && fileType !== 'image/png') {
-            alert('只能上传 JPG 或 PNG 格式的图片');
-            // 清空文件输入框的值，防止用户上传不支持的文件类型
-            fileInput.value = '';
-            return;
-        }
+	    if (isNaN(price)) {
+	        alert("价格需要输入数字！");
+	        return false;
+	    }
 
-        // 检查文件大小，限制为 1MB
-        var maxSize = 10*1024 * 1024; // 1MB
-        if (file.size > maxSize) {
-            alert('图片文件太大，请选择小于 10MB 的图片');
-            // 清空文件输入框的值，防止用户上传过大的文件
-            fileInput.value = '';
-            return;
-        }
+	    if (goodname.length > 20) {
+	        alert("商品名称不能超过20个字符！");
+	        return false;
+	    }
 
-        // 创建 FileReader 对象
-        var reader = new FileReader();
+	    if (description.length > 100) {
+	        alert("商品描述不能超过100个字符！");
+	        return false;
+	    }
 
-        // 设置文件加载完成的回调函数
-        reader.onload = function (e) {
-            // 获取预览图片元素
-            var imagePreview = document.getElementById('imagePreview');
+	    if(fileExtension != "png" && fileExtension != "jpg") {
+	        alert("图片只能上传png或jpg格式！");
+	        return false;
+	    }
 
-            // 设置预览图片的源
-            imagePreview.src = e.target.result;
-
-            // 设置图片不透明度
-            imagePreview.style.opacity = '1';
-        };
-
-        // 读取文件内容
-        reader.readAsDataURL(file);
-    }
-}
-
+	    return true;
+	}
 
 </script>
 
 <c:if test="${not empty sessionScope.admin }">
 <div class="main">
- <h1>请发布商品</h1>
-    <form name="myForm" action="creategoodservlet" method="post" onsubmit="return validateForm()">
-        <div class="container">
-        <div class="left-div" style="height: 300px;"> <!-- 左侧div -->
-        	<span style="padding-left: 50px;">&nbsp;&nbsp;商品图片：</span><br><br>
+<h1>请发布商品</h1>
+<form action="creategoodservlet" method="post" onsubmit="return validateForm()">
+    <div class="container">
+        <div class="left-div" style="height: 300px;">
+            <!-- 左侧div -->
+            <span style="padding-left: 50px;">&nbsp;&nbsp;商品图片：</span><br><br>
             <center><img id="imagePreview"><br></center>
             <input type="file" name="picture" id="pictureInput" onchange="showPreview(this);">
-            <button><a href="show_good.jsp">取消发布</a></button></center>
+            <button><a href="show_goods.jsp">取消发布</a></button>
+            </center>
         </div>
 
-        <div class="right-div"> <!-- 右侧div -->
+        <div class="right-div">
+            <!-- 右侧div -->
             <center>
-            	<span>商品名称：</span>
-            	<input type="text" name="goodname" required="required" placeholder="请输入商品名称">
-            	<br><br>
-            	 <span id="goodnameError" style="color: red;"></span><br> <!-- 错误信息显示 -->
-            	</center>
-            <center><span>商品价格：</span><input type="text" name="price" required="required" placeholder="请输入商品价格"><br><br>
-            <span id="priceError" style="color: red;"></span>
+                <span>商品大类：</span>
+                <select name="kind" id="kind" required="required" onchange="updateSubcategories()">
+                    <option value="猫咪主粮">猫咪主粮</option>
+                    <option value="猫咪零食">猫咪零食</option>
+                    <option value="猫咪日用">猫咪日用</option>
+                </select><br><br>
             </center>
-            <center><span>商品库存：</span><input type="text" name="number" required="required" placeholder="1" /><br><br>
+            <center>
+                <span>商品子类：</span>
+                <select name="subkind" id="subkind" required="required">
+                    <!-- 放置在下方script部分 -->
+                </select><br><br>
             </center>
-            <center><span>商品描述：</span><input type="text" name="description" required="required" placeholder="请输入商品描述"><br><br>
+            <center>
+                <span>商品名称：</span>
+                <input type="text" name="goodname" required="required" placeholder="请输入商品名称"><br><br>
             </center>
-            <input type="submit" class="submit-button-container" value="确认发布" >
+            <center>
+                <span>商品价格：</span>
+                <input type="text" name="price" required="required" placeholder="请输入商品价格"><br><br>
+            </center>
+            <center>
+                <span>商品库存：</span>
+                <input type="text" name="number" required="required" placeholder="请输入商品库存" /><br><br>
+            </center>
+            <center>
+                <span>商品描述：</span>
+                <input type="text" name="description" required="required" placeholder="请输入商品描述"><br><br>
+            </center>
+            <input type="submit" class="submit-button-container" value="确认发布">
         </div>
     </div>
+
+    <script>
+    function updateSubcategories() {
+        var categorySelect = document.getElementById("kind");
+        var subcategorySelect = document.getElementById("subkind");
+        subcategorySelect.innerHTML = ""; // Clear existing options
+
+        if (categorySelect.value === "猫咪主粮") {
+            addOption(subcategorySelect, "猫干粮");
+            addOption(subcategorySelect, "猫湿粮");
+        } else if (categorySelect.value === "猫咪零食") {
+            addOption(subcategorySelect, "饼干");
+            addOption(subcategorySelect, "罐头");
+            addOption(subcategorySelect, "猫条");
+        } else if (categorySelect.value === "猫咪日用") {
+            addOption(subcategorySelect, "猫砂盆");
+            addOption(subcategorySelect, "猫小窝");
+            addOption(subcategorySelect, "猫沙发");
+            addOption(subcategorySelect, "清洁除味");
+        }
+    }
+    function addOption(selectElement, optionValue) {
+        var option = document.createElement("option");
+        option.value = optionValue;
+        option.text = optionValue;
+        selectElement.add(option);
+    }
+
+        // Call updateSubcategories initially to set up the initial state
+        updateSubcategories();
+    </script>
 </form>
+
 </div>
 <!-- <script>
 	var isDuplicate = ${isDuplicate}; // 获取Java代码中设置的标志值
@@ -276,35 +325,6 @@ function showPreview(input) {
 您还未登录，请先<a href="index.jsp">登录</a>
 </div>
 </c:if>
-
-
-<script>
-function validateForm() {
-    var goodname = document.forms["myForm"]["goodname"].value;
-    var price = document.forms["myForm"]["price"].value;
-
-    var chineseRegex = /^[\u4e00-\u9fa5]+$/; // 中文字符正则表达式
-    var numberRegex = /^\d+(\.\d{1,2})?$/; // 数字正则表达式，最多两位小数
-
-    if (!chineseRegex.test(goodname)) {
-        document.getElementById('goodnameError').innerHTML = "商品名称只能是中文";
-        return false;
-    } else {
-        document.getElementById('goodnameError').innerHTML = "";
-    }
-    if (!numberRegex.test(price) || price.length > 10) {
-        document.getElementById('priceError').innerHTML = "商品价格必须是数字且不超过十位数";
-        return false;
-    } else {
-        document.getElementById('priceError').innerHTML = "";
-    }
-
-    return true;
-}
-</script>
-
-
-
 
 </body>
 </html>

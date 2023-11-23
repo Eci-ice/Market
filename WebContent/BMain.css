@@ -22,8 +22,8 @@ body {
 }
 .daohang{
     background-color: rgba(0, 0, 0, 0);
-    width: 200px;/*格子宽度*/
-    height: 600px;/*格子高度*/
+    width: 20px;/*格子宽度*/
+    height: 50%;/*格子高度*/
     position: relative;
     top: 50px;
     left: 30px;
