@@ -100,7 +100,6 @@ background: rgba(224,224,224,.8);
 box-sizing:border-box;
 box-shadow: 0px 15px 25px rgba(0,0,0,.5);
 border-radius:20px;
-align-items: center; /* 子元素水平居中 */
 }
 .login h4{
 margin:0 0 30px;
@@ -141,7 +140,7 @@ left:0;
 color:#696969;
 font-size:14px;
 }
-/* .login input[type="submit"]{
+.login input[type="submit"]{
 border:none;
 outline:none;
 left:60%;
@@ -151,10 +150,9 @@ background:#C0C0C0;
 padding:10px 20px;
 cursor:pointer;
 border-radius:10px;
-} */
+}
 .image-buttons {
     display: flex;
-    width:100%;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
@@ -175,21 +173,6 @@ border-radius:10px;
     width: 350px;
     height: 40px;
 }
-.butt-1 {
-  position: relative;
-  border-radius: 10px;
-  margin:10px;
-  margin-left:20px;
-  border:1px;
-  width:300px;
-  background-color: orange;
-  font-size: 22px;
-  padding: 10px 20px; /* 调整字体与边框的距离 */
-  cursor: pointer; /* 设置悬停时的鼠标样式为手型 */
-  color:white;
-  text-align: center;
-}
-
 </style>
 
 
@@ -200,7 +183,9 @@ border-radius:10px;
 			<div class="cat-background"></div>
 		</ul>
 		<c:if test="${empty sessionScope.admin }">
+		<%System.out.println("correct"); %>
 			<div class="login">
+			
 				<form action="loginservlet" method="post">
 					<!-- 账号框 -->
 					<div class="input">
@@ -213,12 +198,12 @@ border-radius:10px;
 						<input type="password" name="pwd"><br><br>
 					</div>
 					<!-- 登录注册根据action和value在同一个servlet中检测 -->
-					<a href="forgetpassword.jsp" alt="忘记密码" title="忘记密码" >忘记密码</a>
 					<div class="image-buttons">
-					    <input class="butt-1" type="submit" alt="登录" title="登录" name="action" value="登录" >
-					    <a href="choose_register.jsp" alt="注册" title="注册" class="butt-1">注册</a>
-					    <a href="sellinggoodservlet"alt="游客访问" title="游客访问" class="butt-1">游客访问</a>
-					    
+					    <input class="input-image-button" type="image" src="img/login.png" alt="登录" title="登录" name="action" value="登录"><br>
+					    <!-- <input class="input-image-button" type="image" src="img/register.png" alt="注册" title="注册" name="action" value="注册"><br> -->
+					    <a href="register.jsp"><img src="img/register.png" alt="注册" title="注册" /></a>
+					    <a href="sellinggoodservlet"><img src="img/shop.png" alt="购物" title="直接访问购物界面"  style="margin-top: 20px;"/></a>
+					    <br>
 					</div>
 				</form>
 				
@@ -231,11 +216,12 @@ border-radius:10px;
 		</c:if>
 		
 		<c:if test="${not empty sessionScope.admin }">
+		<% System.out.println("null"); %>
 			<div class="else">您已登录，无需再登录!!!<br>
-			<c:if test="${sessionScope.admin.power eq 1}">
+			<c:if test="${sessionScope.admin eq 1}">
 				<a href="seller.jsp">返回</a></div>
 			</c:if>
-			<c:if test="${sessionScope.admin.power eq 0}">
+			<c:if test="${sessionScope.admin eq 0}">
 				<a href="BuyerMain.jsp">返回</a></div>
 			</c:if>
 		</c:if>

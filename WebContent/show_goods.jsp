@@ -191,7 +191,7 @@ a{
 <div class="container">
     <center>
 	<h2>全部商品信息</h2>
-	 <form action="successsearchservlet" method="post">
+	<form action="successsearchservlet" method="post">
 		<input type="text" name="keyword" placeholder="搜索商品"  oninput="search()">
 		<input type="submit" value="搜索">
 	</form>
@@ -202,7 +202,6 @@ a{
 	    <th>ID</th>
 	    <th>名称</th>
 	    <th>描述</th>
-	    <th>库存</th>
 	    <th>单价</th>
 	    <th>图片</th>
 	    <th>状态</th>
@@ -217,7 +216,6 @@ a{
 		<td>${g.goodid}</td>
 		<td>${g.goodname}</td>
 		<td>${g.description}</td>
-		<td <c:if test="${g.number <5}"> style="font-weight: bold; color: red;"</c:if>>${g.number}</td>
 		<td>${g.price}</td>
 		<td>
             <img src="${g.picture}" alt="" width="174">
@@ -225,7 +223,7 @@ a{
 		<td><c:if test="${g.state eq 0}">上架</c:if>
 		<c:if test="${g.state eq 1}">冻结</c:if>
 		<c:if test="${g.state eq 2}">售出</c:if>
-		
+		</td>
 		<td><a href="deletegoodservlet?&goodid=${g.goodid}">下架</a>
 		</td>
 	    </tr>

@@ -21,9 +21,8 @@ public class changepwdservlet extends HttpServlet {
 		doPost(request, response);
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 	String sellername = request.getParameter("username");
+		 String sellername = request.getParameter("username");
 	        String sellerpwd = request.getParameter("userpwd");
-	        System.out.println("test:"+sellername+" "+sellerpwd);
 	        String oldpwd = request.getParameter("oldpwd");
 	        String newpwd = request.getParameter("newpwd");
 	        String newpwd1 = request.getParameter("newpwd1");
@@ -43,8 +42,6 @@ public class changepwdservlet extends HttpServlet {
 									us.modifypwd(sellername, newpwd);
 								} catch (SQLException e) {
 									// TODO Auto-generated catch block
-									request.setAttribute("err","修改失败");
-									request.getRequestDispatcher("error.jsp").forward(request,response);
 									e.printStackTrace();
 								}
 	                            request.setAttribute("message","修改密码成功");

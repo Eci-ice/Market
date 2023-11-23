@@ -9,11 +9,9 @@ public interface goodsql {
 	public void add(good good) throws SQLException;
 	public int remove(int goodid) throws SQLException;
 	public int unique(String goodname) throws SQLException;
-	public int oldunique() throws SQLException;
 	public good search(int goodid) throws SQLException;
-	public List<good> searchls(String keyword,int power,int userid) throws SQLException;
+	public List<good> searchls(String keyword) throws SQLException;
 	public void modifystate(int goodid,int tostate) throws SQLException;
-	public List<good> showall(int userid) throws SQLException;
-	public List<good> showhistoryall(int userid) throws SQLException;
+	public List<good> showall() throws SQLException;
 	public List<good> shownow() throws SQLException;
 }

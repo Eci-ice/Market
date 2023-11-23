@@ -31,46 +31,25 @@ public class Setup{
       		"  `picture` char(100) NOT NULL,\r\n" + 
       		"  `state` int NOT NULL,\r\n" + 
       		"  `number` int NOT NULL,\r\n" + 
-      		"  `kind` varchar(20) NOT NULL,\r\n" + 
-      		"  `subkind` varchar(20) NOT NULL,\r\n" + 
-      		"  `owner` INTEGER NOT NULL,\r\n" + 
-      		"  FOREIGN KEY (`owner`) REFERENCES `MLuser` (`userid`))"
+      		"  `kind` char(20) NOT NULL)"
       		);
-      		
-      statement.executeUpdate("DROP TABLE IF EXISTS `MLhistorygood`");
-      statement.executeUpdate("CREATE TABLE `MLhistorygood`  (\r\n" + 
-        		"  `goodid` INTEGER NOT NULL,\r\n" + 
-        		"  `goodname` char(20) NOT NULL,\r\n" + 
-        		"  `description` varchar(100) NOT NULL,\r\n" + 
-        		"  `price` double NOT NULL,\r\n" + 
-        		"  `picture` char(100) NOT NULL,\r\n" + 
-        		"  `number` int NOT NULL,\r\n" + 
-        		"  `kind` varchar(20) NOT NULL, \r\n" + 
-          		"  `subkind` varchar(20) NOT NULL,\r\n" + 
-          		"  `owner` INTEGER NOT NULL,\r\n" + 
-          		"  FOREIGN KEY (`owner`) REFERENCES `MLuser` (`userid`))"
-        		);
       
       statement.executeUpdate("DROP TABLE IF EXISTS `MLorder`");
       statement.executeUpdate("CREATE TABLE `MLorder`  (\r\n" + 
         		"  `orderid` INTEGER PRIMARY KEY AUTOINCREMENT,\r\n" + 
         		"  `address` varchar(99) ,\r\n" + 
-        		"  `telephone` varchar(11) ,\r\n" + 
-        		"  `buyername` varchar(10) ,\r\n" + 
+        		"  `telephone` varchar(20) ,\r\n" + 
+        		"  `buyername` varchar(99) ,\r\n" + 
 	        	"  `goodid` int NOT NULL,\r\n" + 
 	        	"  `orderstate` int NOT NULL ,\r\n" +
-	      		"  `owner` INTEGER NOT NULL,\r\n" + 
-	      		"  FOREIGN KEY (`owner`) REFERENCES `MLuser` (`userid`),\r\n" + 
 	        	"  FOREIGN KEY (`goodid`) REFERENCES `MLgood` (`goodid`))");
 
       statement.executeUpdate("DROP TABLE IF EXISTS `MLuser`");
       statement.executeUpdate("CREATE TABLE `MLuser`  (\r\n" + 
       		"  `userid` INTEGER PRIMARY KEY AUTOINCREMENT,\r\n" + 
-      		"  `username` char(10) NOT NULL,\r\n" + 
       		"  `pwd` char(15) NOT NULL,\r\n" + 
-      		"  `power` int NOT NULL ,\r\n" +  
-            "  `question` varchar(50) NOT NULL,\r\n" + 
-            "  `answer` varchar(30) NOT NULL )" 
+      		"  `username` char(10) NOT NULL,\r\n" + 
+      		"  `power` int NOT NULL )" 
         		) ;
       
       statement.executeUpdate("DROP TABLE IF EXISTS `MLprice`");
@@ -80,23 +59,26 @@ public class Setup{
         "  `price` double NOT NULL,\r\n" + 
         "  `change_time` datetime NOT NULL,\r\n" + 
         "  FOREIGN KEY (`goodid`) REFERENCES `MLgood` (`goodid`))");
+   
+   // 当MLgood中的价格发生变化时，插入新记录 
+//      String sql = "INSERT INTO MLprice (goodid, price, change_time) VALUES (?, ?, ?)";
+//      PreparedStatement pstmt = conn.prepareStatement(sql);
+//      pstmt.setInt(1, goodid);
+//      pstmt.setDouble(2, newPrice);
+//      pstmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+//      pstmt.executeUpdate();
       
+//      String sql = "SELECT price FROM MLprice WHERE goodid = ? ORDER BY change_time DESC LIMIT 1";
+//      PreparedStatement pstmt = conn.prepareStatement(sql);
+//      pstmt.setInt(1, goodid);
+//      ResultSet rs = pstmt.executeQuery();
+//      if (rs.next()) {
+//          double latestPrice = rs.getDouble("price");// 这里是最新价格
+//      }
       
-      statement.executeUpdate("DROP TABLE IF EXISTS `MLinfo`");
-      statement.executeUpdate("CREATE TABLE `MLinfo`  (\r\n" + 
-        "  `userid` INTEGER NOT NULL,\r\n" + 
-        "  `phone` char(11) NOT NULL,\r\n" + 
-        "  `address` varchar(99) NOT NULL,\r\n" + 
-        "  FOREIGN KEY (`userid`) REFERENCES `MLuser` (`userid`))");
-      
-      statement.executeUpdate("INSERT INTO `MLuser` VALUES (1, '123', '123', 1,'who are you?','Xiaoming')");
-      statement.executeUpdate("INSERT INTO `MLuser` VALUES (2, '111', '111', 0,'who are you?','Xiaoming')");
-      statement.executeUpdate("INSERT INTO `MLinfo` VALUES (2, '11111111111','zjsu')");
-      statement.executeUpdate("INSERT INTO `MLgood` VALUES (1, '111', 'yummy', 1.0,'./img/buyer/food-1.jpg',0,1,'guti','maoliang',1)");
-      statement.executeUpdate("INSERT INTO `MLhistorygood` VALUES (1, '111', 'yummy', 1.0,'./img/buyer/food-1.jpg',1,'guti','maoliang',1)");
-      statement.executeUpdate("INSERT INTO `MLorder` VALUES (1, 'zjsu','11111111111', '111', 1,0,1)");
+      statement.executeUpdate("INSERT INTO `MLuser` VALUES (1, '123', '123', 1)");
+      statement.executeUpdate("INSERT INTO `MLuser` VALUES (2, '111', '111', 0)");
       System.out.println("Success Setup");
-      
 
     }
     catch(SQLException e){
