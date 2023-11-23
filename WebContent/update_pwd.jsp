@@ -149,28 +149,43 @@ button:hover a {
     color: #333; /* Color of the text on hover */
 }
 </style>
+<script>
+	function validateForm() {
+	    var pwd = document.getElementsByName("newpwd")[0].value;
+
+
+	    if (pwd.length > 15) {
+	        alert("密码不能超过15个字符！");
+	        return false;
+	    }
+
+
+	    return true;
+	}
+
+</script>
 <c:if test="${not empty sessionScope.admin }">
 <div style="text-align:center; margin-bottom: 0px; margin-top: 10px;">
     <img src="img/catbackground.png" alt="小猫" style="width:200px;height:200px;">
 </div>
 <div class="main">
-		<form  action="changepwdservlet" method="post" >
+		<form  action="changepwdservlet" method="post" onsubmit="return validateForm()">
 			<input type="hidden" name="username" value="${sessionScope.admin.getUsername()}">
 			<input type="hidden" name="userpwd" value="${sessionScope.admin.getPwd()}">
 	   		<h1>修改密码</h1>
 		   	<center>
 		   	<span>旧&nbsp;密&nbsp;码:&nbsp;</span>
-		     <input type="password" name="oldpwd">
+		     <input type="password" name="oldpwd" required="required" >
 		     </center>
 	   	<br>
 		   	<center>
 		     <span>新&nbsp;密&nbsp;码:&nbsp;</span>
-		     <input type="password" name="newpwd">
+		     <input type="password" name="newpwd" required="required" >
 		   	</center>
 	    <br>
 		    <center>
 		     <span>确认密码:&nbsp;</span>
-		     <input type="password" name="newpwd1">
+		     <input type="password" name="newpwd1" required="required" >
 		    </center>
 	    <br>
 		    <center>

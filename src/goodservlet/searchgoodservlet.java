@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import sql.goodsql;
 import sqlimpl.goodsqlimpl;
 import vo.good;
+import vo.user;
 
 /**
  * Servlet implementation class creatgoodservlet
@@ -26,33 +27,34 @@ import vo.good;
 public class searchgoodservlet extends HttpServlet {
 	    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	        // 获取搜索关键词
+	    	HttpSession session = request.getSession();
+	    	user u = (user)session.getAttribute("admin");
+	    	int power=0;
+	    	if(null!=u) {
+	    		power=u.getPower();
+	    	}
 	        String keyword = request.getParameter("keyword");
 	        // 查询数据库
-	        List<String> results = searchDatabase(keyword);
+	        goodsql gs = new goodsqlimpl();
+	        List<String> results = null;
+	        try {
+	            // 调用search方法获取匹配的商品
+	            List<good> goods = gs.searchls(keyword,power,u.getUserid());//卖家仅搜索对应userid商品
+	            // 提取商品名称
+	            results = new ArrayList<>();
+	            for (good g : goods) {
+	            	results.add(g.getGoodname());
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	        
 	        // 将结果转换为JSON
 	        String json = new Gson().toJson(results);
 	        // 返回JSON响应
 	        response.setContentType("application/json");
 	        response.setCharacterEncoding("UTF-8");
 	        response.getWriter().write(json);
-	    }
-
-	    private List<String> searchDatabase(String keyword) {
-	        goodsql gs = new goodsqlimpl();
-	        try {
-	            // 调用search方法获取匹配的商品
-	            List<good> goods = gs.searchls(keyword);
-	            // 提取商品名称
-	            List<String> names = new ArrayList<>();
-	            for (good g : goods) {
-	                names.add(g.getGoodname());
-	            }
-	            return names;
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	            // 如果发生错误，返回一个空列表
-	            return new ArrayList<>();
-	        }
 	    }
 
 }

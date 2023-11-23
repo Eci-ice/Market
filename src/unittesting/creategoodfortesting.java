@@ -24,11 +24,16 @@ public class creategoodfortesting {
 	    Double price = Double.parseDouble(priceStr);
         int state = 0;
         int number = 1;
+        String kind = "Maoliang";
+        if(null==picture) {
+        	picture="./img/buyer/food-1.png";//设置默认值
+        }
         good g=new good();
         goodsql gs = new goodsqlimpl();
 		good gf = null;
         try {
-			if(gs.unique()==1) {
+        	//检测商品名称是否唯一
+			if(gs.oldunique()==1) {
 				gf=new good();
 				gf.setGoodname(goodname);
 				gf.setDescription(description);
@@ -36,6 +41,7 @@ public class creategoodfortesting {
 				gf.setPicture(picture);
 				gf.setState(state);
 				gf.setNumber(number);
+				gf.setKind(kind);
 				gs.add(gf);
 				List<good> gList = null;
        			 try {

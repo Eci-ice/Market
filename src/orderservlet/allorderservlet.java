@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import sql.goodsql;
 import sql.ordersql;
@@ -15,6 +16,7 @@ import sqlimpl.goodsqlimpl;
 import sqlimpl.ordersqlimpl;
 import vo.good;
 import vo.order;
+import vo.user;
 
 /**
  * Servlet implementation class historygoodservlet
@@ -41,10 +43,12 @@ public class allorderservlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 ordersql ors=new ordersqlimpl();
+		HttpSession session = request.getSession();
+		user u = (user)session.getAttribute("admin"); 
+		ordersql ors=new ordersqlimpl();
 		 List<order> orList = null;
 		 try {
-				orList = ors.showall();
+				orList = ors.showall(u.getUserid());
 		 } catch (SQLException e) {
 			e.printStackTrace();
 		 }

@@ -119,6 +119,34 @@ input[type="text"]{
 /*}*/
 
 </style>
+<script >
+	
+	function validateForm() {
+	    var buyername = document.getElementsByName("buyername")[0].value;
+	    var telephone = document.getElementsByName("telephone")[0].value;
+	    var address = document.getElementsByName("address")[0].value;
+	    var phoneRegex = /^[0-9]{11}$/;
+
+	    if (!phoneRegex.test(telephone)) {
+	        alert("电话号码需要是11位数字！");
+	        return false;
+	    }
+
+	    if (buyername.length > 10) {
+	        alert("用户名不能超过10个字符！");
+	        return false;
+	    }
+	
+	    if (address.length > 99) {
+	        alert("地址不能超过99个字符！");
+	        return false;
+	    }
+	
+	
+	    return true;
+	}
+	
+</script>
 <body>
 <hr class="cline" color=#BBBBBB width=1 size=900>
 <div class="left"><!-- 商品介绍 -->
@@ -147,19 +175,15 @@ input[type="text"]{
 
 </div>
 
-<div  >
-    <form action="createorderservlet" method="post" name="myform" class="buy-imf">
+<div class="right">
+    <form action="createorderservlet" method="post" name="myform" class="buy-imf" onsubmit="return validateForm()">
 		<input type="hidden" name="goodid" value="${nowg.goodid}"/><br/>
         <label class="username">
-            用户名：<input type="text" name="buyername"><br><br>
-        电话：<input type="text" name="telephone"><br><br>
-        交易地点：<input type="text" name="address" placeholder="默认地址"><br><br>
+                   姓名：<input type="text" name="buyername" value="${sessionScope.admin.username}" required="required" ><br><br>
+	        电话：<input type="text" name="telephone" value="${sessionScope.admin.phone}" required="required" ><br><br>
+	        交易地点：<input type="text" name="address" value="${sessionScope.admin.address}" required="required" ><br><br>
         </label>
-       <!--<input type="button" onclick='location.href=("success.jsp")' value="确认购买" class="butt-2"/>  --> 
        <input type="submit"  class="butt-2" value="确认购买" >
-<%--        <input type="submit" value="确认购买" >--%>
-<%--        <button class="buy-btn"><a href="success.jsp">确认购买</a></button>--%>
-
     </form>
 
 </div>

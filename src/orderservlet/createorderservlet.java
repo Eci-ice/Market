@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import sql.goodsql;
 import sql.ordersql;
@@ -15,6 +16,7 @@ import sqlimpl.goodsqlimpl;
 import sqlimpl.ordersqlimpl;
 import vo.good;
 import vo.order;
+import vo.user;
 
 /**
  * Servlet implementation class findallorderservlet
@@ -41,11 +43,14 @@ public class createorderservlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		user u = (user)session.getAttribute("admin");
 		String  address = request.getParameter("address");
 	 	String  telephone = request.getParameter("telephone");
 	 	String  buyername = request.getParameter("buyername");
 	 	int goodid = Integer.parseInt(request.getParameter("goodid"));
         int orderstate = 0;//状态零：未成功订单
+        
         goodsql gs=new goodsqlimpl();
         good g=null;
         try {
@@ -55,6 +60,7 @@ public class createorderservlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+        int owner=g.getOwner();//要的是卖家id而不是买家
         if(null!= g) {
 	        ordersql ors = new ordersqlimpl();
 	        order orf = null;
@@ -65,10 +71,12 @@ public class createorderservlet extends HttpServlet {
 				orf.setBuyername(buyername);
 				orf.setGoodid(goodid);
 				orf.setOrderstate(orderstate);
+				orf.setOwner(owner);
 				ors.add(orf);
+				
 				 List<order> orList = null;
 				 try {
-						orList = ors.showall();
+						orList = ors.showall(u.getUserid());
 				 } catch (SQLException e) {
 					e.printStackTrace();
 				 }

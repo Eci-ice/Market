@@ -39,6 +39,7 @@ public class creategoodtest {
 	public void test02() {
 		assertEquals("success",new creategoodfortesting().create("Abc", "Good", "1.1", "./xx.png"));
 	}
+	//./img/buyer/food-1.jpg
 	@Test
 	public void test03() {
 		assertEquals("fail",new creategoodfortesting().create("猫粮", "好猫粮", "1.1", "aaaa"));
@@ -46,7 +47,7 @@ public class creategoodtest {
 	}
 	@Test
 	public void test04() {
-		assertEquals("fail1",new creategoodfortesting().create("Abc猫粮", "Good猫粮", "a", "./xx.png"));//无判断  a
+		assertEquals("fail1",new creategoodfortesting().create("Abc猫粮", "Good猫粮", "a", "./xx.png"));//无判断  
 		
 	}
 	@Test
