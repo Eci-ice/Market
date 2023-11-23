@@ -68,12 +68,15 @@
         
             <label>商品名称:</label>
             <input type="text" name="goodname">
+            <span id="goodnameError" style="color: red;"></span>
             <br>
             <label>商品价格:</label>
             <input type="text" name="price">
+            <span id="priceError" style="color: red;"></span>
             <br>
             <label>商品描述:</label>
             <input type="text" name="description">
+            <span id="descriptionError" style="color: red;"></span>
             <label>商品大类：</label>
             <select name="kind" id="kind" required="required" onchange="updateSubcategories()">
                 <option value="猫咪主粮">猫咪主粮</option>
@@ -86,6 +89,7 @@
             </select><br><br>
             <label>商品图片:</label>
             <input type="file" name="picture">
+            <span id="pictureError" style="color: red;"></span>
             <br>
             <button type="button" onclick="addProduct()">添加商品</button>
         
@@ -111,17 +115,98 @@
     <script>
         var productList = [];
 
-        function addProduct() {
-            var goodname = document.querySelector("input[name='goodname']").value;
-            var price = document.querySelector("input[name='price']").value;
-            var description = document.querySelector("input[name='description']").value;
-            var pictureFile = document.querySelector("input[name='picture']").files[0];
-            var pictureUrl = "";
-            var kind = document.querySelector("select[name='kind']").value;
-            var subkind = document.querySelector("select[name='subkind']").value;
-            if (pictureFile) {
-                pictureUrl = URL.createObjectURL(pictureFile);
+        function isDuplicateProductName(name) {
+            for (var i = 0; i < productList.length; i++) {
+                if (productList[i].goodname === name) {
+                    return true;
+                }
             }
+            return false;
+        }
+        
+        function validateChineseCharacters(input) {
+            var chineseRegex = /^[\u4E00-\u9FFF]+$/; // 中文字符的正则表达式
+            return chineseRegex.test(input);
+        }
+        function validatePrice(input) {
+            var priceRegex = /^\d{1,10}$/; // 1到10位数字的正则表达式
+            return priceRegex.test(input);
+        }
+        function validateDescription(input) {
+            return input.trim().length > 0; // 检查输入的描述是否非空
+        }
+        function validateImageType(file) {
+            // 获取文件的扩展名并转换为小写
+            var extension = file.name.split('.').pop().toLowerCase();
+            return extension === 'jpg' || extension === 'jpeg' || extension === 'png';
+        }
+        function validateImageSize(file) {
+            // 10MB的字节数
+            var maxSize = 10 * 1024 * 1024;
+            return file.size <= maxSize;
+        }
+        
+        
+        function addProduct() {
+            //var goodname = document.querySelector("input[name='goodname']").value;
+           // var price = document.querySelector("input[name='price']").value;
+            //var description = document.querySelector("input[name='description']").value;
+            //var pictureFile = document.querySelector("input[name='picture']").files[0];
+            //var pictureUrl = URL.createObjectURL(pictureFile);
+            var goodname = document.querySelector("input[name='goodname']").value;
+        var price = document.querySelector("input[name='price']").value;
+        var description = document.querySelector("input[name='description']").value;
+        var pictureFile = document.querySelector("input[name='picture']").files[0];
+        var kind = document.querySelector("select[name='kind']").value;
+        var subkind = document.querySelector("select[name='subkind']").value;
+
+            
+        if (!validateChineseCharacters(goodname)) {
+            document.getElementById("goodnameError").innerHTML = "商品名称只能包含中文字符。";
+            return;
+        } else {
+            document.getElementById("goodnameError").innerHTML = "";
+        }
+        if (!validatePrice(price)) {
+            document.getElementById("priceError").innerHTML = "商品价格必须为数字且不超过十位数。";
+            return;
+        } else {
+            document.getElementById("priceError").innerHTML = "";
+        }
+        if (!validateDescription(description)) {
+            document.getElementById("descriptionError").innerHTML = "商品描述不能为空。";
+            return;
+        } else {
+            document.getElementById("descriptionError").innerHTML = "";
+        }
+        if (!pictureFile) {
+            document.getElementById("pictureError").innerHTML = "请选择要上传的图片。";
+            return;
+        } else {
+            document.getElementById("pictureError").innerHTML = "";
+        }
+        if (!validateImageType(pictureFile)) {
+            document.getElementById("pictureError").innerHTML = "照片只能为jpg或png格式。";
+            return;
+        } else {
+            document.getElementById("pictureError").innerHTML = "";
+        }
+        if (!validateImageSize(pictureFile)) {
+            document.getElementById("pictureError").innerHTML = "照片大小不得超过10MB。";
+            return;
+        } else {
+            document.getElementById("pictureError").innerHTML = "";
+        }
+        if (isDuplicateProductName(goodname)) {
+            document.getElementById("goodnameError").innerHTML = "商品名称不能重复。";
+            return;
+        } else {
+            document.getElementById("goodnameError").innerHTML = "";
+        }
+        
+        
+        
+            var pictureUrl = URL.createObjectURL(pictureFile);
             var product = {
                 goodname: goodname,
                 price: price,
@@ -130,27 +215,6 @@
                 kind: kind,
                 subkind: subkind
             };
-            var fileExtension = pictureFile ? pictureFile.name.split('.').pop().toLowerCase() : "";
-
-    	    if (isNaN(price)) {
-    	        alert("价格需要输入数字！");
-    	        return;
-    	    }
-
-    	    if (goodname.length > 20) {
-    	        alert("商品名称不能超过20个字符！");
-    	        return;
-    	    }
-
-    	    if (description.length > 100) {
-    	        alert("商品描述不能超过100个字符！");
-    	        return;
-    	    }
-
-    	    if(fileExtension != "png" && fileExtension != "jpg") {
-    	        alert("图片只能上传png或jpg格式！");
-    	        return;
-    	    }
 
 
             productList.push(product);
@@ -160,8 +224,7 @@
             document.querySelector("input[name='price']").value = "";
             document.querySelector("input[name='description']").value = "";
             document.querySelector("input[name='picture']").value = "";
-            document.querySelector("select[name='kind']").value = "";
-            document.querySelector("select[name='subkind']").value = "";
+
         }
 		/* 将待添加的内容显示在表格中 */
         function displayProducts() {
@@ -185,7 +248,7 @@
                 cell1.innerHTML = product.goodname;
                 cell2.innerHTML = product.price;
                 cell3.innerHTML = product.description;
-               
+           
                 var img = document.createElement("img");
                 img.src = product.picture;  // 直接使用product.picture作为图片的URL
                 img.width = 100;
@@ -200,6 +263,10 @@
 
         
         function submitProducts() {
+	       	 if (productList.length === 0) {
+	             alert("请先添加商品信息。");
+	             return;
+	         }
             var productListInput = document.getElementById("productListInput");
             productListInput.value = JSON.stringify(productList);
             console.log(JSON.stringify(productList));
@@ -208,9 +275,7 @@
             var form = document.getElementById("productForm");
             form.submit();
         }
-    </script>
-    <!-- 这一段script实现二级管理的下拉框功能 -->
-    <script>
+
         function updateSubcategories() {
             var categorySelect = document.getElementById("kind");
             var subcategorySelect = document.getElementById("subkind");

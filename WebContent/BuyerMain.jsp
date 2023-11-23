@@ -157,13 +157,13 @@ form {
 <script >
 	var currentPage = ${requestScope.currentPage};
 	var totalItems = ${sessionScope.gL.size()}; // 商品总数
-	var itemsPerPage = 5; // 每页显示的商品数量
+	var itemsPerPage = 6; // 每页显示的商品数量
 	var totalPages = Math.ceil(totalItems / itemsPerPage); 
 	
 	function goToPrevPage() {
 	    if (currentPage > 1) {
 	        currentPage--;
-	        location.href = "show_goods.jsp?currentPage=" + currentPage;
+	        location.href = "BuyerMain.jsp?currentPage=" + currentPage;
 	    }
 	}
 	
@@ -171,7 +171,7 @@ form {
 	    if (currentPage < totalPages) {
 	        currentPage++;
 	        console.log(currentPage);
-	        location.href = "show_goods.jsp?currentPage=" + currentPage;
+	        location.href = "BuyerMain.jsp?currentPage=" + currentPage;
 	    }
 	}
 	
@@ -238,7 +238,7 @@ form {
 			<div id="search_list"></div>
 		</center>
 	    <div class="goods">
-	    	<c:forEach items="${sessionScope.gL}" var="g">
+	    	<c:forEach items="${sessionScope.gL}" var="g" begin="${(currentPage-1)*6}" end="${currentPage*6-1}">
 	    		<a href="showgoodservlet?goodid=${g.goodid}" class="show-1">
 		    		<div>
 		    			<img src="${g.picture}" alt="aa" width="200">

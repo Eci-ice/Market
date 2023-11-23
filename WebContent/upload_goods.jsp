@@ -176,50 +176,64 @@ button{
 }
 </style>
 <script>
-	function showPreview(input) {
-	    if (input.files && input.files[0]) {
-	        var reader = new FileReader();  
-	        
-	        reader.onload = function (e) {
-	            var imagePreview = document.getElementById('imagePreview');
-	            imagePreview.src = e.target.result;  
-	            imagePreview.style.opacity = '1';  // 设置图片为不透明
-	        };
-	        
-	        reader.readAsDataURL(input.files[0]);
-	    }
-	}
+function showPreview(input) {
+    // 获取文件输入框
+    var fileInput = input;
+    // 检查是否有选择文件
+    if (fileInput.files && fileInput.files[0]) {
+        // 获取文件信息
+        var file = fileInput.files[0];
+        // 检查文件类型
+        var fileType = file.type;
+        if (fileType !== 'image/jpeg' && fileType !== 'image/png') {
+            alert('只能上传 JPG 或 PNG 格式的图片');
+            // 清空文件输入框的值，防止用户上传不支持的文件类型
+            fileInput.value = '';
+            return;
+        }
+        // 检查文件大小，限制为 1MB
+        var maxSize = 10*1024 * 1024; // 1MB
+        if (file.size > maxSize) {
+            alert('图片文件太大，请选择小于 10MB 的图片');
+            // 清空文件输入框的值，防止用户上传过大的文件
+            fileInput.value = '';
+            return;
+        }
+        // 创建 FileReader 对象
+        var reader = new FileReader();
+        // 设置文件加载完成的回调函数
+        reader.onload = function (e) {
+            // 获取预览图片元素
+            var imagePreview = document.getElementById('imagePreview');
+            // 设置预览图片的源
+            imagePreview.src = e.target.result;
+            // 设置图片不透明度
+            imagePreview.style.opacity = '1';
+        };
+        // 读取文件内容
+        reader.readAsDataURL(file);
+    }
+}
 	
-	function validateForm() {
-	    var price = document.getElementsByName("price")[0].value;
-	    var goodname = document.getElementsByName("goodname")[0].value;
-	    var description = document.getElementsByName("description")[0].value;
-	    var pictureInput = document.getElementsByName("picture")[0].value;
-	    var fileExtension = pictureInput.split('.').pop().toLowerCase();
-
-
-	    if (isNaN(price)) {
-	        alert("价格需要输入数字！");
-	        return false;
-	    }
-
-	    if (goodname.length > 20) {
-	        alert("商品名称不能超过20个字符！");
-	        return false;
-	    }
-
-	    if (description.length > 100) {
-	        alert("商品描述不能超过100个字符！");
-	        return false;
-	    }
-
-	    if(fileExtension != "png" && fileExtension != "jpg") {
-	        alert("图片只能上传png或jpg格式！");
-	        return false;
-	    }
-
-	    return true;
-	}
+function validateForm() {
+    var goodname = document.forms["myForm"]["goodname"].value;
+    var price = document.forms["myForm"]["price"].value;
+    var chineseRegex = /^[\u4e00-\u9fa5]+$/; // 中文字符正则表达式
+    var numberRegex = /^\d+(\.\d{1,2})?$/; // 数字正则表达式，最多两位小数
+    if (!chineseRegex.test(goodname)) {
+        document.getElementById('goodnameError').innerHTML = "商品名称只能是中文";
+        return false;
+    } else {
+        document.getElementById('goodnameError').innerHTML = "";
+    }
+    if (!numberRegex.test(price) || price.length > 10) {
+        document.getElementById('priceError').innerHTML = "商品价格必须是数字且不超过十位数";
+        return false;
+    } else {
+        document.getElementById('priceError').innerHTML = "";
+    }
+    return true;
+}
 
 </script>
 
@@ -256,18 +270,22 @@ button{
             <center>
                 <span>商品名称：</span>
                 <input type="text" name="goodname" required="required" placeholder="请输入商品名称"><br><br>
+            <span id="goodnameError" style="color: red;"></span>
             </center>
             <center>
                 <span>商品价格：</span>
                 <input type="text" name="price" required="required" placeholder="请输入商品价格"><br><br>
+            <span id="priceError" style="color: red;"></span>
             </center>
             <center>
                 <span>商品库存：</span>
                 <input type="text" name="number" required="required" placeholder="请输入商品库存" /><br><br>
+            <span id="numberError" style="color: red;"></span>
             </center>
             <center>
                 <span>商品描述：</span>
                 <input type="text" name="description" required="required" placeholder="请输入商品描述"><br><br>
+            <span id="descriptionError" style="color: red;"></span>
             </center>
             <input type="submit" class="submit-button-container" value="确认发布">
         </div>
