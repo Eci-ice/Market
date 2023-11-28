@@ -201,11 +201,11 @@ a{
 			    <tr>
 			    <th>ID</th>
 			    <th>名称</th>
-			    <th>描述</th>
 			    <th>单价</th>
 			    <th>图片</th>
 			    <th>类别</th>
 			    <th>子类别</th>
+                <th>创建日期</th>
 			    <%--
 			    <th>意向人数</th>
 			    <th>最终购买人</th>
@@ -215,13 +215,13 @@ a{
 				<tr>
 				<td>${g.goodid}</td>
 				<td>${g.goodname}</td>
-				<td>${g.description}</td>
 				<td>${g.price}</td>
 				<td>
 		            <img src="${g.picture}" alt="" width="174">
 		        </td>
 		        <td>${g.kind}</td>
 				<td>${g.subkind}</td>
+                <td>${g.createdate}</td>
 			    </tr>
 			    </c:forEach>
 			</table>

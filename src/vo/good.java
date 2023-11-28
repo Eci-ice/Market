@@ -11,8 +11,16 @@ public class good {
 	private String kind;
 	private String subkind;
 	private int owner;
+	private String createdate;
+	
 
 
+	public String getCreatedate() {
+		return createdate;
+	}
+	public void setCreatedate(String createdate) {
+		this.createdate = createdate;
+	}
 	public String getSubkind() {
 		return subkind;
 	}

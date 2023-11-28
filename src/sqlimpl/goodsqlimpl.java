@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +66,7 @@ public class goodsqlimpl implements goodsql{
 	             goodid = rs.getInt(1);//获得刚刚创建的id
 	         }
 	         ps.close();
-	         String sql1 = "insert into MLhistorygood(goodid,goodname,description,price,picture,number,kind,subkind,owner) values(?,?,?,?,?,?,?,?,?)";
+	         String sql1 = "insert into MLhistorygood(goodid,goodname,description,price,picture,number,kind,subkind,createdate,owner) values(?,?,?,?,?,?,?,?,?,?)";
 	         PreparedStatement ps1  = conn.prepareStatement(sql1);
 	         ps1.setInt(1, goodid);
 	         ps1.setString(2, good.getGoodname());
@@ -74,7 +76,14 @@ public class goodsqlimpl implements goodsql{
 	         ps1.setInt(6, good.getNumber());
 	         ps1.setString(7, good.getKind());
 	         ps1.setString(8, good.getSubkind());
-	         ps1.setInt(9, good.getOwner());
+	      // 获取当前时间
+	         LocalDateTime currentTime = LocalDateTime.now();
+	         // 定义日期时间格式
+	         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	         // 格式化当前时间
+	         String formattedDateTime = currentTime.format(formatter);
+	         ps1.setString(9, formattedDateTime);
+	         ps1.setInt(10, good.getOwner());
 	         ps1.executeUpdate();
 	         ps1.close();
 	         conn.close();
@@ -366,7 +375,8 @@ public class goodsqlimpl implements goodsql{
 				g.setNumber(rs.getInt(6));
 				g.setKind(rs.getString(7));
 				g.setSubkind(rs.getString(8));
-				g.setOwner(rs.getInt(9));
+				g.setCreatedate(rs.getString(9));
+				g.setOwner(rs.getInt(10));
 				gL.add(g);
 			}
 			ps.close();
