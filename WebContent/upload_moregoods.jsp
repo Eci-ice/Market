@@ -123,11 +123,14 @@
             }
             return false;
         }
-        
-        function validateChineseCharacters(input) {
-            var chineseRegex = /^[\u4E00-\u9FFF]+$/; // 中文字符的正则表达式
-            return chineseRegex.test(input);
+        function validateProductName(input) {
+            var validCharactersRegex = /^[a-zA-Z0-9\u4e00-\u9fff\s]+$/; // Chinese, English, numbers, and space regex
+            return input.trim() !== "" && validCharactersRegex.test(input);
         }
+        //function validateChineseCharacters(input) {
+        //    var chineseRegex = /^[\u4E00-\u9FFF]+$/; // 中文字符的正则表达式
+         //   return chineseRegex.test(input);
+       // }
         function validatePrice(input) {
             var priceRegex = /^\d{1,10}$/; // 1到10位数字的正则表达式
             return priceRegex.test(input);
@@ -161,8 +164,8 @@
         var subkind = document.querySelector("select[name='subkind']").value;
 
             
-        if (!validateChineseCharacters(goodname)) {
-            document.getElementById("goodnameError").innerHTML = "商品名称只能包含中文字符。";
+        if (!validateProductName(goodname)) {
+            document.getElementById("goodnameError").innerHTML = "商品名称只能包含中文、英文、数字和空格。";
             return;
         } else {
             document.getElementById("goodnameError").innerHTML = "";
