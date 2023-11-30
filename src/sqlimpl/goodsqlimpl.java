@@ -121,22 +121,19 @@ public class goodsqlimpl implements goodsql{
         return 0;
 	}
 
-	//查找商品名是否唯一
+	//查找商品名是否唯一,唯一则返回1
 	@Override
 	public int unique(String name) throws SQLException {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
-            String sql = "SELECT * FROM MLgood WHERE state=0";//在售
+            String sql = "SELECT * FROM MLgood WHERE state=0 AND goodname = ?";//在售
             PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, name);
    			ResultSet rs=ps.executeQuery();
+   			//有返回值，说明有同名商品，返回1
    			if(rs.next()) {
-   		        while(rs.next()) {
-   		        	if(rs.getString(1).equals(name)) {
-   		        		return 0;
-   		        	}
-   		        }
-   		        return 1;
+   		        return 0;
    	         }else {
    	            return 1;
    	         }
@@ -271,22 +268,43 @@ public class goodsqlimpl implements goodsql{
 	
 
 	@Override
-	public List<good> searchls(String keyword,int power,int userid) throws SQLException {
+	public List<good> searchls(String keyword,String kind,int power,int userid) throws SQLException {
+	    Connection conn = null;
+	    PreparedStatement ps = null;
+
 	    try {
 	        Class.forName("org.sqlite.JDBC");
-	        Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+	        conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
 	        
-	        String sql = "SELECT * FROM MLgood WHERE goodname LIKE ? AND owner = ?";
-	        if(0==power) {//买家
-	        	sql = "SELECT * FROM MLgood WHERE goodname LIKE ? AND state = 0";
+	        if(kind.equals("默认类别")) {
+	        	String sql = "SELECT * FROM MLgood WHERE goodname LIKE ? AND owner = ?";
+		        if(0==power) {//买家
+		        	sql = "SELECT * FROM MLgood WHERE goodname LIKE ? AND state = 0";
+		        }
+		        ps = conn.prepareStatement(sql);
+		        // 添加 '%' 来匹配任何以关键词开头的商品名称
+		        ps.setString(1, keyword + "%");
+//		        如果是商家，限制owner商家id
+		        if(1==power) {
+		        	ps.setInt(2, userid);
+		        }
+	        }
+	        else{
+	        	String sql = "SELECT * FROM MLgood WHERE goodname LIKE ? AND kind = ? AND owner = ?";
+		        if(0==power) {//买家
+		        	sql = "SELECT * FROM MLgood WHERE goodname LIKE ? AND kind= ? AND state = 0";
+		        }
+		        ps = conn.prepareStatement(sql);
+		        // 添加 '%' 来匹配任何以关键词开头的商品名称
+		        ps.setString(1, keyword + "%");
+		        ps.setString(2, kind);
+		        if(1==power) {
+		        	ps.setInt(3, userid);
+		        }
+	        	
 	        }
 	        
-	        PreparedStatement ps = conn.prepareStatement(sql);
-	        // 添加 '%' 来匹配任何以关键词开头的商品名称
-	        ps.setString(1, keyword + "%");
-	        if(1==power) {
-	        	ps.setInt(2, userid);
-	        }
+	        
 	        ResultSet rs = ps.executeQuery();
 	        List<good> gL=new ArrayList<good>();
 			good g=null;
