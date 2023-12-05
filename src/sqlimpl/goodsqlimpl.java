@@ -121,19 +121,22 @@ public class goodsqlimpl implements goodsql{
         return 0;
 	}
 
-	//查找商品名是否唯一,唯一则返回1
+	//查找商品名是否唯一
 	@Override
 	public int unique(String name) throws SQLException {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
-            String sql = "SELECT * FROM MLgood WHERE state=0 AND goodname = ?";//在售
+            String sql = "SELECT * FROM MLgood WHERE state=0";//在售
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, name);
    			ResultSet rs=ps.executeQuery();
-   			//有返回值，说明有同名商品，返回1
    			if(rs.next()) {
-   		        return 0;
+   		        while(rs.next()) {
+   		        	if(rs.getString(1).equals(name)) {
+   		        		return 0;
+   		        	}
+   		        }
+   		        return 1;
    	         }else {
    	            return 1;
    	         }
@@ -268,43 +271,22 @@ public class goodsqlimpl implements goodsql{
 	
 
 	@Override
-	public List<good> searchls(String keyword,String kind,int power,int userid) throws SQLException {
-	    Connection conn = null;
-	    PreparedStatement ps = null;
-
+	public List<good> searchls(String keyword,int power,int userid) throws SQLException {
 	    try {
 	        Class.forName("org.sqlite.JDBC");
-	        conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+	        Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
 	        
-	        if(kind.equals("默认类别")) {
-	        	String sql = "SELECT * FROM MLgood WHERE goodname LIKE ? AND owner = ?";
-		        if(0==power) {//买家
-		        	sql = "SELECT * FROM MLgood WHERE goodname LIKE ? AND state = 0";
-		        }
-		        ps = conn.prepareStatement(sql);
-		        // 添加 '%' 来匹配任何以关键词开头的商品名称
-		        ps.setString(1, keyword + "%");
-//		        如果是商家，限制owner商家id
-		        if(1==power) {
-		        	ps.setInt(2, userid);
-		        }
-	        }
-	        else{
-	        	String sql = "SELECT * FROM MLgood WHERE goodname LIKE ? AND kind = ? AND owner = ?";
-		        if(0==power) {//买家
-		        	sql = "SELECT * FROM MLgood WHERE goodname LIKE ? AND kind= ? AND state = 0";
-		        }
-		        ps = conn.prepareStatement(sql);
-		        // 添加 '%' 来匹配任何以关键词开头的商品名称
-		        ps.setString(1, keyword + "%");
-		        ps.setString(2, kind);
-		        if(1==power) {
-		        	ps.setInt(3, userid);
-		        }
-	        	
+	        String sql = "SELECT * FROM MLgood WHERE goodname LIKE ? AND owner = ?";
+	        if(0==power) {//买家
+	        	sql = "SELECT * FROM MLgood WHERE goodname LIKE ? AND state = 0";
 	        }
 	        
-	        
+	        PreparedStatement ps = conn.prepareStatement(sql);
+	        // 添加 '%' 来匹配任何以关键词开头的商品名称
+	        ps.setString(1, keyword + "%");
+	        if(1==power) {
+	        	ps.setInt(2, userid);
+	        }
 	        ResultSet rs = ps.executeQuery();
 	        List<good> gL=new ArrayList<good>();
 			good g=null;
@@ -410,5 +392,79 @@ public class goodsqlimpl implements goodsql{
 		
 		return null;
 	}
+	//aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+	public good getGoodById(int goodId) throws SQLException {
+	    try {
+	        Connection conn = getConn();
+	        String query = "SELECT * FROM MLgood WHERE goodid = ?";
+	        PreparedStatement preparedStatement = conn.prepareStatement(query);
+	        preparedStatement.setInt(1, goodId);
+
+	        ResultSet resultSet = preparedStatement.executeQuery();
+	        good gf = null;
+
+	        if (resultSet.next()) {
+	            gf = new good();
+	            gf.setGoodid(resultSet.getInt("goodid"));
+	            gf.setGoodname(resultSet.getString("goodname"));
+	            gf.setDescription(resultSet.getString("description"));
+	            gf.setPrice(resultSet.getDouble("price"));
+	            gf.setPicture(resultSet.getString("picture"));
+	            gf.setState(resultSet.getInt("state"));
+	            gf.setNumber(resultSet.getInt("number"));
+	            gf.setKind(resultSet.getString("kind"));
+	            gf.setSubkind(resultSet.getString("subkind"));
+	            gf.setOwner(resultSet.getInt("owner"));
+	            // 根据数据库列名设置相应的属性
+	        }
+
+	        resultSet.close();
+	        preparedStatement.close();
+	        conn.close();
+
+	        return gf;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return null;
+	}
+
+
+	@Override
+	public boolean updateGood(good good) throws SQLException {
+	    try {
+	        Connection conn = getConn();
+	        String updateQuery = "UPDATE MLgood SET goodname = ?, description = ?, price = ?, picture = ?, state = ?, number = ?, kind = ?, subkind = ?, owner = ? WHERE goodid = ?";
+	        PreparedStatement preparedStatement = conn.prepareStatement(updateQuery);
+
+	        preparedStatement.setString(1, good.getGoodname());
+	        preparedStatement.setString(2, good.getDescription());
+	        preparedStatement.setDouble(3, good.getPrice());
+	        preparedStatement.setString(4, good.getPicture());
+	        preparedStatement.setInt(5, good.getState());
+	        preparedStatement.setInt(6, good.getNumber());
+	        preparedStatement.setString(7, good.getKind());
+	        preparedStatement.setString(8, good.getSubkind());
+	        preparedStatement.setInt(9, good.getOwner());
+	        preparedStatement.setInt(10, good.getGoodid());
+
+	        int rowsAffected = preparedStatement.executeUpdate();
+
+	        preparedStatement.close();
+	        conn.close();
+
+	        return rowsAffected > 0; // 返回更新是否成功
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return false;
+	}
+
+
+
+	
+	
 
 }

@@ -122,10 +122,8 @@ body {
     .prev, .next {
     	background-color: rgb(237, 196, 110);
     }
-	form {
+form {
     display: flex; /* 让表单内的元素在同一行显示 */
-    width:600px;
-    height:45px;
 	}
 	input[type="text"] {
 	    flex-grow: 1; /* 让搜索框占据剩余的空间 */
@@ -233,14 +231,9 @@ body {
 	<div class="right">
 		<center>
 			<h2>欢迎来到猫咪美食坊！</h2>
-       		<form action="successsearchservlet" method="post">
-				<input type="text" name="keyword" placeholder="搜索商品"  oninput="search()">&nbsp;&nbsp;&nbsp;
-				<select name="kind" id="search_kind">
-                    <option value="猫咪主粮">猫咪主粮</option>
-                    <option value="猫咪零食">猫咪零食</option>
-                    <option value="猫咪日用">猫咪日用</option>
-                </select><br><br>&nbsp;&nbsp;&nbsp;
-				<input type="submit" value="搜索" style="width:130px;">
+        <form action="successsearchservlet" method="post">
+				<input type="text" name="keyword" placeholder="搜索商品"  oninput="search()">
+				<input type="submit" value="搜索">
 			</form>
 			<div id="search_list"></div>
 		</center>

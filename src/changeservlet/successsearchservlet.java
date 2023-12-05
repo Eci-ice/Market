@@ -27,8 +27,6 @@ public class successsearchservlet extends HttpServlet {
 		doPost(request, response);
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
-		response.setCharacterEncoding("UTF-8");	
 		HttpSession session = request.getSession();    
     	user u = (user)session.getAttribute("admin");
     	int power=0;
@@ -36,12 +34,11 @@ public class successsearchservlet extends HttpServlet {
     		power=u.getPower();
     	}
 		String keyword = request.getParameter("keyword");
-		String kind = request.getParameter("search_kind");
 	        // 查询数据库
 	    goodsql gs = new goodsqlimpl();
 	        List<good> goods = null;
 	        try {
-	        	goods = gs.searchls(keyword,kind,power,u.getUserid());
+	        	goods = gs.searchls(keyword,power,u.getUserid());
 	        	System.out.print(keyword);
 	        } catch (SQLException e) {
 	            e.printStackTrace();

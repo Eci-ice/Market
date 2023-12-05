@@ -153,6 +153,13 @@
 		<servlet-name>forgetservlet</servlet-name>
 		<servlet-class>forgetservlet.forgetservlet</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>UpdatePriceServlet</display-name>
+		<servlet-name>UpdatePriceServlet</servlet-name>
+		<servlet-class>goodservlet.UpdatePriceServlet</servlet-class>
+	</servlet>
 
 
 
@@ -239,6 +246,10 @@
 	<servlet-mapping>
 		<servlet-name>forgetservlet</servlet-name>
 		<url-pattern>/forgetservlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>UpdatePriceServlet</servlet-name>
+		<url-pattern>/UpdatePriceServlet</url-pattern>
 	</servlet-mapping>
 
 

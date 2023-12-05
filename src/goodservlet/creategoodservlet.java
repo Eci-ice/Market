@@ -42,8 +42,6 @@ public class creategoodservlet extends HttpServlet {
 			String  goodname = request.getParameter("goodname");
 		 	String  description = request.getParameter("description");
 		 	String priceStr = request.getParameter("price");
-	        String numberStr = request.getParameter("number");
-	        int number = Integer.parseInt(numberStr);
 		 	double price =0.0;
 		 	try {
 		 	    price = Double.parseDouble(priceStr);
@@ -59,7 +57,7 @@ public class creategoodservlet extends HttpServlet {
 		 	}
 		 	String  picture = request.getParameter("picture");
 	        int state = 0;
-
+	        int number = 1;
 	        String kind = request.getParameter("kind");
 		 	String subkind = request.getParameter("subkind");
 		 // 检查subkind是否为空或空字符串
