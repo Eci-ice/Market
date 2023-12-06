@@ -1,0 +1,79 @@
+* {
+    background-color: #FFF9F1;
+}
+
+.container {
+    font-family: Arial, sans-serif;
+    width: 80%;
+    margin: 2% auto;
+    border: 1px solid rgba(0, 0, 0, 0);
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th,td {
+    border: 1px solid rgba(41, 133, 234, 0.5);
+    padding: 20px;
+    text-align: left;
+    font-size: 30px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.history-btn,.prev,.next {
+    padding: 10px 20px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.history-btn {
+    position: relative;
+    /* top: 5px; */
+    left: 20px;
+    background-color: rgb(237, 137, 108);
+    border-radius: 10px;
+}
+
+.prev,.next {
+    background-color: rgb(237, 196, 110);
+    
+}
+
+/* .history-btn:hover,.prev:hover,.next:hover {
+    background-color: #d32f2f;
+} */
+
+.history-btn a {
+    background-color: rgba(0, 0, 0, 0);
+    text-decoration: none;
+    color: white;
+    border-radius: 20px;/*设置了圆角和内边距 */
+    font-size: 20px;
+}
+
+.history-btn a:hover {
+    text-decoration: none;
+}
+
+.left-btn-container {
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+}
