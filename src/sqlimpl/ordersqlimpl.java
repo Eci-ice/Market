@@ -147,6 +147,51 @@ public class ordersqlimpl implements ordersql{
 		
 		return null;
 	}
+	@Override
+	public List<order> showall2(int userid) throws SQLException {
+		try {
+			Class.forName("org.sqlite.JDBC");
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+            PreparedStatement ps = null;
+			String sql = "select * from MLorder WHERE owner = ?";
+            
+			System.out.println("现在是showall2");
+			
+//            String sql = "select * from MLorder";
+            
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, userid);
+			
+			ResultSet rs=ps.executeQuery();
+			List<order> orL=new ArrayList<order>();
+			order or=null;
+			while(rs.next()) {
+				or=new order();
+				or.setOrderid(rs.getInt(1));
+				or.setAddress(rs.getString(2));
+				or.setTelephone(rs.getString(3));
+				or.setBuyername(rs.getString(4));
+				or.setGoodid(rs.getInt(5));
+				or.setOrderstate(rs.getInt(6));
+				or.setOwner(rs.getInt(7));
+				orL.add(or);
+				System.out.println("or:");
+				System.out.println(or);
+			}
+			ps.close();
+	         conn.close();
+			return orL;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 
 	@Override
 	public void deleteorder(int orderid) throws SQLException {

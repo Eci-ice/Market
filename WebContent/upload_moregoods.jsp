@@ -88,7 +88,7 @@
                 <!-- 放置在下方script部分 -->
             </select><br><br>
             <label>商品图片:</label>
-            <input type="file" name="picture">
+            <input type="file" name="picture" onchange="uploadImage(this)">
             <span id="pictureError" style="color: red;"></span>
             <br>
             <button type="button" onclick="addProduct()">添加商品</button>
@@ -105,7 +105,7 @@
                 </tr>
             </thead>
         </table>
-         <form id="productForm" action="createmoregoodservlet" method="post">
+         <form id="productForm" action="createmoregoodservlet" enctype="multipart/form-data" method="post">
           	<input type="hidden" id="productListInput" name="productList">
         	
          </form>
@@ -114,6 +114,30 @@
 
     <script>
         var productList = [];
+        let uploadedFilenames = [];  // 用于保存上传的文件名
+        
+        function uploadImage(input) {
+            if (input.files && input.files[0]) {
+                var formData = new FormData();
+                formData.append('file', input.files[0]);
+
+                fetch('uploadimageservlet', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(response) {
+                    return response.text();
+                })
+                .then(function(filename) {
+                    // 将文件名添加到全局数组中
+                    uploadedFilenames.push('./img/' + filename);
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+            }
+        }
+
 
         function isDuplicateProductName(name) {
             for (var i = 0; i < productList.length; i++) {
@@ -123,6 +147,7 @@
             }
             return false;
         }
+        
         function validateProductName(input) {
             var validCharactersRegex = /^[a-zA-Z0-9\u4e00-\u9fff\s]+$/; // Chinese, English, numbers, and space regex
             return input.trim() !== "" && validCharactersRegex.test(input);
@@ -164,8 +189,8 @@
         var subkind = document.querySelector("select[name='subkind']").value;
 
             
-        if (!validateProductName(goodname)) {
-            document.getElementById("goodnameError").innerHTML = "商品名称只能包含中文、英文、数字和空格。";
+        if (!validateChineseCharacters(goodname)) {
+            document.getElementById("goodnameError").innerHTML = "商品名称只能包含中文字符。";
             return;
         } else {
             document.getElementById("goodnameError").innerHTML = "";
@@ -208,13 +233,12 @@
         }
         
         
-        
-            var pictureUrl = URL.createObjectURL(pictureFile);
+
             var product = {
                 goodname: goodname,
                 price: price,
                 description: description,
-                picture: pictureUrl,
+                picture: uploadedFilenames.pop(),
                 kind: kind,
                 subkind: subkind
             };

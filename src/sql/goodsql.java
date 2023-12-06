@@ -11,14 +11,11 @@ public interface goodsql {
 	public int unique(String goodname) throws SQLException;
 	public int oldunique() throws SQLException;
 	public good search(int goodid) throws SQLException;
-	public List<good> searchls(String keyword,int power,int userid) throws SQLException;
+	public List<good> searchls(String keyword,String kind,int power,int userid,int ishistory) throws SQLException;
 	public void modifystate(int goodid,int tostate) throws SQLException;
 	public List<good> showall(int userid) throws SQLException;
 	public List<good> showhistoryall(int userid) throws SQLException;
 	public List<good> shownow() throws SQLException;
-	
-	 //aaaaaa
-	 public good getGoodById(int goodId) throws SQLException;
-	    public boolean updateGood(good good) throws SQLException;
-	
+	public good getGoodById(int goodId) throws SQLException;
+    public boolean updateGood(good good) throws SQLException;
 }

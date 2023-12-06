@@ -47,7 +47,7 @@ public class Setup{
         		"  `number` int NOT NULL,\r\n" + 
         		"  `kind` varchar(20) NOT NULL, \r\n" + 
           		"  `subkind` varchar(20) NOT NULL,\r\n" + 
-          		"  `createdate` DATETIME NOT NULL,\r\n" + 
+          		"  `createdate` DATETIME NOT NULL,\r\n" +
           		"  `owner` INTEGER NOT NULL,\r\n" + 
           		"  FOREIGN KEY (`owner`) REFERENCES `MLuser` (`userid`))"
         		);
@@ -93,9 +93,10 @@ public class Setup{
       statement.executeUpdate("INSERT INTO `MLuser` VALUES (1, '123', '123', 1,'who are you?','Xiaoming')");
       statement.executeUpdate("INSERT INTO `MLuser` VALUES (2, '111', '111', 0,'who are you?','Xiaoming')");
       statement.executeUpdate("INSERT INTO `MLinfo` VALUES (2, '11111111111','zjsu')");
-      statement.executeUpdate("INSERT INTO `MLgood` VALUES (1, '111', 'yummy', 1.0,'./img/buyer/food-1.jpg',0,1,'guti','maoliang',1)");
-      statement.executeUpdate("INSERT INTO `MLhistorygood` VALUES (1, '111', 'yummy', 1.0,'./img/buyer/food-1.jpg',1,'guti','maoliang','2023-11-11 13:13:13',1)");
+      statement.executeUpdate("INSERT INTO `MLgood` VALUES (1, '111', 'yummy', 1.0,'./img/buyer/food-1.jpg',0,1,'猫咪主粮','猫干粮',1)");
+      statement.executeUpdate("INSERT INTO `MLhistorygood` VALUES (1, '111', 'yummy', 1.0,'./img/buyer/food-1.jpg',1,'猫咪主粮','猫干粮','2023-11-11 13:13:13',1)");
       statement.executeUpdate("INSERT INTO `MLorder` VALUES (1, 'zjsu','11111111111', '111', 1,0,1)");
+      
       System.out.println("Success Setup");
       
 

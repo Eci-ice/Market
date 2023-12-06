@@ -174,82 +174,297 @@ button{
      background-color: rgb(255, 215, 0);
       cursor: pointer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 }
+.modal {
+        display: none; /* 默认隐藏 */
+        position: fixed; /* 固定在页面上 */
+        z-index: 1; /* 处于顶层 */
+        left: 0;
+        top: 0;
+        width: 100%; /* 宽度为整个屏幕 */
+        height: 100%; /* 高度为整个屏幕 */
+        overflow: auto; /* 如果内容过多则启用滚动条 */
+        background-color: rgba(0,0,0,0.4); /* 半透明的黑色背景 */
+        padding-top: 60px;
+    }
+   .modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    width: 60%;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close:hover {
+    color: #000;
+    text-decoration: none;
+}
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    
+    .price-modal-content {
+    background-image: url('img/a.jpg'); /* 更改为您自己的图片路径 */
+    background-size: cover; /* 调整背景图片大小以填充整个容器 */
+    background-position: center; /* 居中显示背景图片 */
+    opacity: 1; /* 调整透明度（0.8表示80%的不透明度） */
+}
+#preview {
+    /* 设置预览窗口的大小和样式 */
+    width: 200px;
+    height: 200px;
+    border: 1px solid #ccc;
+    position: relative;
+    overflow: hidden;
+}
+
+#preview img {
+    /* 设置图片的大小和位置 */
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#preview button {
+    /* 设置删除按钮的样式和位置 */
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.5);
+    border: none;
+
+}
+
 </style>
 <script>
-function showPreview(input) {
-    // 获取文件输入框
-    var fileInput = input;
-    // 检查是否有选择文件
-    if (fileInput.files && fileInput.files[0]) {
-        // 获取文件信息
-        var file = fileInput.files[0];
-        // 检查文件类型
-        var fileType = file.type;
-        if (fileType !== 'image/jpeg' && fileType !== 'image/png') {
-            alert('只能上传 JPG 或 PNG 格式的图片');
-            // 清空文件输入框的值，防止用户上传不支持的文件类型
-            fileInput.value = '';
-            return;
-        }
-        // 检查文件大小，限制为 1MB
-        var maxSize = 10*1024 * 1024; // 1MB
-        if (file.size > maxSize) {
-            alert('图片文件太大，请选择小于 10MB 的图片');
-            // 清空文件输入框的值，防止用户上传过大的文件
-            fileInput.value = '';
-            return;
-        }
-        // 创建 FileReader 对象
-        var reader = new FileReader();
-        // 设置文件加载完成的回调函数
-        reader.onload = function (e) {
-            // 获取预览图片元素
-            var imagePreview = document.getElementById('imagePreview');
-            // 设置预览图片的源
-            imagePreview.src = e.target.result;
-            // 设置图片不透明度
-            imagePreview.style.opacity = '1';
-        };
-        // 读取文件内容
-        reader.readAsDataURL(file);
-    }
-}
-	
+
+var allFiles = []; // 全局的文件数组
 function validateForm() {
-    var goodname = document.forms["myForm"]["goodname"].value;
-    var price = document.forms["myForm"]["price"].value;
-    var chineseRegex = /^[\u4e00-\u9fa5]+$/; // 中文字符正则表达式
-    var numberRegex = /^\d+(\.\d{1,2})?$/; // 数字正则表达式，最多两位小数
-    if (!chineseRegex.test(goodname)) {
-        document.getElementById('goodnameError').innerHTML = "商品名称只能是中文";
+    var price = document.getElementsByName("price")[0].value;
+    var number = document.getElementsByName("number")[0].value;
+    var goodname = document.getElementsByName("goodname")[0].value;
+    var description = document.getElementsByName("description")[0].value;
+    var kind = document.getElementsByName("kind")[0].value;
+    var subkind = document.getElementsByName("subkind")[0].value;
+    var pictureInput = document.getElementsByName("picture")[0].value;
+    var fileExtension = pictureInput.split('.').pop().toLowerCase();
+
+
+    if (isNaN(price)) {
+        alert("价格需要输入数字！");
         return false;
-    } else {
-        document.getElementById('goodnameError').innerHTML = "";
     }
-    if (!numberRegex.test(price) || price.length > 10) {
-        document.getElementById('priceError').innerHTML = "商品价格必须是数字且不超过十位数";
+    if (isNaN(number)) {
+        alert("库存需要输入数字！");
         return false;
-    } else {
-        document.getElementById('priceError').innerHTML = "";
     }
+
+    if (goodname.length > 20) {
+        alert("商品名称不能超过20个字符！");
+        return false;
+    }
+
+    if (description.length > 100) {
+        alert("商品描述不能超过100个字符！");
+        return false;
+    }
+
+    // 验证所有文件的扩展名
+    for (var i = 0; i < allFiles.length; i++) {
+        var fileExtension = allFiles[i].name.split('.').pop().toLowerCase();
+        if(fileExtension != "png" && fileExtension != "jpg" && fileExtension != "mp4") {
+            alert("图片只能上传png,jpg或mp4格式！");
+            return false;
+        }
+    }
+    
+    var formData = new FormData();
+    formData.append('price', price);
+    formData.append('number', number);
+    formData.append('goodname', goodname);
+    formData.append('description', description);
+    formData.append('kind', kind);
+    formData.append('subkind', subkind);
+    console.log(allFiles.length);
+    console.log("aaa");
+    for (var i = 0; i < allFiles.length; i++) {
+        formData.append('picture[]', allFiles[i]);
+    }
+    
+    // 创建一个新的XMLHttpRequest对象
+    var xhr = new XMLHttpRequest();
+
+    // 设置请求完成后的处理函数
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // 请求成功，处理响应
+            console.log('请求成功');
+        } else {
+            // 请求失败，处理错误
+            console.error('请求失败，状态码：' + xhr.status);
+        }
+    };
+
+    // 设置请求错误时的处理函数
+    xhr.onerror = function() {
+        console.error('发生网络错误');
+    };
+
+    // 打开并发送请求
+    xhr.open('POST', 'creategoodservlet', true);
+    xhr.send(formData);
     return true;
 }
+
+var imageIndex = 0;
+
+function previewFiles() {
+    var files   = document.querySelector('input[type=file]').files;
+
+    // 将新选择的文件添加到全局的文件数组中
+    for (var i = 0; i < files.length; i++) {
+        allFiles.push(files[i]);
+    }
+    var preview = document.querySelector('#preview');
+
+    function readAndPreview(file) {
+        // 确保 `file.name` 符合我们的扩展名要求
+        if ( /\.(jpe?g|png|mp4)$/i.test(file.name) ) {
+            var reader = new FileReader();
+
+            reader.addEventListener("load", function () {
+                var container = document.createElement("div");
+                container.className = "slide"; // 添加类名
+
+                var media;
+                if (file.type === "video/mp4") {
+                    media = document.createElement("video");
+                    media.controls = true;
+                } else {
+                    media = document.createElement("img");
+                }
+                media.src = this.result;
+                media.style.width = "100%";
+                media.style.height = "100%";
+                media.style.objectFit = "contain";//适应屏幕
+                container.appendChild(media);
+                
+                imageIndex = preview.children.length;
+
+                // 添加删除按钮
+                var removeButton = document.createElement("button");
+                removeButton.innerHTML = "X";
+                removeButton.addEventListener("click", function(e) {
+                    e.target.parentNode.remove();
+                    imageIndex = (imageIndex - 1 + preview.children.length) % preview.children.length;
+                    updatePreview();//还原
+                    updateUploadLabel();
+                });
+                container.appendChild(removeButton);
+
+                preview.appendChild(container);
+
+                // 更新预览窗口
+                updatePreview();
+                
+                updateUploadLabel();
+            }, false);
+
+            reader.readAsDataURL(file);
+        }
+    }
+
+    if (files) {
+        [].forEach.call(files, readAndPreview);
+    }
+}
+
+function updateUploadLabel() {
+    var uploadLabel = document.querySelector('#customUploadButton');
+    var fileInput = document.querySelector('#fileInput');
+    var preview = document.querySelector('#preview');
+    console.log(preview.children.length);
+    if (preview.children.length >= 3) { // 每个文件有一个子节点（图片），所以这里检查子节点数量是否大于或等于3
+        uploadLabel.innerHTML = "最多上传3个文件";
+        uploadLabel.style.color = "red";
+        fileInput.disabled = true; // 禁用上传按钮
+    } else if (preview.children.length > 0) {
+        uploadLabel.innerHTML = "继续上传";
+        uploadLabel.style.color = "black";
+        fileInput.disabled = false; // 启用上传按钮
+    } else {
+        uploadLabel.innerHTML = "上传图片/视频";
+        uploadLabel.style.color = "black";
+        fileInput.disabled = false; // 启用上传按钮
+    }
+}
+
+
+function prevImage() {
+    var preview = document.querySelector('#preview');
+    if (preview.hasChildNodes()) {
+    	imageIndex = (imageIndex - 1 + preview.children.length) % preview.children.length;
+        updatePreview();
+    }
+}
+
+function nextImage() {
+    var preview = document.querySelector('#preview');
+    if (preview.hasChildNodes()) {
+    	imageIndex = (imageIndex + 1) % preview.children.length;
+        updatePreview();
+    }
+}
+
+function updatePreview() {
+    var preview = document.querySelector('#preview');
+    for (var i = 0; i < preview.children.length; i++) {
+        if (i == imageIndex) {
+            preview.children[i].style.display = "block";
+        } else {
+            preview.children[i].style.display = "none";
+        }
+    }
+}
+
 
 </script>
 
 <c:if test="${not empty sessionScope.admin }">
 <div class="main">
 <h1>请发布商品</h1>
-<form action="creategoodservlet" method="post" onsubmit="return validateForm()">
+<form action="creategoodservlet" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
     <div class="container">
         <div class="left-div" style="height: 300px;">
-            <!-- 左侧div -->
-            <span style="padding-left: 50px;">&nbsp;&nbsp;商品图片：</span><br><br>
-            <center><img id="imagePreview"><br></center>
-            <input type="file" name="picture" id="pictureInput" onchange="showPreview(this);">
-            <button><a href="show_goods.jsp">取消发布</a></button>
-            </center>
-        </div>
+		    <!-- 左侧div -->
+		    <!-- 顶部是一个返回按钮 -->
+		    <button type="button" onclick="window.history.back()">返回</button>
+		    <!-- 中间是一个固定尺寸的预览窗口，用于显示用户上传的图片或视频，最多三个,其中每个图片都支持右上角显示x删除 -->
+		    
+			<div id="preview">
+			    <!-- 预览窗口 -->
+			</div>
+			<button type="button" id="prevButton" onclick="prevImage()">＜</button>
+			<button type="button" id="nextButton" onclick="nextImage()">＞</button>
+
+		    <!-- 底部是一个上传按钮，在上传图片为空的时候时它显示的是“上传图片/视频”，在有内容的时候为“继续上传”-->
+		    <input type="file" id="fileInput" name="picture" accept="image/png, image/jpeg, video/mp4" onchange="previewFiles()" multiple style="display: none;" required="required">
+
+			<!-- 添加自定义的上传按钮 -->
+			<button type="button" id="customUploadButton" onclick="document.getElementById('fileInput').click()">上传图片/视频</button>
+		</div>
+
 
         <div class="right-div">
             <!-- 右侧div -->
@@ -269,7 +484,7 @@ function validateForm() {
             </center>
             <center>
                 <span>商品名称：</span>
-                <input type="text" name="goodname" required="required" placeholder="请输入商品名称"><br><br>
+                <input type="text" name="goodname" required="required" placeholder="请输入商品名称" ><br><br>
             <span id="goodnameError" style="color: red;"></span>
             </center>
             <center>
@@ -290,7 +505,7 @@ function validateForm() {
             <input type="submit" class="submit-button-container" value="确认发布">
         </div>
     </div>
-
+</form>
     <script>
     function updateSubcategories() {
         var categorySelect = document.getElementById("kind");
@@ -321,7 +536,7 @@ function validateForm() {
         // Call updateSubcategories initially to set up the initial state
         updateSubcategories();
     </script>
-</form>
+
 
 </div>
 <!-- <script>

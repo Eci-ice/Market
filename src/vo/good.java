@@ -10,9 +10,10 @@ public class good {
 	private int number;
 	private String kind;
 	private String subkind;
-	private int owner;
 	private String createdate;
-	
+	private int owner;
+
+
 
 
 	public String getCreatedate() {

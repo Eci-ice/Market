@@ -6,10 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import sql.goodsql;
 import vo.good;
@@ -76,7 +77,7 @@ public class goodsqlimpl implements goodsql{
 	         ps1.setInt(6, good.getNumber());
 	         ps1.setString(7, good.getKind());
 	         ps1.setString(8, good.getSubkind());
-	      // 获取当前时间
+	         // 获取当前时间
 	         LocalDateTime currentTime = LocalDateTime.now();
 	         // 定义日期时间格式
 	         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -271,21 +272,35 @@ public class goodsqlimpl implements goodsql{
 	
 
 	@Override
-	public List<good> searchls(String keyword,int power,int userid) throws SQLException {
+	public List<good> searchls(String keyword,String kind,int power,int userid,int ishistory) throws SQLException {
+	    Connection conn = null;
+	    PreparedStatement ps = null;
+
 	    try {
 	        Class.forName("org.sqlite.JDBC");
-	        Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+	        conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
 	        
-	        String sql = "SELECT * FROM MLgood WHERE goodname LIKE ? AND owner = ?";
-	        if(0==power) {//买家
-	        	sql = "SELECT * FROM MLgood WHERE goodname LIKE ? AND state = 0";
+	        
+	        if(1==ishistory) {
+	        	String sql = "SELECT * FROM MLhistorygood WHERE goodname LIKE ? AND kind = ? AND  owner = ?";
+		        ps = conn.prepareStatement(sql);
+		        // 添加 '%' 来匹配任何以关键词开头的商品名称
+		        ps.setString(1, keyword + "%");
+		        ps.setString(2, kind);
+		        ps.setInt(3, userid);
 	        }
-	        
-	        PreparedStatement ps = conn.prepareStatement(sql);
-	        // 添加 '%' 来匹配任何以关键词开头的商品名称
-	        ps.setString(1, keyword + "%");
-	        if(1==power) {
-	        	ps.setInt(2, userid);
+	        else {
+	        	String sql = "SELECT * FROM MLgood WHERE goodname LIKE ? AND kind = ? AND owner = ?";
+		        if(0==power) {//买家
+		        	sql = "SELECT * FROM MLgood WHERE goodname LIKE ? AND kind= ? AND state = 0";
+		        }
+		        ps = conn.prepareStatement(sql);
+		        // 添加 '%' 来匹配任何以关键词开头的商品名称
+		        ps.setString(1, keyword + "%");
+		        ps.setString(2, kind);
+		        if(1==power) {
+		        	ps.setInt(3, userid);
+		        }
 	        }
 	        ResultSet rs = ps.executeQuery();
 	        List<good> gL=new ArrayList<good>();
@@ -392,7 +407,6 @@ public class goodsqlimpl implements goodsql{
 		
 		return null;
 	}
-	//aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 	public good getGoodById(int goodId) throws SQLException {
 	    try {
 	        Connection conn = getConn();
@@ -461,10 +475,5 @@ public class goodsqlimpl implements goodsql{
 
 	    return false;
 	}
-
-
-
-	
-	
 
 }

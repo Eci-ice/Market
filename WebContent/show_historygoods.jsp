@@ -10,6 +10,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -113,6 +114,8 @@ a{
 	}
 	form {
     display: flex; /* 让表单内的元素在同一行显示 */
+       width:600px;
+    height:45px;
 	}
 	
 	input[type="text"] {
@@ -136,7 +139,34 @@ a{
 	#search_list div {
 	    border-bottom: 1px solid black; 
 	}
-		
+	
+	    .media-container {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        overflow: hidden;
+    }
+    .media-container img, .media-container video {
+        display: none;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .media-container img.active, .media-container video.active {
+        display: block;
+    }
+    .media-container button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.7);
+    }
+    .media-container .prev-button {
+        left: 10px;
+    }
+    .media-container .next-button {
+        right: 10px;
+    }
 </style>
 <%
     int currentPage = 1;
@@ -150,11 +180,11 @@ a{
     var totalItems = ${sessionScope.gL.size()}; // 商品总数
     var itemsPerPage = 5; // 每页显示的商品数量
     var totalPages = Math.ceil(totalItems / itemsPerPage); 
-    
+    console.log(totalPages);
     function goToPrevPage() {
         if (currentPage > 1) {
             currentPage--;
-            location.href = "show_goods.jsp?currentPage=" + currentPage;
+            location.href = "show_historygoods.jsp?currentPage=" + currentPage;
         }
     }
 
@@ -162,14 +192,19 @@ a{
         if (currentPage < totalPages) {
             currentPage++;
             console.log(currentPage);
-            location.href = "show_goods.jsp?currentPage=" + currentPage;
+            location.href = "show_historygoods.jsp?currentPage=" + currentPage;
         }
     }
     
     function search() {
-    	var keyword = document.getElementsByName('keyword')[0].value;
+        var keyword = document.getElementsByName('keyword')[0].value;
+        var kind = document.getElementsByName('search_kind')[0].value;
         var xhr = new XMLHttpRequest();// 使用Ajax发送请求
-        xhr.open('GET', 'searchgoodservlet?keyword=' + keyword, true);
+
+        xhr.open('POST', 'searchgoodservlet', true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.overrideMimeType("application/json; charset=UTF-8");
+
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 var results= JSON.parse(xhr.responseText);// 当请求成功时，使用返回的数据更新搜索结果列表
@@ -182,30 +217,96 @@ a{
                 }
             }
         };
-        xhr.send();
+        xhr.send('keyword=' + encodeURIComponent(keyword) + '&search_kind=' + encodeURIComponent(kind) +'&ishistory=' + encodeURIComponent('0'));
     }
+    window.onload = function() {
+        var containers = document.querySelectorAll('.media-container');
+        containers.forEach(function(container) {
+            var mediaFiles = container.querySelectorAll('img, video');
+            var index = 0;
+
+            function updateMedia() {
+                mediaFiles.forEach(function(file, i) {
+                    file.classList.remove('active');
+                    if (i === index) {
+                        file.classList.add('active');
+                    }
+                });
+            }
+
+            container.querySelector('.prev-button').addEventListener('click', function() {
+                index = (index - 1 + mediaFiles.length) % mediaFiles.length;
+                updateMedia();
+            });
+
+            container.querySelector('.next-button').addEventListener('click', function() {
+                index = (index + 1) % mediaFiles.length;
+                updateMedia();
+            });
+
+            mediaFiles.forEach(function(file) {
+                file.addEventListener('click', function() {
+                    var modal = document.querySelector('#modal');
+                    var modalImage = modal.querySelector('#modalImage');
+                    var modalVideo = modal.querySelector('#modalVideo');
+                    if (file.tagName === 'VIDEO') {
+                        modalImage.style.display = 'none';
+                        modalVideo.src = file.src;
+                        modalVideo.style.display = 'block';
+                    } else {
+                        modalVideo.style.display = 'none';
+                        modalImage.src = file.src;
+                        modalImage.style.display = 'block';
+                    }
+                    modal.style.display = 'block';
+                });
+            });
+
+            updateMedia();
+        });
+
+        var modal = document.querySelector('#modal');
+        modal.querySelector('.close-button').addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+    };
 </script>
 
 <c:if test="${not empty sessionScope.admin }">
+
+<!-- 模态窗口 -->
+<div id="modal" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+    <span class="close-button" style="position: absolute; top: 20px; right: 30px; color: #f1f1f1; font-size: 35px; font-weight: bold; cursor: pointer;">&times;</span>
+    <img id="modalImage" style="margin: auto; display: none; width: 80%; max-width: 700px;">
+    <video id="modalVideo" controls style="margin: auto; display: none; width: 80%; max-width: 700px;"></video>
+</div>
+
 	<div id="a">
 		<div class="container">
 		    <center>
 			<h2>历史商品信息</h2>
-			<form action="successsearchservlet" method="post">
-				<input type="text" name="keyword" placeholder="搜索商品"  oninput="search()">
-				<input type="submit" value="搜索">
+		    <form action="successsearchservlet" method="post">
+				<input type="text" name="keyword" placeholder="搜索商品"  oninput="search()">&nbsp;&nbsp;&nbsp;
+				<select name="search_kind" id="search_kind">
+                    <option value="猫咪主粮">猫咪主粮</option>
+                    <option value="猫咪零食">猫咪零食</option>
+                    <option value="猫咪日用">猫咪日用</option>
+                </select><br><br>&nbsp;&nbsp;&nbsp;
+				<input type="submit" value="搜索" style="width:130px">
+				<input type="hidden" id="ishistory" name="ishistory" value="1">
 			</form>
-			<div id="search_list"></div>
+			<div id="search_list"></div>  
 			</center>
 			<table border="1px" align=center cellspacing="0">
 			    <tr>
 			    <th>ID</th>
 			    <th>名称</th>
+			    <th>描述</th>
 			    <th>单价</th>
-			    <th>图片</th>
+			    <th>展示内容</th>
 			    <th>类别</th>
 			    <th>子类别</th>
-                <th>创建日期</th>
+			    <th>创建日期</th>
 			    <%--
 			    <th>意向人数</th>
 			    <th>最终购买人</th>
@@ -215,13 +316,28 @@ a{
 				<tr>
 				<td>${g.goodid}</td>
 				<td>${g.goodname}</td>
+				<td>${g.description}</td>
 				<td>${g.price}</td>
 				<td>
-		            <img src="${g.picture}" alt="" width="174">
-		        </td>
+			        <c:set var="mediaFiles" value="${fn:split(g.picture, ',')}" /> <!-- 分割媒体文件路径字符串 -->
+			        <div class="media-container">
+			            <button class="prev-button">＜</button>
+			            <button class="next-button">＞</button>
+			            <c:forEach var="file" items="${mediaFiles}"> <!-- 遍历媒体文件路径数组 -->
+			                <c:choose>
+			                    <c:when test="${fn:endsWith(file, '.mp4')}"> <!-- 如果文件是MP4视频 -->
+			                        <video src="${file}" controls></video>
+			                    </c:when>
+			                    <c:otherwise> <!-- 否则，我们假设文件是图片 -->
+			                        <img src="${file}" alt="">
+			                    </c:otherwise>
+			                </c:choose>
+			            </c:forEach>
+			        </div>
+			    </td>
 		        <td>${g.kind}</td>
 				<td>${g.subkind}</td>
-                <td>${g.createdate}</td>
+				<td>${g.createdate}</td>
 			    </tr>
 			    </c:forEach>
 			</table>

@@ -124,6 +124,8 @@ body {
     }
 form {
     display: flex; /* 让表单内的元素在同一行显示 */
+       width:600px;
+    height:45px;
 	}
 	input[type="text"] {
 	    flex-grow: 1; /* 让搜索框占据剩余的空间 */
@@ -176,23 +178,28 @@ form {
 	}
 	
 	function search() {
-		var keyword = document.getElementsByName('keyword')[0].value;
-	    var xhr = new XMLHttpRequest();// 使用Ajax发送请求
-	    xhr.open('GET', 'searchgoodservlet?keyword=' + keyword, true);
-	    xhr.onreadystatechange = function() {
-	        if (xhr.readyState == 4 && xhr.status == 200) {
-	            var results= JSON.parse(xhr.responseText);// 当请求成功时，使用返回的数据更新搜索结果列表
-	            var resultsDiv = document.getElementById('search_list');
-	            resultsDiv.innerHTML = '';
-	            for (var i = 0; i < results.length; i++) {
-	                var div = document.createElement('div');
-	                div.textContent = results[i];
-	                resultsDiv.appendChild(div);
-	            }
-	        }
-	    };
-	    xhr.send();
-	}
+        var keyword = document.getElementsByName('keyword')[0].value;
+        var kind = document.getElementsByName('search_kind')[0].value;
+        var xhr = new XMLHttpRequest();// 使用Ajax发送请求
+
+        xhr.open('POST', 'searchgoodservlet', true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.overrideMimeType("application/json; charset=UTF-8");
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var results= JSON.parse(xhr.responseText);// 当请求成功时，使用返回的数据更新搜索结果列表
+                var resultsDiv = document.getElementById('search_list');
+                resultsDiv.innerHTML = '';
+                for (var i = 0; i < results.length; i++) {
+                    var div = document.createElement('div');
+                    div.textContent = results[i];
+                    resultsDiv.appendChild(div);
+                }
+            }
+        };
+        xhr.send('keyword=' + encodeURIComponent(keyword) + '&search_kind=' + encodeURIComponent(kind));
+    }
 </script>
 <body style="margin: 0px;">
 	<div class="left" ><!-- 买家导航 -->
@@ -202,9 +209,6 @@ form {
 	    	<c:if test="${not empty sessionScope.admin }">
 		        <tr>
 		            <td class="head2">${sessionScope.admin.username}</td>
-		        </tr>
-		        <tr>
-		            <td class="head4"><a  href="BuyerChanInfo.jsp" class="head4-1">创建订单</a></td>
 		        </tr>
 		        <tr>
 		            <td class="head4"><a  href="BuyerHistory.jsp" class="head4-1">历史购买记录</a></td>
@@ -231,11 +235,16 @@ form {
 	<div class="right">
 		<center>
 			<h2>欢迎来到猫咪美食坊！</h2>
-        <form action="successsearchservlet" method="post">
-				<input type="text" name="keyword" placeholder="搜索商品"  oninput="search()">
-				<input type="submit" value="搜索">
+            <form action="successsearchservlet" method="post">
+				<input type="text" name="keyword" placeholder="搜索商品"  oninput="search()">&nbsp;&nbsp;&nbsp;
+				<select name="search_kind" id="search_kind">
+                    <option value="猫咪主粮">猫咪主粮</option>
+                    <option value="猫咪零食">猫咪零食</option>
+                    <option value="猫咪日用">猫咪日用</option>
+                </select><br><br>&nbsp;&nbsp;&nbsp;
+				<input type="submit" value="搜索" style="width:130px">
 			</form>
-			<div id="search_list"></div>
+			<div id="search_list"></div>  
 		</center>
 	    <div class="goods">
 	    	<c:forEach items="${sessionScope.gL}" var="g" begin="${(currentPage-1)*6}" end="${currentPage*6-1}">

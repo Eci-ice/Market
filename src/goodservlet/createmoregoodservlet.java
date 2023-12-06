@@ -1,18 +1,25 @@
 package goodservlet;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -25,9 +32,29 @@ import vo.user;
 /**
  * Servlet implementation class creategoodservletabc
  */
+@MultipartConfig
 public class createmoregoodservlet extends HttpServlet {
 	  private static final long serialVersionUID = 1L;
-
+	  private String getFileName(Part part) {
+			String contentDisp = part.getHeader("content-disposition");
+			String[] items = contentDisp.split(";");
+			for (String s : items) {
+				if (s.trim().startsWith("filename")) {
+					return s.substring(s.indexOf("=") + 2, s.length()-1);
+				}
+			}
+			return "";
+		}
+		
+		private String randomString(int length) {
+		    String allowedChars = "0123456789abcdefghijklmnopqrstuvwxyz";
+		    Random random = new Random();
+		    StringBuilder sb = new StringBuilder(length);
+		    for (int i = 0; i < length; i++) {
+		        sb.append(allowedChars.charAt(random.nextInt(allowedChars.length())));
+		    }
+		    return sb.toString();
+		}
 	    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    	request.setCharacterEncoding("UTF-8");
 	    	response.setCharacterEncoding("UTF-8");
@@ -48,10 +75,30 @@ public class createmoregoodservlet extends HttpServlet {
 		    	    String goodname = good.getGoodname();
 		    	    String description = good.getDescription();
 		    	    double price = good.getPrice();
-		    	    String picture = good.getPicture();
+		    	    // 获取上传的文件
+		            Part filePart = request.getPart(good.getPicture()); // 与<input type="file" name="picture">中的name相对应
+		            String fileName = getFileName(filePart);
+		            String fileExtension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
+
+		            // 确保文件是png或jpg格式
+		            if (!fileExtension.equals(".png") && !fileExtension.equals(".jpg")) {
+		                System.out.print("在前端");
+		            }
+
+		            // 使用长度为20的只包含数字或字符的随机字符串作为文件名
+		            String filePath =  randomString(20) + fileExtension;
+
+		            // 将文件保存到./img文件夹
+		            File uploads = new File(getServletContext().getRealPath("./img"));
+		            File file = new File(uploads, filePath);
+		            try (InputStream input = filePart.getInputStream()) {
+		                Files.copy(input, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		            }
+		            String picture = "./img/"+filePath;
 	
 		            int state = 0;
-		            int number = 1;
+			        String numberStr = request.getParameter("number");
+			        int number = Integer.parseInt(numberStr);
 		            String kind = good.getKind();
 		            String subkind  = good.getSubkind();
 		            int owner = u.getUserid();

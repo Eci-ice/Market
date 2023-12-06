@@ -6,7 +6,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import sql.usersql;
 import vo.user;
@@ -68,7 +69,50 @@ public class usersqlimpl implements usersql{
 	    }
 		return null;
 	}
+	
+	@Override
+	public List<user> searchalluser() throws SQLException {
+		try {
+			Class.forName("org.sqlite.JDBC");
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+//			// 获取数据库文件的文件名
+//			String dbURL = conn.getMetaData().getURL();
+//			String fileName = dbURL.substring(dbURL.lastIndexOf(":") + 1);
+//			// 使用java.io.File类获取文件的绝对路径
+//			File file = new File(fileName);
+//			String absolutePath = file.getAbsolutePath();
+//			// 打印绝对路径
+//			System.out.println("The absolute path is: " + absolutePath);
 
+	        PreparedStatement ps = null;
+	        List<user> urL=new ArrayList<user>();
+	        user u=null;
+	        
+			String sql = "select * from MLuser";
+			//System.out.print(sql);
+			ps = conn.prepareStatement(sql);
+//	        ps.setString(1, username);
+	        ResultSet rs = ps.executeQuery();
+	        int id=-1;
+	        while(rs.next()) {
+	        	u=new user(); 
+	        	u.setUserid(rs.getInt(1));
+	        	u.setUsername(rs.getString(2));
+	        	u.setPwd(rs.getString(3));
+	        	u.setPower(rs.getInt(4));
+	        	u.setQuestion(rs.getString(5));
+	        	u.setAnswer(rs.getString(6));
+	        	urL.add(u);
+	        }
+	        ps.close();
+	        conn.close();
+            return urL;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+		return null;
+	}
+	
 	@Override
 	public void modifypwd(String username,String pwd) throws SQLException {
 		try {

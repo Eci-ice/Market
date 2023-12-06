@@ -27,6 +27,8 @@ public class successsearchservlet extends HttpServlet {
 		doPost(request, response);
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();    
     	user u = (user)session.getAttribute("admin");
     	int power=0;
@@ -34,11 +36,14 @@ public class successsearchservlet extends HttpServlet {
     		power=u.getPower();
     	}
 		String keyword = request.getParameter("keyword");
+		String kind = request.getParameter("search_kind");
+        int ishistory = Integer.parseInt(request.getParameter("ishistory"));
+//      System.out.print(kind);
 	        // 查询数据库
 	    goodsql gs = new goodsqlimpl();
 	        List<good> goods = null;
 	        try {
-	        	goods = gs.searchls(keyword,power,u.getUserid());
+	        	goods = gs.searchls(keyword,kind,power,u.getUserid(),ishistory);
 	        	System.out.print(keyword);
 	        } catch (SQLException e) {
 	            e.printStackTrace();
@@ -47,11 +52,16 @@ public class successsearchservlet extends HttpServlet {
 	        
 	        session.setAttribute("sL", goods);
 	        // 重定向到search_list.jsp页面
-	        if(1==power) {
-	        	response.sendRedirect("search_list.jsp");
+	        if(1==ishistory) {
+	        	response.sendRedirect("searchhistory_list.jsp");
 	        }
-	        else if(0==power){
-		        response.sendRedirect("BuyerSearch.jsp");
+	        else {
+		        if(1==power) {
+		        	response.sendRedirect("search_list.jsp");
+		        }
+		        else if(0==power){
+			        response.sendRedirect("BuyerSearch.jsp");
+		        }
 	        }
 	    
 	}
