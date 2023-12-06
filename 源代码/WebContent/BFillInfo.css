@@ -1,0 +1,104 @@
+*{
+    background-color: #FFF9F1;
+
+}
+/* .goodname{
+    text-decoration: none;
+    color: rgba(0, 0, 0,1);
+    font-size: 60px;
+    font-family: "微软雅黑";
+}
+.price,.state{color: #000;font-size: 30px;} */
+.cline{
+    /* 竖线 */
+    position: absolute;
+    top: 30px;
+    left: 810px;
+}
+.good-1{
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    border-style: none;
+    /* background-color: rgba(121, 115, 115, 0.5); */
+    width: 700px;/*格子宽度*/
+    height: 600px;/*格子高度*/
+}
+.goodname{
+    height: 100px;/*格子高度*/
+    font-size:60px;
+}
+.price{
+    font-size:24px;
+    width: 200px;
+    height: 50px;
+}
+.description{
+	font-size: 30px;
+}
+.butt-1{
+    /* 取消购买按钮 */
+    position: relative;
+    top: 100px ;
+    left: 200px;
+    background-color: orange;
+    font-size: 30px;
+}
+button {
+            padding: 5px 10px;
+            width:200px;
+            height:100px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+  }
+
+.buy-imf{
+    /* 右侧表单 */
+    position: absolute;
+    top: 140px;
+    left: 890px;
+    font-size: 36px;
+
+}
+
+input[type="text"]{
+    width: 200px;
+    appearance: none;
+    /* border: none; */
+    border-color: #cccccc;
+    outline: none;
+    background-color: #FFFFFF;
+    padding: 20px;
+    font-size: 20px;
+    color: #888888;
+
+}
+.butt-2{
+    position: relative;
+    top: 160px;
+    left: 150px;
+    background-color: #EBC16B;
+    color: #fff;
+    border: none;
+    border-radius: 20px;/*设置了圆角和内边距 */
+    padding:25px 55px;
+    font-size: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    /* 最后使用cursor属性将光标变成手型，增强按钮的交互性。 */
+}
+/*.buy-btn{*/
+/*    position: relative;*/
+/*    !* top: 5px; *!*/
+/*    top: 160px;*/
+/*    left: 150px;*/
+/*    background-color: #EBC16B;*/
+/*    color: #fff;*/
+/*    border: none;*/
+/*    border-radius: 20px;!*设置了圆角和内边距 *!*/
+/*    padding:25px 55px;*/
+/*    font-size: 30px;*/
+/*    cursor: pointer;*/
+/*}*/
