@@ -171,7 +171,8 @@ input[type="text"]{
         </tr>
     </table>
     <!-- <a href="BuyerMain.jsp" class="butt-1"><img src="./img/buyer/debuy-button.png" alt="" width="228px" title="不买"></a> -->
-      <a href="BuyerMain.jsp" alt="" title="购买"><button class="butt-2">取消购买</button></a> 
+      <a href="BuyerMain.jsp" alt="" title="购买">
+      <button class="butt-2">取消购买</button></a> 
 
 </div>
 

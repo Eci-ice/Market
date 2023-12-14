@@ -211,7 +211,7 @@ form {
 		            <td class="head2">${sessionScope.admin.username}</td>
 		        </tr>
 		        <tr>
-		            <td class="head4"><a  href="BuyerHistory.jsp" class="head4-1">历史购买记录</a></td>
+		            <td class="head4"><a  href="userorderservlet?userId=${sessionScope.admin.username}" class="head4-1">历史购买记录</a></td>
 		        </tr>
 		        <tr >
 		            <td class="head5"><a href="quitloginservlet" class="head5-1">退出登录</a></td>

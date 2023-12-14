@@ -306,6 +306,7 @@ overflow: hidden;
 		                <h3><a href = "upload_moregoods.jsp" target="main" class="black-text">发布多个商品</a></h3>
 		                <h3><a href = "allhistorygoodservlet" target="main" class="black-text">查看历史商品</a></h3>		 
 		             	<h3><a href = "allgoodservlet" target="main" class="black-text">查看全部商品</a></h3>
+	            		<h3><a href = "allcustomservlet" target="main" class="black-text">查看客户信息</a></h3>
 	            	</div>
 	        	</div>
 	    	</div>

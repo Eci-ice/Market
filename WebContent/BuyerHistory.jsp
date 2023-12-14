@@ -1,161 +1,188 @@
-<%@page import="sqlimpl.goodsqlimpl"%>
-<%@page import="sql.goodsql"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="vo.good"%>
-<%@page import="java.util.List"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.PreparedStatement"%>
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.Connection"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%--
+  Created by IntelliJ IDEA.
+  User: banana
+  Date: 2023/10/18
+  Time: 10:27
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>历史下单记录</title>
+<!--     <link rel="stylesheet" type="text/css" href="BMain.css"/> -->
+    <title>买家购物首页</title>
+    <meta charset="UTF-8">
 </head>
-<body>
-<!-- 未登录框 -->
-<style type="text/css">
-.else{
-position:absolute;
-top:40%;
-left:50%;
-transform:translate(-50%,-50%);
-width:450px;
-padding:30px;
-background: rgba(224,224,224,.8);
-box-sizing:border-box;
-box-shadow: 0px 15px 25px rgba(0,0,0,.5);
-border-radius:16px;
-text-align:center;
-font-family:KaiTi;
-font-size:26px;
-}
-a{
-	text-decoration:none;
-}
-</style>
+
 <style>
-.container {
-        font-family: Arial, sans-serif;
-        width: 80%;
-        margin: 2% auto;
-        border: 1px solid #ccc;
-        padding: 20px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-    }
+*{
+    background-color: #FFF9F1;
+    
+}
+body {
+    display: block;
+}
+.left{
+    /* 买家导航 */
+    width: 287px;
+    height:100vh;
+    background-color: rgba(61, 61, 61, 0.33);
+    position: relative;
+    float: left;
+    align-content: center;
+}
+.head1{
+    background-color: rgba(61, 61, 61, 0);
+    position: relative;
+    top: 30px;
+    left: 70px;
+}
+.daohang{
+    background-color: rgba(0, 0, 0, 0);
+    width: 200px;/*格子宽度*/
+    position: relative;
+    left: 30px;
+}
+.head2{
+    background-color: rgba(61, 61, 61, 0.33);
+    text-align: center;
+    vertical-align: top;
+    font-size:36px;
+    color: white;
+    height: 100px;/*格子高度*/
+}
+.head4{
+    background-color: rgba(61, 61, 61, 0.33);
+    text-align: center;
+    height: 100px;/*格子高度*/
+}
+.head4-1{
+    background-color: rgba(61, 61, 61, 0);
+    text-decoration: none;
+    color: #ffffff;
+    font-size:28px;
+    font-weight: bold;
+}
+.head5{
+    background-color: rgba(61, 61, 61, 0.33);
+    text-align: center;
+    height: 100px;/*格子高度*/
+    bottom: 0;
+    
+}
+.head5-1{
+    background-color: rgba(61, 61, 61, 0);
+    text-decoration: none;
+    color: #585655;
+    font-size:28px;
+    font-weight: bold;
+}
 
-    th, td {
-        border: 1px solid #ccc;
-        padding: 10px;
-        text-align: left;
-    }
+/* 商品 */
+.right{
+    /* 商品显示 
+    width: 1340px;*/
+    height: 100vh;
+    /* background-color: aquamarine; */
+    position: absolute;/*绝对定位*/
+    left: 350px; 
+    
+    float: right;
+}
 
-    th {
-        background-color: #f2f2f2;
-    }
 
-    img {
-        width: 50px;
-        height: auto;
-    }
+.goods {
+    display: flex; /*使用flex布局*/
+    flex-wrap: wrap; /*允许元素换行*/
+    justify-content: space-between; /*元素之间留有空隙*/
+    border: 1px solid #000; /*添加边框*/
+}
 
-    .pagination {
+.show-1 {
+    flex: 0 0 30%; /*每个元素占用30%的宽度，这样每行就可以放3个元素*/
+    border: 1px solid #000; /*添加边框*/
+    margin-bottom: 10px; /*添加底部边距*/
+}
+
+.picture {
+    text-align: center; /*图片居中*/
+}
+
+.price {
+    font-size: 20px;
+    height: 20px;
+}
+.pagination {
         display: flex;
         justify-content: center;
         align-items: center;
         margin-bottom: 20px;
     }
-
-    .history-btn, .prev, .next {
-        padding: 10px 20px;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-        margin: 0 5px;
-    }
-    
-    .history-btn {
-    	background-color: rgb(237, 137, 108);
-    	border-radius: 8px;
-    }
-    
     .prev, .next {
     	background-color: rgb(237, 196, 110);
     }
-
-    .history-btn:hover, .prev:hover, .next:hover {
-        background-color: #d32f2f;
-    }
-    
-    .history-btn a {
-        text-decoration: none;
-        color: white;
-    }
-    
-    .history-btn a:hover {
-        text-decoration: none; 
-    }
-    .left-btn-container {
-	    margin-right: auto;
-	    display: flex;
-	    align-items: center;
+form {
+    display: flex; /* 让表单内的元素在同一行显示 */
+       width:600px;
+    height:45px;
 	}
-	 button {
-            padding: 5px 10px;
-            margin: 5px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-	.green-btn {
-            background-color: green;
-        }
+	input[type="text"] {
+	    flex-grow: 1; /* 让搜索框占据剩余的空间 */
+	}
+	input[name="keyword"] {
+	    width: 100%;
+	    padding: 10px; 
+	    border: 1px solid #ccc; 
+	    border-radius: 4px;
+	}	
+	#search_list {
+		position: fixed;
+		top: 110px;
+		left: 350px;
+		width: 400px;
+		background-color: white;
+	}
 
-    .red-btn {
-            background-color: tomato;
-     }
+	
+	#search_list div {
+	    border-bottom: 1px solid black; 
+	}
 </style>
-<script>
-    // 当前页面的页数
-    let currentPage = 1;
-    const totalPages = 5; // 总页数，可以根据您的需求进行调整
 
-    document.querySelector('.prev').addEventListener('click', function() {
-        if (currentPage > 1) {
-            currentPage--;
-            updatePage();
-        }
-    });
-
-    document.querySelector('.next').addEventListener('click', function() {
-        if (currentPage < totalPages) {
-            currentPage++;
-            updatePage();
-        }
-    });
-
-    function updatePage() {
-        // 这里可以进行AJAX调用，从数据库获取相应页数的商品数据，并更新页面
-        document.querySelector('.pagination span').textContent = `${currentPage}/${totalPages}`;
-    }
-
-    document.querySelector('.history-btn').addEventListener('click', function() {
-        window.history.back(); // 返回上一个浏览过的页面
-    });
-</script>
-
+<body style="margin: 0px;">
+	<div class="left" ><!-- 买家导航 -->
+	    <!-- <hr class="head3" color=#FFF2E1 width="230px" size="2px" > -->
+	    <table class="daohang">
+	    	<img class="head1" src="img/buyer/head.png" alt=""  >	
+	    	<c:if test="${not empty sessionScope.admin }">
+		        <tr>
+		            <td class="head2">${sessionScope.admin.username}</td>
+		        </tr>
+		        <tr>
+		            <td class="head4"><a  href="BuyerHistory.jsp" class="head4-1">历史购买记录</a></td>
+		        </tr>
+		        <tr >
+		            <td class="head5"><a href="quitloginservlet" class="head5-1">退出登录</a></td>
+		        </tr>
+		    </c:if>
+		    <c:if test="${empty sessionScope.admin }">
+		    	<tr>
+		            <td class="head2"> 游客</td>
+		        </tr>
+		        <tr>
+		            <td class="head4"><a   class="head4-1">其他功能后登录使用</a></td>
+		        </tr>
+		        <tr >
+		            <td class="head5"><a href="index.jsp" class="head5-1">返回登录</a></td>
+		        </tr>
+		    </c:if>
+	    </table>
+	
+	</div>
+	
 <c:if test="${not empty sessionScope.admin }">
-<div id="a">
+<div id="right">
 <div class="container">
     <center>
 	<h2>历史下单记录</h2>
@@ -222,6 +249,4 @@ a{
 <span>您还未登录，请先<a href="index.jsp">登录</a></span>
 </div>
 </c:if>
-
-</body>
 </html>

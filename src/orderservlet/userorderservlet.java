@@ -41,14 +41,11 @@ public class userorderservlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		System.out.println("我进入了userorderservlet");
-		user u = (user)session.getAttribute("admin"); 
+		String buyerid = request.getParameter("userId");
 		ordersql ors=new ordersqlimpl();
 		 List<order> orList = null;
-		 System.out.println("u.id:");
-		 System.out.println(u.getUserid());
 		 try {
-				orList = ors.showall2(u.getUserid());
+				orList = ors.showall2(buyerid);
 		 } catch (SQLException e) {
 			e.printStackTrace();
 		 }

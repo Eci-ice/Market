@@ -148,19 +148,20 @@ public class ordersqlimpl implements ordersql{
 		return null;
 	}
 	@Override
-	public List<order> showall2(int userid) throws SQLException {
+	public List<order> showall2(String buyername) throws SQLException {
 		try {
+			System.out.println("name"+buyername);
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
             PreparedStatement ps = null;
-			String sql = "select * from MLorder WHERE owner = ?";
+			String sql = "select * from MLorder WHERE buyername = ?";
             
 			System.out.println("现在是showall2");
 			
 //            String sql = "select * from MLorder";
             
 			ps=conn.prepareStatement(sql);
-			ps.setInt(1, userid);
+			ps.setString(1, buyername);
 			
 			ResultSet rs=ps.executeQuery();
 			List<order> orL=new ArrayList<order>();

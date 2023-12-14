@@ -273,7 +273,7 @@ a{
            <tr>
                <td>${user.userid}</td>
                <td>${user.username}</td>
-               <td><a href="userorderservlet?userId=${user.userid}">查看购买历史</a></td>
+               <td><a href="userorderservlet?userId=${user.username}">查看购买历史</a></td>
            </tr>
        </c:forEach>
 	</table>

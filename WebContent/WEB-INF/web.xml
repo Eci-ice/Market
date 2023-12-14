@@ -128,6 +128,13 @@
 	<servlet>
 		<description>
 		</description>
+		<display-name>userorderservlet</display-name>
+		<servlet-name>userorderservlet</servlet-name>
+		<servlet-class>orderservlet.userorderservlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
 		<display-name>registerservlet</display-name>
 		<servlet-name>registerservlet</servlet-name>
 		<servlet-class>registerservlet.registerservlet</servlet-class>
@@ -160,6 +167,14 @@
 		<servlet-name>UpdatePriceServlet</servlet-name>
 		<servlet-class>goodservlet.UpdatePriceServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>allcustomservlet</display-name>
+		<servlet-name>allcustomservlet</servlet-name>
+		<servlet-class>allcusservlet.allcustomservlet</servlet-class>
+	</servlet>
+	
 
 
 
@@ -224,6 +239,10 @@
 		<url-pattern>/deleteorderservlet</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
+		<servlet-name>userorderservlet</servlet-name>
+		<url-pattern>/userorderservlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
 		<servlet-name>registerservlet</servlet-name>
 		<url-pattern>/registerservlet</url-pattern>
 	</servlet-mapping>
@@ -251,6 +270,11 @@
 		<servlet-name>UpdatePriceServlet</servlet-name>
 		<url-pattern>/UpdatePriceServlet</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>allcustomservlet</servlet-name>
+		<url-pattern>/allcustomservlet</url-pattern>
+	</servlet-mapping>
+	
 
 
 	<welcome-file-list>

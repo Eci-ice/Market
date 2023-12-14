@@ -13,145 +13,156 @@
     <title>买家商品主页</title>
     <link rel="stylesheet" type="text/css" href="BShop.css"/>
 </head>
-<!-- 
 <style>
-* {
-  background-color: #fff9f1;
+
+*{
+    background-color: #FFF9F1;
+    
 }
-.left {
-  /* 买家导航 */
-  width: 287px;
-  height: 1023px;
-  background-color: rgba(61, 61, 61, 0.33);
-  position: relative;
-  float: left;
+body {
+    display: block;
 }
-.head1 {
-  background-color: rgba(61, 61, 61, 0);
-  position: relative;
-  top: 30px;
-  left: 70px;
+.left{
+    /* 买家导航 */
+    width: 287px;
+    height:100vh;
+    background-color: rgba(61, 61, 61, 0.33);
+    position: relative;
+    float: left;
+    align-content: center;
 }
-.daohang {
-  background-color: rgba(0, 0, 0, 0);
-  width: 200px; /*格子宽度*/
-  height: 600px; /*格子高度*/
-  position: relative;
-  top: 50px;
-  left: 30px;
+.head1{
+    background-color: rgba(61, 61, 61, 0);
+    position: relative;
+    top: 30px;
+    left: 70px;
 }
-.head2 {
-  background-color: rgba(61, 61, 61, 0.33);
-  text-align: center;
-  vertical-align: top;
-  font-size: 36px;
-  color: white;
-  height: 100px; /*格子高度*/
+.daohang{
+    background-color: rgba(0, 0, 0, 0);
+    width: 200px;/*格子宽度*/
+    position: relative;
+    left: 30px;
 }
-.head4 {
-  background-color: rgba(61, 61, 61, 0.33);
-  text-align: center;
-  height: 100px; /*格子高度*/
+.head2{
+    background-color: rgba(61, 61, 61, 0.33);
+    text-align: center;
+    vertical-align: top;
+    font-size:36px;
+    color: white;
+    height: 100px;/*格子高度*/
 }
-.head4-1 {
-  background-color: rgba(61, 61, 61, 0);
-  text-decoration: none;
-  color: #ffffff;
-  font-size: 28px;
-  font-weight: bold;
+.head4{
+    background-color: rgba(61, 61, 61, 0.33);
+    text-align: center;
+    height: 100px;/*格子高度*/
 }
-.head5 {
-  background-color: rgba(61, 61, 61, 0.33);
-  text-align: center;
-  vertical-align: bottom;
-  height: 450px; /*格子高度*/
+.head4-1{
+    background-color: rgba(61, 61, 61, 0);
+    text-decoration: none;
+    color: #ffffff;
+    font-size:28px;
+    font-weight: bold;
 }
-.head5-1 {
-  background-color: rgba(61, 61, 61, 0);
-  text-decoration: none;
-  color: #585655;
-  font-size: 28px;
-  font-weight: bold;
+.head5{
+    background-color: rgba(61, 61, 61, 0.33);
+    text-align: center;
+    height: 100px;/*格子高度*/
+    bottom: 0;
+    
+}
+.head5-1{
+    background-color: rgba(61, 61, 61, 0);
+    text-decoration: none;
+    color: #585655;
+    font-size:28px;
+    font-weight: bold;
 }
 
-.right {
-  /* 商品显示 */
-  width: 1340px;
-  height: 1023px;
-  /* background-color: aquamarine; */
-  position: absolute; /*绝对定位*/
-  left: 287px;
-  float: right;
+/* 商品 */
+.right{
+    /* 商品显示 
+    width: 1340px;*/
+    height: 100vh;
+    /* background-color: aquamarine; */
+    position: absolute;/*绝对定位*/
+    left: 350px; 
+    
+    float: right;
 }
-.picture-k {
-  /* 放图片的框 */
-  width: 462px;
-  height: 561px;
-  background-repeat: no-repeat;
-  background-image: url("./img/buyer/Square.png");
-  position: relative;
-  left: 100px;
-  top: 10px;
-  background-size: 100% 100%;
-  border-style: none;
+
+
+.goods {
+    display: flex; /*使用flex布局*/
+    flex-wrap: wrap; /*允许元素换行*/
+    justify-content: space-between; /*元素之间留有空隙*/
+    border: 1px solid #000; /*添加边框*/
 }
-.test1 {
-  /* 商品图片 */
-  width: 400px;
-  height: 500px;
-  color: #000;
-  /* background-image: url("./元件/4.jpg"); */
-  background-repeat: no-repeat; /*这里不知道怎么把div默认格式改了????*/
-  background-size: cover;
-  position: relative;
-  top: 20px;
-  left: 10px;
-  border-style: none;
+
+.show-1 {
+    flex: 0 0 30%; /*每个元素占用30%的宽度，这样每行就可以放3个元素*/
+    border: 1px solid #000; /*添加边框*/
+    margin-bottom: 10px; /*添加底部边距*/
 }
-.good-2 {
-  position: absolute;
-  top: 100px;
-  left: 650px;
-  float: right;
-  border-style: none;
-  /* background-color: rgba(121, 115, 115, 0.5); */
-  width: 700px; /*格子宽度*/
-  height: 600px; /*格子高度*/
+
+.picture {
+    text-align: center; /*图片居中*/
 }
-.goodname {
-  height: 150px; /*格子高度*/
-  font-size: 55px;
-}
-.description {
-  height: 300px; /*格子高度*/
-  background-color: rgba(255, 255, 255, 0.5);
-  font-size: 30px;
-}
+
 .price {
-  font-size: 24px;
-  width: 300px;
-  height: 100px;
+    font-size: 20px;
+    height: 20px;
 }
-.butt-1 {
-  /* 购买按钮 */
-  position: relative;
-  top: 100px;
-  left: 200px;
-  background-color: orange;
-  font-size: 30px;
-}
+.pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .prev, .next {
+    	background-color: rgb(237, 196, 110);
+    }
 button {
   padding: 5px 10px;
-  width: 200px;
-  height: 100px;
+  width: 150px;
+  height: 50px;
   margin: 5px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
+.butt-1 {
+  /* 购买按钮 */
+  position: relative;
+  background-color: orange;
+  font-size: 20px;
+}
+form {
+    display: flex; /* 让表单内的元素在同一行显示 */
+       width:600px;
+    height:45px;
+	}
+	input[type="text"] {
+	    flex-grow: 1; /* 让搜索框占据剩余的空间 */
+	}
+	input[name="keyword"] {
+	    width: 100%;
+	    padding: 10px; 
+	    border: 1px solid #ccc; 
+	    border-radius: 4px;
+	}	
+	#search_list {
+		position: fixed;
+		top: 110px;
+		left: 350px;
+		width: 400px;
+		background-color: white;
+	}
 
-</style> -->
-
+	
+	#search_list div {
+	    border-bottom: 1px solid black; 
+	}
+</style>
 <body style="margin:0px">
 <div class="left"><!-- 买家导航 -->
     <img class="head1" src="img/buyer/head.png" alt=""  >
@@ -214,7 +225,9 @@ button {
         </tr>
     </table>
   <!-- <img src="./img/buyer/aa.png" alt="" width="228" title="go">-->
-     <a href="BuyerFillInfo.jsp" alt="" title="购买"><button class="butt-1" >购买该商品</button></a> 
+     <a href="BuyerFillInfo.jsp" alt="" title="购买">
+     <button class="butt-1" >购买该商品</button></a>
+     <button class="butt-1" >加入愿望单</button>
 </div>
 
 </body>
