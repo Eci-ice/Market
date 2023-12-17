@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -162,7 +163,91 @@ form {
 	#search_list div {
 	    border-bottom: 1px solid black; 
 	}
+	 .media-container {
+        position: relative;
+        width: 90%;
+        height: 90%;
+        margin-left:10px;
+        margin-top:100px;
+        overflow: hidden;
+    }
+    .media-container img, .media-container video {
+        display: none;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .media-container img.active, .media-container video.active {
+        display: block;
+    }
+    .media-container button {
+        position: absolute;
+        top: 50%;
+        width: 30px;
+        transform: translateY(-50%);
+        background: rgba(133, 196, 110, 0.7);
+    }
+    .media-container .prev-button {
+        left: 10px;
+    }
+    .media-container .next-button {
+        right: 10px;
+    }
 </style>
+
+<script>
+	window.onload = function() {
+        var containers = document.querySelectorAll('.media-container');
+        containers.forEach(function(container) {
+            var mediaFiles = container.querySelectorAll('img, video');
+            var index = 0;
+
+            function updateMedia() {
+                mediaFiles.forEach(function(file, i) {
+                    file.classList.remove('active');
+                    if (i === index) {
+                        file.classList.add('active');
+                    }
+                });
+            }
+
+            container.querySelector('.prev-button').addEventListener('click', function() {
+                index = (index - 1 + mediaFiles.length) % mediaFiles.length;
+                updateMedia();
+            });
+
+            container.querySelector('.next-button').addEventListener('click', function() {
+                index = (index + 1) % mediaFiles.length;
+                updateMedia();
+            });
+
+            mediaFiles.forEach(function(file) {
+                file.addEventListener('click', function() {
+                    var modal = document.querySelector('#modal');
+                    var modalImage = modal.querySelector('#modalImage');
+                    var modalVideo = modal.querySelector('#modalVideo');
+                    if (file.tagName === 'VIDEO') {
+                        modalImage.style.display = 'none';
+                        modalVideo.src = file.src;
+                        modalVideo.style.display = 'block';
+                    } else {
+                        modalVideo.style.display = 'none';
+                        modalImage.src = file.src;
+                        modalImage.style.display = 'block';
+                    }
+                    modal.style.display = 'block';
+                });
+            });
+
+            updateMedia();
+        });
+
+        var modal = document.querySelector('#modal');
+        modal.querySelector('.close-button').addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+    };
+</script>
 <body style="margin:0px">
 <div class="left"><!-- 买家导航 -->
     <img class="head1" src="img/buyer/head.png" alt=""  >
@@ -202,9 +287,21 @@ form {
     <a href="BuyerMain.jsp"><img src="./img/buyer/arrow.png" alt="" width="40" title="返回浏览界面"> </a>
     <!-- 图片 -->
     <div class="picture-k">
-        <div class="test1">
-            <img src="${nowg.picture}" alt="" width="100%" title="猫粮图片">
-        </div>:
+        <c:set var="mediaFiles" value="${fn:split(nowg.picture, ',')}" /> <!-- 分割媒体文件路径字符串 -->
+		<div class="media-container">
+			<button class="prev-button">＜</button>
+			<button class="next-button">＞</button>
+			<c:forEach var="file" items="${mediaFiles}"> <!-- 遍历媒体文件路径数组 -->
+				 <c:choose>
+				       <c:when test="${fn:endsWith(file, '.mp4')}"> <!-- 如果文件是MP4视频 -->
+				            <video src="${file}" controls width="200"></video>
+				       </c:when>
+				       <c:otherwise> <!-- 否则，我们假设文件是图片 -->
+				            <img src="${file}" alt="" width="200">
+				       </c:otherwise>
+				</c:choose>
+			</c:forEach>
+		</div>
     </div>
     <table class="good-2"><!-- 商品介绍 -->
         <tr><td colspan="2" class="goodname">
@@ -227,7 +324,7 @@ form {
   <!-- <img src="./img/buyer/aa.png" alt="" width="228" title="go">-->
      <a href="BuyerFillInfo.jsp" alt="" title="购买">
      <button class="butt-1" >购买该商品</button></a>
-     <button class="butt-1" >加入愿望单</button>
+  <!--非A    <button class="butt-1" >加入愿望单</button> -->
 </div>
 
 </body>

@@ -151,22 +151,33 @@ form {
 </style>
 
 <body style="margin: 0px;">
-	<div class="left" ><!-- 买家导航 -->
-	    <!-- <hr class="head3" color=#FFF2E1 width="230px" size="2px" > -->
-	    <table class="daohang">
-	    	<img class="head1" src="img/buyer/head.png" alt=""  >	
-	    	<c:if test="${not empty sessionScope.admin }">
-		        <tr>
-		            <td class="head2">${sessionScope.admin.username}</td>
-		        </tr>
-		        <tr>
-		            <td class="head4"><a  href="BuyerHistory.jsp" class="head4-1">历史购买记录</a></td>
-		        </tr>
-		        <tr >
-		            <td class="head5"><a href="quitloginservlet" class="head5-1">退出登录</a></td>
-		        </tr>
-		    </c:if>
-		    <c:if test="${empty sessionScope.admin }">
+	
+
+	   <c:if test="${not empty sessionScope.admin }">
+	   		<c:if test="${sessionScope.admin.power ne '1' }"><!-- 管理员权限不显示以下内容 -->
+		    	<div class="left" ><!-- 买家导航 -->
+				    <!-- <hr class="head3" color=#FFF2E1 width="230px" size="2px" > -->
+				    <table class="daohang">
+		
+			    	<img class="head1" src="img/buyer/head.png" alt=""  >	
+			        <tr>
+			            <td class="head2">${sessionScope.admin.username}</td>
+			        </tr>
+			        <tr>
+			            <td class="head4"><a  href="userorderservlet?userId=${sessionScope.admin.username}" class="head4-1">历史购买记录</a></td>
+			        </tr>
+			        <tr >
+			            <td class="head5"><a href="quitloginservlet" class="head5-1">退出登录</a></td>
+			        </tr>
+			       	</table>
+				</div>
+			</c:if>
+		</c:if>
+		<c:if test="${empty sessionScope.admin }">
+		    <div class="left" ><!-- 买家导航 -->
+			    <!-- <hr class="head3" color=#FFF2E1 width="230px" size="2px" > -->
+			    <table class="daohang">
+		    	<img class="head1" src="img/buyer/head.png" alt=""  >	
 		    	<tr>
 		            <td class="head2"> 游客</td>
 		        </tr>
@@ -176,14 +187,21 @@ form {
 		        <tr >
 		            <td class="head5"><a href="index.jsp" class="head5-1">返回登录</a></td>
 		        </tr>
-		    </c:if>
-	    </table>
+		       	</table>
 	
-	</div>
-	
+			</div>
+	   </c:if>
+
 <c:if test="${not empty sessionScope.admin }">
 <div id="right">
+
 <div class="container">
+<c:if test="${sessionScope.admin.power eq '1' }"><!-- 管理员权限显示以下内容 -->
+<a href="allcustomservlet">返回</a>
+</c:if>
+<c:if test="${sessionScope.admin.power eq '0' }">
+<a href="BuyerMain.jsp">返回</a>
+</c:if>
     <center>
 	<h2>历史下单记录</h2>
 	</center>

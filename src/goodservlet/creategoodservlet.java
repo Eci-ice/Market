@@ -3,6 +3,7 @@ package goodservlet;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
@@ -11,7 +12,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.ServletException;
@@ -146,6 +149,7 @@ public class creategoodservlet extends HttpServlet {
 	        good g=new good();
 	        goodsql gs = new goodsqlimpl();
 			good gf = null;
+			Map<String, Boolean> map = new HashMap<>();
 	        try {
 	        	//检测商品名称是否唯一
 				if(gs.unique(goodname)==1) {
@@ -168,23 +172,47 @@ public class creategoodservlet extends HttpServlet {
 	       			 }
 	       			session.setAttribute("gL", gList);
 	       			//System.out.println("pic:.."+gf.getPicture());
-					request.getRequestDispatcher("show_goods.jsp").forward(request,response); 
+					//request.getRequestDispatcher("show_goods.jsp").forward(request,response); 
+	       			map.put("isUnique", true);
 				}
 				else {
 					//注释的代码与前端script联系，出现提示框，但是这样操作会引发sqlite多线程锁定
 //					boolean isDuplicate = true;
 //					request.setAttribute("isDuplicate", isDuplicate);
-
-					request.setAttribute("err","请勿上传重名商品！");
-				    request.setAttribute("to","upload_goods");
-				    request.getRequestDispatcher("error.jsp").forward(request,response);
-					
+//		 	    	System.out.println("11error");
+					session.setAttribute("err","请勿上传重名商品！");
+					session.setAttribute("to","upload_goods");
+				    //request.getRequestDispatcher("error.jsp").forward(request,response); 
+				    map.put("isUnique", false);
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				System.out.println("y78y");
 				e.printStackTrace();
 			}
+
+	     // 创建一个StringBuilder对象
+	     StringBuilder json = new StringBuilder();
+
+	     // 将map转换为JSON格式的字符串
+	     json.append("{");
+	     for (Map.Entry<String, Boolean> entry : map.entrySet()) {
+	         json.append("\"").append(entry.getKey()).append("\": ").append(entry.getValue()).append(",");
+	     }
+	     json.deleteCharAt(json.length() - 1);  // 删除最后一个逗号
+	     json.append("}");
+
+	     // 设置响应的内容类型为JSON
+	     response.setContentType("application/json");
+
+	     // 获取响应的输出流
+	     PrintWriter out = response.getWriter();
+
+	     // 将JSON字符串写入响应
+	     out.print(json.toString());
+
+	     // 关闭输出流
+	     out.flush();
 
 		
 	}

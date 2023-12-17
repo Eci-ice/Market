@@ -122,7 +122,33 @@ body {
     .prev, .next {
     	background-color: rgb(237, 196, 110);
     }
-
+ .media-container {
+        position: relative;
+        width: 100px;
+        height: 200px;
+        overflow: hidden;
+    }
+    .media-container img, .media-container video {
+        display: none;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .media-container img.active, .media-container video.active {
+        display: block;
+    }
+    .media-container button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.7);
+    }
+    .media-container .prev-button {
+        left: 10px;
+    }
+    .media-container .next-button {
+        right: 10px;
+    }
 </style>
 <%
     int currentPage = 1;
@@ -152,7 +178,57 @@ body {
 	    }
 	}
 	
-	
+	window.onload = function() {
+        var containers = document.querySelectorAll('.media-container');
+        containers.forEach(function(container) {
+            var mediaFiles = container.querySelectorAll('img, video');
+            var index = 0;
+
+            function updateMedia() {
+                mediaFiles.forEach(function(file, i) {
+                    file.classList.remove('active');
+                    if (i === index) {
+                        file.classList.add('active');
+                    }
+                });
+            }
+
+            container.querySelector('.prev-button').addEventListener('click', function() {
+                index = (index - 1 + mediaFiles.length) % mediaFiles.length;
+                updateMedia();
+            });
+
+            container.querySelector('.next-button').addEventListener('click', function() {
+                index = (index + 1) % mediaFiles.length;
+                updateMedia();
+            });
+
+            mediaFiles.forEach(function(file) {
+                file.addEventListener('click', function() {
+                    var modal = document.querySelector('#modal');
+                    var modalImage = modal.querySelector('#modalImage');
+                    var modalVideo = modal.querySelector('#modalVideo');
+                    if (file.tagName === 'VIDEO') {
+                        modalImage.style.display = 'none';
+                        modalVideo.src = file.src;
+                        modalVideo.style.display = 'block';
+                    } else {
+                        modalVideo.style.display = 'none';
+                        modalImage.src = file.src;
+                        modalImage.style.display = 'block';
+                    }
+                    modal.style.display = 'block';
+                });
+            });
+
+            updateMedia();
+        });
+
+        var modal = document.querySelector('#modal');
+        modal.querySelector('.close-button').addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+    };
 </script>
 <body style="margin: 0px;">
 	<div class="left" ><!-- 买家导航 -->
@@ -160,14 +236,11 @@ body {
 	    <table class="daohang">
 	    	<img class="head1" src="img/buyer/head.png" alt=""  >	
 	    	<c:if test="${not empty sessionScope.admin }">
-		        <tr>
+		         <tr>
 		            <td class="head2">${sessionScope.admin.username}</td>
 		        </tr>
 		        <tr>
-		            <td class="head4"><a  href="BuyerChanInfo.jsp" class="head4-1">创建订单</a></td>
-		        </tr>
-		        <tr>
-		            <td class="head4"><a  href="BuyerHistory.jsp" class="head4-1">历史购买记录</a></td>
+		            <td class="head4"><a  href="userorderservlet?userId=${sessionScope.admin.username}" class="head4-1">历史购买记录</a></td>
 		        </tr>
 		        <tr >
 		            <td class="head5"><a href="quitloginservlet" class="head5-1">退出登录</a></td>

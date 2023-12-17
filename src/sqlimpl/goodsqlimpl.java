@@ -18,28 +18,6 @@ import vo.good;
 public class goodsqlimpl implements goodsql{
 
     Connection conn = null;
-
-    public Connection getConn() {
-        try {
-        	Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return conn;
-    }
-
-    public void closeConn() {
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
     
 	@Override
 	public void add(good good) throws SQLException {
@@ -128,19 +106,20 @@ public class goodsqlimpl implements goodsql{
 		try {
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
-            String sql = "SELECT * FROM MLgood WHERE state=0";//在售
+            String sql = "SELECT * FROM MLgood WHERE state=0 and goodname =?";//在售
             PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, name);
    			ResultSet rs=ps.executeQuery();
    			if(rs.next()) {
-   		        while(rs.next()) {
-   		        	if(rs.getString(1).equals(name)) {
-   		        		return 0;
-   		        	}
-   		        }
-   		        return 1;
+   				ps.close();
+   	   			conn.close();
+	        	return 0;
    	         }else {
+   	        	ps.close();
+   	   			conn.close();
    	            return 1;
    	         }
+   			
    		} catch (SQLException e) {
    				// TODO Auto-generated catch block
    				e.printStackTrace();
@@ -160,8 +139,12 @@ public class goodsqlimpl implements goodsql{
 	            PreparedStatement ps = conn.prepareStatement(sql);
 	   			ResultSet rs=ps.executeQuery();
 	   			if(rs.next()) {
+	   				ps.close();
+	   	   			conn.close();
 	   		        return 0;
 	   	         }else {
+	   	        	ps.close();
+	   	   			conn.close();
 	   	            return 1;
 	   	         }
 	   		} catch (SQLException e) {
@@ -409,7 +392,8 @@ public class goodsqlimpl implements goodsql{
 	}
 	public good getGoodById(int goodId) throws SQLException {
 	    try {
-	        Connection conn = getConn();
+			Class.forName("org.sqlite.JDBC");
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
 	        String query = "SELECT * FROM MLgood WHERE goodid = ?";
 	        PreparedStatement preparedStatement = conn.prepareStatement(query);
 	        preparedStatement.setInt(1, goodId);
@@ -439,7 +423,10 @@ public class goodsqlimpl implements goodsql{
 	        return gf;
 	    } catch (SQLException e) {
 	        e.printStackTrace();
-	    }
+	    } catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	    return null;
 	}
@@ -448,7 +435,8 @@ public class goodsqlimpl implements goodsql{
 	@Override
 	public boolean updateGood(good good) throws SQLException {
 	    try {
-	        Connection conn = getConn();
+			Class.forName("org.sqlite.JDBC");
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
 	        String updateQuery = "UPDATE MLgood SET goodname = ?, description = ?, price = ?, picture = ?, state = ?, number = ?, kind = ?, subkind = ?, owner = ? WHERE goodid = ?";
 	        PreparedStatement preparedStatement = conn.prepareStatement(updateQuery);
 
@@ -471,7 +459,10 @@ public class goodsqlimpl implements goodsql{
 	        return rowsAffected > 0; // 返回更新是否成功
 	    } catch (SQLException e) {
 	        e.printStackTrace();
-	    }
+	    } catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	    return false;
 	}

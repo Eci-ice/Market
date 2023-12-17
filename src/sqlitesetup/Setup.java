@@ -82,19 +82,6 @@ public class Setup{
         "  `change_time` datetime NOT NULL,\r\n" + 
         "  FOREIGN KEY (`goodid`) REFERENCES `MLgood` (`goodid`))");
       
-      statement.executeUpdate("DROP TABLE IF EXISTS `MLCollect`");
-      statement.executeUpdate("CREATE TABLE `MLCollect`  (\r\n" + 
-      		"  `goodid` INTEGER NOT NULL,\r\n" + 
-      		"  `goodname` char(20) NOT NULL,\r\n" + 
-      		"  `price` double NOT NULL,\r\n" + 
-      		"  `picture` char(100) NOT NULL,\r\n" + 
-      		"  `kind` varchar(20) NOT NULL, \r\n" + 
-    		"  `subkind` varchar(20) NOT NULL,\r\n" + 
-    		"  `adddate` DATETIME NOT NULL,\r\n" +
-    		"  `owner` INTEGER NOT NULL,\r\n" + 
-    		"  FOREIGN KEY (`owner`) REFERENCES `MLuser` (`userid`))"
-      		);
-      
       
       statement.executeUpdate("DROP TABLE IF EXISTS `MLinfo`");
       statement.executeUpdate("CREATE TABLE `MLinfo`  (\r\n" + 
@@ -102,6 +89,16 @@ public class Setup{
         "  `phone` char(11) NOT NULL,\r\n" + 
         "  `address` varchar(99) NOT NULL,\r\n" + 
         "  FOREIGN KEY (`userid`) REFERENCES `MLuser` (`userid`))");
+      
+      statement.executeUpdate("DROP TABLE IF EXISTS `MLbuying`");
+      statement.executeUpdate("CREATE TABLE `MLbuying`  (\r\n" + 
+      		"  `goodid` INTEGER,\r\n" + 
+      		"  `state` int NOT NULL,\r\n" + 
+      		"  `number` int NOT NULL,\r\n" + 
+      		"  `islike` varchar(20) NOT NULL,\r\n" + 
+      		"  `buyer` INTEGER NOT NULL,\r\n" + 
+      		"  FOREIGN KEY (`buyer`) REFERENCES `MLuser` (`userid`))"
+      		);
       
       statement.executeUpdate("INSERT INTO `MLuser` VALUES (1, '123', '123', 1,'who are you?','Xiaoming')");
       statement.executeUpdate("INSERT INTO `MLuser` VALUES (2, '111', '111', 0,'who are you?','Xiaoming')");

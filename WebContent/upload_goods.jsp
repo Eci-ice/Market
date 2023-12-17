@@ -250,7 +250,7 @@ button{
 <script>
 
 var allFiles = []; // 全局的文件数组
-function validateForm() {
+function validateForm(event) {
     var price = document.getElementsByName("price")[0].value;
     var number = document.getElementsByName("number")[0].value;
     var goodname = document.getElementsByName("goodname")[0].value;
@@ -263,20 +263,30 @@ function validateForm() {
 
     if (isNaN(price)) {
         alert("价格需要输入数字！");
+        event.preventDefault();
         return false;
     }
     if (isNaN(number)) {
         alert("库存需要输入数字！");
+        event.preventDefault();
         return false;
     }
 
     if (goodname.length > 20) {
         alert("商品名称不能超过20个字符！");
+        event.preventDefault();
         return false;
     }
 
     if (description.length > 100) {
         alert("商品描述不能超过100个字符！");
+        event.preventDefault();
+        return false;
+    }
+    
+    if(allFiles.length<=0){
+    	alert("请上传照片/视频！");
+        event.preventDefault();
         return false;
     }
 
@@ -297,7 +307,7 @@ function validateForm() {
     formData.append('kind', kind);
     formData.append('subkind', subkind);
     console.log(allFiles.length);
-    console.log("aaa");
+    console.log("kkk");
     for (var i = 0; i < allFiles.length; i++) {
         formData.append('picture[]', allFiles[i]);
     }
@@ -309,7 +319,12 @@ function validateForm() {
     xhr.onload = function() {
         if (xhr.status === 200) {
             // 请求成功，处理响应
-            console.log('请求成功');
+	        var response = JSON.parse(xhr.responseText);
+	        if (response.isUnique) {
+	            window.location.href = 'show_goods.jsp';
+	        } else {
+	            window.location.href = 'error.jsp';
+	        }
         } else {
             // 请求失败，处理错误
             console.error('请求失败，状态码：' + xhr.status);
@@ -324,9 +339,11 @@ function validateForm() {
     // 打开并发送请求
     xhr.open('POST', 'creategoodservlet', true);
     xhr.send(formData);
+    
+    // 阻止表单的默认提交行为
+    event.preventDefault();
     return true;
 }
-
 var imageIndex = 0;
 
 function previewFiles() {
@@ -444,7 +461,7 @@ function updatePreview() {
 <c:if test="${not empty sessionScope.admin }">
 <div class="main">
 <h1>请发布商品</h1>
-<form action="creategoodservlet" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+<form action="creategoodservlet" method="post" enctype="multipart/form-data" onsubmit="validateForm(event)">
     <div class="container">
         <div class="left-div" style="height: 300px;">
 		    <!-- 左侧div -->

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -35,7 +36,7 @@ import vo.user;
 @MultipartConfig
 public class createmoregoodservlet extends HttpServlet {
 	  private static final long serialVersionUID = 1L;
-	  private String getFileName(Part part) {
+	  	private String getFileName(Part part) {
 			String contentDisp = part.getHeader("content-disposition");
 			String[] items = contentDisp.split(";");
 			for (String s : items) {
@@ -71,50 +72,61 @@ public class createmoregoodservlet extends HttpServlet {
 
 	    	// 处理每个商品信息
 	    	for (good good : productList) {
+	    		String goodname = good.getGoodname();
+	    		try {
+					if(gs.unique(goodname)==0) {
+						request.setAttribute("err","请勿上传重名商品：" + goodname + "！");
+					    request.setAttribute("to","upload_moregoods");
+					    request.getRequestDispatcher("error.jsp").forward(request,response);
+					    return;
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    	}
+	    	for (good good : productList) {
 	    		try {
 		    	    String goodname = good.getGoodname();
 		    	    String description = good.getDescription();
 		    	    double price = good.getPrice();
-		    	    // 获取上传的文件
-		            Part filePart = request.getPart(good.getPicture()); // 与<input type="file" name="picture">中的name相对应
-		            String fileName = getFileName(filePart);
-		            String fileExtension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
-
-		            // 确保文件是png或jpg格式
-		            if (!fileExtension.equals(".png") && !fileExtension.equals(".jpg")) {
-		                System.out.print("在前端");
-		            }
-
-		            // 使用长度为20的只包含数字或字符的随机字符串作为文件名
-		            String filePath =  randomString(20) + fileExtension;
-
-		            // 将文件保存到./img文件夹
-		            File uploads = new File(getServletContext().getRealPath("./img"));
-		            File file = new File(uploads, filePath);
-		            try (InputStream input = filePart.getInputStream()) {
-		                Files.copy(input, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-		            }
-		            String picture = "./img/"+filePath;
+		    	    Collection<Part> fileParts = request.getParts(); // 获取所有上传的文件
+			        List<String> fileNames = new ArrayList<>(); // 用于存储所有文件的路径
+			        for (Part filePart : fileParts) {
+			            if (getFileName(filePart) != null && getFileName(filePart).length() > 0) {
+			                String fileName = getFileName(filePart); // 获取上传的文件名
+			                String extension = fileName.substring(fileName.lastIndexOf(".")); // 获取文件的扩展名
+			                String randomFileName = randomString(20) + extension; // 生成随机文件名
+			                String uploadPath = getServletContext().getRealPath("./img") + File.separator + randomFileName; // 设置上传路径
+			                File fileUploadDirectory = new File(getServletContext().getRealPath("./img"));
+			                if (!fileUploadDirectory.exists()) {
+			                    fileUploadDirectory.mkdirs();
+			                }
+			                filePart.write(uploadPath); // 保存文件
+			                System.out.print(uploadPath);
+			                fileNames.add("./img" + File.separator + randomFileName); // 将文件路径添加到列表
+			            }
+			        }
+			        String picture = String.join(",", fileNames);
 	
 		            int state = 0;
-			        String numberStr = request.getParameter("number");
-			        int number = Integer.parseInt(numberStr);
+			        int number = good.getNumber();
 		            String kind = good.getKind();
 		            String subkind  = good.getSubkind();
 		            int owner = u.getUserid();
 		            
 		            good gf = new good();
-		            if(gs.unique(goodname)==1) {//对于商品名重复仍需修改
-		            gf.setGoodname(goodname);
-		            gf.setDescription(description);
-		            gf.setPrice(price);
-		            gf.setPicture(picture);
-		            gf.setState(state);
-		            gf.setNumber(number);
-		            gf.setKind(kind);
-		            gf.setSubkind(subkind);
-		            gf.setOwner(owner);
-		            }
+		            
+			            gf.setGoodname(goodname);
+			            gf.setDescription(description);
+			            gf.setPrice(price);
+			            gf.setPicture(picture);
+			            gf.setState(state);
+			            gf.setNumber(number);
+			            gf.setKind(kind);
+			            gf.setSubkind(subkind);
+			            gf.setOwner(owner);
+		            
 		            // 插入商品信息到数据库
 		            
 	                gs.add(gf);
