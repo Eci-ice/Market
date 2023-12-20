@@ -75,6 +75,55 @@ public class goodsqlimpl implements goodsql{
 		}
 		
 	}
+	
+	@Override
+	public void addtocart(int goodid,int buyer) throws SQLException {
+		try {
+			Class.forName("org.sqlite.JDBC");
+	         Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+	         String sql = "insert into MLbuying(goodid,number,islike,buyer) values(?,?,?,?)";
+	         PreparedStatement ps  = conn.prepareStatement(sql);
+	         ps.setInt(1, goodid);
+	         ps.setInt(2, 1);
+	         ps.setInt(3, 0);
+	         ps.setInt(4, buyer);
+	         ps.executeUpdate();
+	         ps.close();
+	         conn.close();
+		} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Override
+	public void modifybuynumber(int buyingid,int number) throws SQLException {
+		try {
+			Class.forName("org.sqlite.JDBC");
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+			PreparedStatement ps = null;
+			String sql;
+			if (number == -1) {//自增
+			     sql = "UPDATE MLbuying SET number = number + 1 WHERE buyingid = ?";
+			     ps = conn.prepareStatement(sql);
+			     ps.setInt(1, buyingid);
+			} else {
+			     sql = "UPDATE MLbuying SET number = ? WHERE buyingid = ?";
+			     ps = conn.prepareStatement(sql);
+			     ps.setInt(1, number);
+			     ps.setInt(2, buyingid);
+			}
+			ps.executeUpdate();
+			ps.close();
+			conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+	}
 
 	@Override
 	public int remove(int goodid) throws SQLException {
@@ -99,6 +148,7 @@ public class goodsqlimpl implements goodsql{
 		}
         return 0;
 	}
+	
 
 	//查找商品名是否唯一
 	@Override
@@ -129,6 +179,37 @@ public class goodsqlimpl implements goodsql{
 		}
 		return 0;
 	}
+	
+	@Override
+	public int uniquecart(int goodid,int buyer) throws SQLException {
+		try {
+			Class.forName("org.sqlite.JDBC");
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+            String sql = "SELECT * FROM MLbuying WHERE goodid =? and buyer =?";//在售
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, goodid);
+            ps.setInt(1, buyer);
+   			ResultSet rs=ps.executeQuery();
+   			if(rs.next()) {
+   				ps.close();
+   	   			conn.close();
+	        	return 0;
+   	         }else {
+   	        	ps.close();
+   	   			conn.close();
+   	            return 1;
+   	         }
+   			
+   		} catch (SQLException e) {
+   				// TODO Auto-generated catch block
+   				e.printStackTrace();
+   		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
 	//查找商品是否唯一
 		@Override
 		public int oldunique() throws SQLException {
@@ -390,6 +471,50 @@ public class goodsqlimpl implements goodsql{
 		
 		return null;
 	}
+	
+	public List<good> showbuyerall(int userid) throws SQLException {
+		try {
+			Class.forName("org.sqlite.JDBC");
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+            PreparedStatement ps = null;
+			String sql = "select * from MLbuying WHERE buyer = ?";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, userid);
+			ResultSet rs=ps.executeQuery();
+			List<good> gL=new ArrayList<good>();
+			good g=null;
+			while(rs.next()) {
+				g=new good();
+				g.setBuyingid(rs.getInt(1));
+				g.setGoodid(rs.getInt(2));
+				g.setNumber(rs.getInt(3));
+				sql = "select * from MLgood WHERE goodid = ?";//查找对应商品
+				PreparedStatement ps2=conn.prepareStatement(sql);
+				ps2.setInt(1, rs.getInt(2));
+				ResultSet rs2=ps2.executeQuery();
+				g.setGoodname(rs2.getString(2));
+				g.setPrice(rs2.getDouble(4)*rs.getInt(3));
+				g.setPicture(rs2.getString(5));
+				g.setState(rs2.getInt(6));
+				g.setNumbermax(rs2.getInt(7));//数量上限为库存
+				g.setOwner(userid);
+				gL.add(g);
+				ps2.close();
+			}
+			ps.close();
+	        conn.close();
+			return gL;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 	public good getGoodById(int goodId) throws SQLException {
 	    try {
 			Class.forName("org.sqlite.JDBC");

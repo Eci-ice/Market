@@ -92,10 +92,10 @@ public class Setup{
       
       statement.executeUpdate("DROP TABLE IF EXISTS `MLbuying`");
       statement.executeUpdate("CREATE TABLE `MLbuying`  (\r\n" + 
-      		"  `goodid` INTEGER,\r\n" + 
-      		"  `state` int NOT NULL,\r\n" + 
+    	    "  `buyingid` INTEGER PRIMARY KEY AUTOINCREMENT,\r\n" + 
+      		"  `goodid` INTEGER NOT NULL,\r\n" + 
       		"  `number` int NOT NULL,\r\n" + 
-      		"  `islike` varchar(20) NOT NULL,\r\n" + 
+      		"  `islike` int NOT NULL,\r\n" + 
       		"  `buyer` INTEGER NOT NULL,\r\n" + 
       		"  FOREIGN KEY (`buyer`) REFERENCES `MLuser` (`userid`))"
       		);

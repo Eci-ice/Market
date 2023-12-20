@@ -12,10 +12,31 @@ public class good {
 	private String subkind;
 	private String createdate;
 	private int owner;
+	public int buyingid;
+	private int numbermax;
+	public int islike;
 
 
 
 
+	public int getNumbermax() {
+		return numbermax;
+	}
+	public void setNumbermax(int numbermax) {
+		this.numbermax = numbermax;
+	}
+	public int getBuyingid() {
+		return buyingid;
+	}
+	public void setBuyingid(int buyingid) {
+		this.buyingid = buyingid;
+	}
+	public int getIslike() {
+		return islike;
+	}
+	public void setIslike(int islike) {
+		this.islike = islike;
+	}
 	public String getCreatedate() {
 		return createdate;
 	}

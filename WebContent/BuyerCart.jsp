@@ -123,35 +123,9 @@ body {
     .prev, .next {
     	background-color: rgb(237, 196, 110);
     }
-form {
-    display: flex; /* 让表单内的元素在同一行显示 */
-       width:600px;
-    height:45px;
-	}
-	input[type="text"] {
-	    flex-grow: 1; /* 让搜索框占据剩余的空间 */
-	}
-	input[name="keyword"] {
-	    width: 100%;
-	    padding: 10px; 
-	    border: 1px solid #ccc; 
-	    border-radius: 4px;
-	}	
-	#search_list {
-		position: fixed;
-		top: 110px;
-		left: 350px;
-		width: 400px;
-		background-color: white;
-	}
-
-	
-	#search_list div {
-	    border-bottom: 1px solid black; 
-	}
-	 .media-container {
+ .media-container {
         position: relative;
-        width: 100px;
+        width: 200px;
         height: 200px;
         overflow: hidden;
     }
@@ -176,6 +150,33 @@ form {
     .media-container .next-button {
         right: 10px;
     }
+.sold-out img {
+    filter: grayscale(100%);  /* 将图片转换为灰度 */
+    opacity: 0.6;  /* 降低图片的透明度 */
+}
+
+.overlay {
+    position: absolute;  /* 使用绝对定位 */
+    top: 0;  /* 从顶部开始定位 */
+    left: 0;  /* 从左侧开始定位 */
+    width: 100%;  /* 覆盖整个容器的宽度 */
+    height: 100%;  /* 覆盖整个容器的高度 */
+    background-color: rgba(0, 0, 0, 0.5);  /* 添加一个半透明的黑色背景 */
+    color: white;  /* 设置文本颜色为白色 */
+    text-align: center;  /* 将文本居中对齐 */
+    padding-top: 50%;  /* 将文本垂直居中 */
+    font-size: 20px;  /* 设置文本大小 */
+    display: none;  /* 默认情况下，不显示蒙版 */
+}
+
+.sold-out .overlay {
+    display: block;  /* 当商品已售出时，显示蒙版 */
+}
+tr td, tr th {
+    min-width: 150px; 
+    text-align: center; 
+}
+
 </style>
 <%
     int currentPage = 1;
@@ -193,7 +194,7 @@ form {
 	function goToPrevPage() {
 	    if (currentPage > 1) {
 	        currentPage--;
-	        location.href = "BuyerMain.jsp?currentPage=" + currentPage;
+	        location.href = "BuyerSearch.jsp?currentPage=" + currentPage;
 	    }
 	}
 	
@@ -201,33 +202,10 @@ form {
 	    if (currentPage < totalPages) {
 	        currentPage++;
 	        console.log(currentPage);
-	        location.href = "BuyerMain.jsp?currentPage=" + currentPage;
+	        location.href = "BuyerSearch.jsp?currentPage=" + currentPage;
 	    }
 	}
 	
-	function search() {
-        var keyword = document.getElementsByName('keyword')[0].value;
-        var kind = document.getElementsByName('search_kind')[0].value;
-        var xhr = new XMLHttpRequest();// 使用Ajax发送请求
-
-        xhr.open('POST', 'searchgoodservlet', true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.overrideMimeType("application/json; charset=UTF-8");
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                var results= JSON.parse(xhr.responseText);// 当请求成功时，使用返回的数据更新搜索结果列表
-                var resultsDiv = document.getElementById('search_list');
-                resultsDiv.innerHTML = '';
-                for (var i = 0; i < results.length; i++) {
-                    var div = document.createElement('div');
-                    div.textContent = results[i];
-                    resultsDiv.appendChild(div);
-                }
-            }
-        };
-        xhr.send('keyword=' + encodeURIComponent(keyword) + '&search_kind=' + encodeURIComponent(kind));
-    }
 	window.onload = function() {
         var containers = document.querySelectorAll('.media-container');
         containers.forEach(function(container) {
@@ -279,6 +257,76 @@ form {
             modal.style.display = 'none';
         });
     };
+    
+    var isEditing = false;  // 全局变量，用于跟踪编辑状态
+    function toggleEdit() {
+        isEditing = !isEditing;  // 切换编辑状态
+        
+        // 更新所有的编辑按钮和删除按钮
+        var editallButton = document.getElementById('editall-button');
+        var deleteButtons = document.getElementsByClassName('delete-button');
+        var numberInputs = document.getElementsByClassName('number-input');
+        var incrementButtons = document.getElementsByClassName('increment-button');
+        var decrementButtons = document.getElementsByClassName('decrement-button');
+//        console.log(editallButton.textContent);
+
+        editallButton.textContent = isEditing ? '查看' : '编辑';
+        
+        for (var i = 0; i < deleteButtons.length; i++) {
+        	
+            deleteButtons[i].style.display = isEditing ? 'block' : 'none';
+            numberInputs[i].disabled = !isEditing;
+            incrementButtons[i].style.display = isEditing ? 'inline' : 'none';
+            decrementButtons[i].style.display = isEditing ? 'inline' : 'none';
+            if (!isEditing) {
+            	var buyingid = numberInputs[i].id.split('-')[2];  // 从id中获取buyingid
+                modifyNumber(buyingid, numberInputs[i].value);
+            }
+	     }
+        
+	}
+	    function incrementNumber(inputId, max) {
+	        var input = document.getElementById(inputId);
+	        if (input.value < max) {
+	            input.value = parseInt(input.value) + 1;
+	        } else {
+	            alert("购买数量不能超过库存");
+	        }
+	    }
+	    function decrementNumber(inputId) {
+	        var input = document.getElementById(inputId);
+	        if (input.value > 1) {
+	            input.value = parseInt(input.value) - 1;
+	        } else {
+	            alert("购买数量不能为0");
+	        }
+	    }
+	    
+	    function modifyNumber(buyingid, number) {
+	        var xhr = new XMLHttpRequest();
+	        xhr.open("POST", "modifycartservlet", true);
+	        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	        xhr.onreadystatechange = function() {
+	            if (this.readyState == 4 && this.status == 200) {
+	                window.location.href = "BuyerCart.jsp";  // 在这里设置跳转的页面
+	            }
+	        };
+	        xhr.send("buyingid=" + buyingid + "&number=" + number);
+	    }
+
+	    
+	    function deleteItem(buyingid) {
+	        var xhr = new XMLHttpRequest();
+	        xhr.open("POST", "modifycartservlet", true);
+	        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	        xhr.onreadystatechange = function() {
+	            if (this.readyState == 4 && this.status == 200) {
+	                window.location.href = "BuyerCart.jsp";  // 在这里设置跳转的页面
+	            }
+	        };
+	        xhr.send("buyingid=" + buyingid + "&number=0");
+	    }
+
 </script>
 <body style="margin: 0px;">
 	<div class="left" ><!-- 买家导航 -->
@@ -286,17 +334,17 @@ form {
 	    <table class="daohang">
 	    	<img class="head1" src="img/buyer/head.png" alt=""  >	
 	    	<c:if test="${not empty sessionScope.admin }">
-		        <tr>
+		         <tr>
 		            <td class="head2">${sessionScope.admin.username}</td>
 		        </tr>
 		        <tr>
 		            <td class="head4"><a  href="allcartservlet" class="head4-1">我的购物车</a></td>
-		        </tr>
-		        <tr>
-		            <td class="head4"><a  href="userorderservlet?userId=${sessionScope.admin.username}" class="head4-1">我的收藏</a></td>
-		        </tr>
-		        <tr>
-		            <td class="head4"><a  href="userorderservlet?userId=${sessionScope.admin.username}" class="head4-1">历史购买记录</a></td>
+			        </tr>
+			        <tr>
+			            <td class="head4"><a  href="userorderservlet?userId=${sessionScope.admin.username}" class="head4-1">我的收藏</a></td>
+			        </tr>
+			        <tr>
+			            <td class="head4"><a  href="userorderservlet?userId=${sessionScope.admin.username}" class="head4-1">历史购买记录</a></td>
 		        </tr>
 		        <tr >
 		            <td class="head5"><a href="quitloginservlet" class="head5-1">退出登录</a></td>
@@ -319,51 +367,71 @@ form {
 	
 	<div class="right">
 		<center>
-			<h2>欢迎来到猫咪美食坊！</h2>
-            <form action="successsearchservlet" method="post">
-				<input type="text" name="keyword" placeholder="搜索商品" oninput="search()" >&nbsp;&nbsp;&nbsp;
-				<select name="search_kind" id="search_kind">
-                    <option value="猫咪主粮">猫咪主粮</option>
-                    <option value="猫咪零食">猫咪零食</option>
-                    <option value="猫咪日用">猫咪日用</option>
-                </select><br><br>&nbsp;&nbsp;&nbsp;
-				<input type="submit" value="搜索" style="width:130px">
-				<input type="hidden" id="ishistory" name="ishistory" value="0">
-			</form>
-			<div id="search_list"></div>  
+			<h2>我的购物车</h2>
 		</center>
-	    <div class="goods">
-	    	<c:forEach items="${sessionScope.gL}" var="g" begin="${(currentPage-1)*6}" end="${currentPage*6-1}">
-	    		<div  class="show-1">
-		    		<div>
-		    			<c:set var="mediaFiles" value="${fn:split(g.picture, ',')}" /> <!-- 分割媒体文件路径字符串 -->
-				        <div class="media-container">
-				            <button class="prev-button">＜</button>
-				            <button class="next-button">＞</button>
-				            <c:forEach var="file" items="${mediaFiles}"> <!-- 遍历媒体文件路径数组 -->
-				                <c:choose>
-				                    <c:when test="${fn:endsWith(file, '.mp4')}"> <!-- 如果文件是MP4视频 -->
-				                        <video src="${file}" controls width="200"></video>
-				                    </c:when>
-				                    <c:otherwise> <!-- 否则，我们假设文件是图片 -->
-				                        <img src="${file}" alt="" width="200">
-				                    </c:otherwise>
-				                </c:choose>
-				            </c:forEach>
-				        </div>
-				        <a href="showgoodservlet?goodid=${g.goodid}">
-		    			<p>商品名：${g.goodname}<br>超值价：${g.price}元</p>
-		    			</a>
-		    		</div>
-	    		</div>
-	    	</c:forEach>
-	    </div>
+		<a href="BuyerMain.jsp">返回</a>
+	   
+<table border="1px" align=center cellspacing="0">
+    <tr>
+        <th>展示内容</th>
+        <th>名称</th>
+        <th>购买数量</th>
+        <th>操作</th>
+    </tr>
+    <c:forEach items="${sessionScope.cL}" var="g" begin="${(currentPage-1)*5}" end="${currentPage*5-1}">
+    	<c:if test="${g.number > 0}">
+		        <tr>
+		            <td>
+		                <c:set var="mediaFiles" value="${fn:split(g.picture, ',')}" /> <!-- 分割媒体文件路径字符串 -->
+		                <div class="media-container ${g.state != 0 ? 'sold-out' : ''}">
+		                    <button class="prev-button">＜</button>
+		                    <button class="next-button">＞</button>
+		                    <c:forEach var="file" items="${mediaFiles}"> <!-- 遍历媒体文件路径数组 -->
+		                        <c:choose>
+		                            <c:when test="${fn:endsWith(file, '.mp4')}"> <!-- 如果文件是MP4视频 -->
+		                                <video src="${file}" controls></video>
+		                            </c:when>
+		                            <c:otherwise> <!-- 否则，我们假设文件是图片 -->
+		                                <img src="${file}" alt="">
+		                            </c:otherwise>
+		                        </c:choose>
+		                    </c:forEach>
+		                    <c:if test="${g.state != 0}">
+			                    <div class="overlay">商品不可购买</div>
+			                </c:if>
+		                </div>
+		            </td>
+		            <c:if test="${g.state == 0}">
+			            <td>${g.goodname}</td>
+			            <td>
+			                 <button class="decrement-button" style="display: none;" onclick="decrementNumber('number-input-${g.buyingid}')">-</button>
+			                <input type="number" id="number-input-${g.buyingid}" min="1" max="${g.numbermax}" value="${g.number}" class="number-input" disabled>
+			                <button class="increment-button" style="display: none;" onclick="incrementNumber('number-input-${g.buyingid}',${g.numbermax})">+</button>
+			            </td>
+			            <td>
+			                <button class="delete-button" style="display: none;" onclick="deleteItem(${g.buyingid})">删除商品</button>
+			            </td>
+		            </c:if>
+		            <c:if test="${g.state ne 0}">
+			            <td></td>
+			            <td></td>
+			            <td>
+			               <button class="delete-button" style="display: none;" onclick="deleteItem(${g.buyingid})">删除商品</button>
+			            </td>
+		            </c:if>
+		        </tr>
+		  </c:if>
+	</c:forEach>
+
+		</table>
+
 	    <div class="pagination">
 		    <button class="prev" onclick="goToPrevPage()">上一页</button>
 		    <span id="page-info">第${currentPage}页 </span>
 		    <%-- 当前页码小于总页数时，才显示“下一页”按钮 --%>
 		   	<button class="next" onclick="goToNextPage()">下一页</button>
 		</div>
+		<button id="editall-button" onclick="toggleEdit()">编辑</button>
 	</div>
 </body>
 </html>

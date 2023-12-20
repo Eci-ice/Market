@@ -247,6 +247,10 @@ form {
             modal.style.display = 'none';
         });
     };
+    function addToCart(goodid) {
+        window.location.href = 'createcartservlet?goodid=' + goodid;
+    }
+
 </script>
 <body style="margin:0px">
 <div class="left"><!-- 买家导航 -->
@@ -258,11 +262,14 @@ form {
 	            <td class="head2">${sessionScope.admin.username}</td>
 	        </tr>
 	        <tr>
-	            <td class="head4"><a  href="BuyerChanInfo.jsp" class="head4-1">创建订单</a></td>
-	        </tr>
-	        <tr>
-	            <td class="head4"><a  href="BuyerHistory.jsp" class="head4-1">历史购买记录</a></td>
-	        </tr>
+		            <td class="head4"><a  href="allcartservlet" class="head4-1">我的购物车</a></td>
+		        </tr>
+		        <tr>
+		            <td class="head4"><a  href="userorderservlet?userId=${sessionScope.admin.username}" class="head4-1">我的收藏</a></td>
+		        </tr>
+		        <tr>
+		            <td class="head4"><a  href="userorderservlet?userId=${sessionScope.admin.username}" class="head4-1">历史购买记录</a></td>
+		        </tr>
 	        <tr >
 	            <td class="head5"><a href="quitloginservlet" class="head5-1">退出登录</a></td>
 	        </tr>
@@ -324,7 +331,7 @@ form {
   <!-- <img src="./img/buyer/aa.png" alt="" width="228" title="go">-->
      <a href="BuyerFillInfo.jsp" alt="" title="购买">
      <button class="butt-1" >购买该商品</button></a>
-  <!--非A    <button class="butt-1" >加入愿望单</button> -->
+     <button class="butt-1" onclick="addToCart(${nowg.goodid})">加入购物车</button>
 </div>
 
 </body>
