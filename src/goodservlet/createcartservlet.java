@@ -54,11 +54,12 @@ public class createcartservlet extends HttpServlet {
 	        goodsql gs = new goodsqlimpl();
 	        try {
 	        	//检测商品id是否存在
-				if(gs.uniquecart(goodid,u.getUserid())==1) {
+	        	int buyingid=gs.findcart(goodid,u.getUserid());
+				if(buyingid==-1) {
 					gs.addtocart(goodid, u.getUserid());
 				}
 				else {
-					gs.modifybuynumber(u.getUserid(), -1);//负一表示自增1
+					gs.modifybuynumber(buyingid, -1);//负一表示自增1
 				}
 				List<good> gList = null;
 				 try {

@@ -11,7 +11,7 @@ public interface goodsql {
 	public void modifybuynumber(int buyingid,int number) throws SQLException ;
 	public int remove(int goodid) throws SQLException;
 	public int unique(String goodname) throws SQLException;
-	public int uniquecart(int goodid,int buyer) throws SQLException;
+	public int findcart(int goodid,int buyer) throws SQLException;
 	public int oldunique() throws SQLException;
 	public good search(int goodid) throws SQLException;
 	public List<good> searchls(String keyword,String kind,int power,int userid,int ishistory) throws SQLException;

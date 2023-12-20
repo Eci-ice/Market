@@ -109,6 +109,7 @@ public class goodsqlimpl implements goodsql{
 			String sql;
 			if (number == -1) {//自增
 			     sql = "UPDATE MLbuying SET number = number + 1 WHERE buyingid = ?";
+			    // System.out.println("----------11111");
 			     ps = conn.prepareStatement(sql);
 			     ps.setInt(1, buyingid);
 			} else {
@@ -181,23 +182,24 @@ public class goodsqlimpl implements goodsql{
 	}
 	
 	@Override
-	public int uniquecart(int goodid,int buyer) throws SQLException {
+	public int findcart(int goodid,int buyer) throws SQLException {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
             String sql = "SELECT * FROM MLbuying WHERE goodid =? and buyer =?";//在售
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, goodid);
-            ps.setInt(1, buyer);
+            ps.setInt(2, buyer);
    			ResultSet rs=ps.executeQuery();
    			if(rs.next()) {
+   				int num=rs.getInt(1);
    				ps.close();
    	   			conn.close();
-	        	return 0;
+   	   			return num;
    	         }else {
    	        	ps.close();
    	   			conn.close();
-   	            return 1;
+	        	return -1;
    	         }
    			
    		} catch (SQLException e) {
