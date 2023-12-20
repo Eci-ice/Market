@@ -195,6 +195,34 @@
 		<servlet-name>modifycartservlet</servlet-name>
 		<servlet-class>goodservlet.modifycartservlet</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>addlikeservlet</display-name>
+		<servlet-name>addlikeservlet</servlet-name>
+		<servlet-class>goodservlet.addlikeservlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>showlikeservlet</display-name>
+		<servlet-name>showlikeservlet</servlet-name>
+		<servlet-class>goodservlet.showlikeservlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>showlikeservlet1</display-name>
+		<servlet-name>showlikeservlet1</servlet-name>
+		<servlet-class>goodservlet.showlikeservlet1</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>addlikeservlet1</display-name>
+		<servlet-name>addlikeservlet1</servlet-name>
+		<servlet-class>goodservlet.addlikeservlet</servlet-class>
+	</servlet>
 	
 
 
@@ -306,6 +334,22 @@
 	<servlet-mapping>
 		<servlet-name>modifycartservlet</servlet-name>
 		<url-pattern>/modifycartservlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>addlikeservlet</servlet-name>
+		<url-pattern>/addlikeservlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>showlikeservlet</servlet-name>
+		<url-pattern>/showlikeservlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>showlikeservlet1</servlet-name>
+		<url-pattern>/showlikeservlet1</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>addlikeservlet1</servlet-name>
+		<url-pattern>/addlikeservlet1</url-pattern>
 	</servlet-mapping>
 
 

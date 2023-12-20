@@ -101,6 +101,45 @@ public class goodsqlimpl implements goodsql{
 	}
 	
 	@Override
+	public void addtolike(int goodid,int buyer) throws SQLException {
+		try {
+			Class.forName("org.sqlite.JDBC");
+	         Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+//	         查询表中是否已经有商品
+	         String test = "select *from MLbuying where goodid = ?";
+	         PreparedStatement ps  = conn.prepareStatement(test);
+	         ps  = conn.prepareStatement(test);
+	         ps.setInt(1, goodid);
+	         ResultSet rs = ps.executeQuery();
+//	         如果有，则直接修改值
+	         if(rs.next()) {
+	        	 String update = "update MLbuying set islike = 1 where goodid=?";
+	        	 ps  = conn.prepareStatement(update);
+	        	 ps.setInt(1, goodid);
+	        	 ps.executeUpdate();
+	         }else {
+//	        	 如果没有，则直接插入一个新的
+	        	 String sql = "insert into MLbuying(goodid,number,islike,buyer) values(?,?,?,?)";
+		         ps  = conn.prepareStatement(sql);
+		         ps.setInt(1, goodid);
+		         ps.setInt(2, 0);
+		         ps.setInt(3, 1);
+		         ps.setInt(4, buyer);
+		         ps.executeUpdate();
+	         }
+	         ps.close();
+	         conn.close();
+		} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Override
 	public void modifybuynumber(int buyingid,int number) throws SQLException {
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -459,6 +498,47 @@ public class goodsqlimpl implements goodsql{
 				g.setCreatedate(rs.getString(9));
 				g.setOwner(rs.getInt(10));
 				gL.add(g);
+			}
+			ps.close();
+	        conn.close();
+			return gL;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}public List<good> showlike(int userid) throws SQLException {
+		try {
+			Class.forName("org.sqlite.JDBC");
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+            PreparedStatement ps = null;
+			String sql = "select * from MLbuying WHERE buyer = ? and islike = 1";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, userid);
+			ResultSet rs=ps.executeQuery();
+			List<good> gL=new ArrayList<good>();
+			good g=null;
+			while(rs.next()) {
+				g=new good();
+				g.setBuyingid(rs.getInt(1));
+				g.setGoodid(rs.getInt(2));
+				g.setNumber(rs.getInt(3));
+				sql = "select * from MLgood WHERE goodid = ?";//查找对应商品
+				PreparedStatement ps2=conn.prepareStatement(sql);
+				ps2.setInt(1, rs.getInt(2));
+				ResultSet rs2=ps2.executeQuery();
+				g.setGoodname(rs2.getString(2));
+				g.setPrice(rs2.getDouble(4)*rs.getInt(3));
+				g.setPicture(rs2.getString(5));
+				g.setState(rs2.getInt(6));
+				g.setNumbermax(rs2.getInt(7));//数量上限为库存
+				g.setOwner(userid);
+				gL.add(g);
+				ps2.close();
 			}
 			ps.close();
 	        conn.close();

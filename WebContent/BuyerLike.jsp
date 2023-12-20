@@ -257,34 +257,6 @@ tr td, tr th {
             modal.style.display = 'none';
         });
     };
-    
-    var isEditing = false;  // 全局变量，用于跟踪编辑状态
-    function toggleEdit() {
-        isEditing = !isEditing;  // 切换编辑状态
-        
-        // 更新所有的编辑按钮和删除按钮
-        var editallButton = document.getElementById('editall-button');
-        var deleteButtons = document.getElementsByClassName('delete-button');
-        var numberInputs = document.getElementsByClassName('number-input');
-        var incrementButtons = document.getElementsByClassName('increment-button');
-        var decrementButtons = document.getElementsByClassName('decrement-button');
-//        console.log(editallButton.textContent);
-
-        editallButton.textContent = isEditing ? '查看' : '编辑';
-        
-        for (var i = 0; i < deleteButtons.length; i++) {
-        	
-            deleteButtons[i].style.display = isEditing ? 'block' : 'none';
-            numberInputs[i].disabled = !isEditing;
-            incrementButtons[i].style.display = isEditing ? 'inline' : 'none';
-            decrementButtons[i].style.display = isEditing ? 'inline' : 'none';
-            if (!isEditing) {
-            	var buyingid = numberInputs[i].id.split('-')[2];  // 从id中获取buyingid
-                modifyNumber(buyingid, numberInputs[i].value);
-            }
-	     }
-        
-	}
 	    function incrementNumber(inputId, max) {
 	        var input = document.getElementById(inputId);
 	        if (input.value < max) {
@@ -313,19 +285,13 @@ tr td, tr th {
 	        };
 	        xhr.send("buyingid=" + buyingid + "&number=" + number);
 	    }
-
-	    
-	    function deleteItem(buyingid) {
-	        var xhr = new XMLHttpRequest();
-	        xhr.open("POST", "modifycartservlet", true);
-	        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	        xhr.onreadystatechange = function() {
-	            if (this.readyState == 4 && this.status == 200) {
-	                window.location.href = "BuyerCart.jsp";  // 在这里设置跳转的页面
-	            }
-	        };
-	        xhr.send("buyingid=" + buyingid + "&number=0");
+	    function dislike(goodid) {
+	    	var url = 'addlikeservlet?iscancel='+1+'&goodid=' + goodid;
+	        console.log(url); // 添加这一行来打印URL
+	        window.location.href = url;
 	    }
+
+
 
 </script>
 <body style="margin: 0px;">
@@ -345,8 +311,8 @@ tr td, tr th {
 			        </tr>
 			        <tr>
 			            <td class="head4"><a  href="userorderservlet?userId=${sessionScope.admin.username}" class="head4-1">历史购买记录</a></td>
-		        	</tr>
-		        	<tr>
+		        </tr>
+		        <tr>
 			            <td class="head4"><a  href="BuyerMain.jsp" class="head4-1">返回主页</a></td>
 		        	</tr>
 		        <tr >
@@ -363,6 +329,7 @@ tr td, tr th {
 		        <tr >
 		            <td class="head5"><a href="index.jsp" class="head5-1">返回登录</a></td>
 		        </tr>
+		   
 		    </c:if>
 	    </table>
 	
@@ -370,60 +337,49 @@ tr td, tr th {
 	
 	<div class="right">
 		<center>
-			<h2>我的购物车</h2>
+			<h2>我的收藏</h2>
 		</center>
-		<button id="editall-button" onclick="toggleEdit()">编辑</button>
 	   
 <table border="1px" align=center cellspacing="0">
     <tr>
         <th>展示内容</th>
         <th>名称</th>
-        <th>购买数量</th>
+        <th>描述</th>
         <th>操作</th>
     </tr>
-    <c:forEach items="${sessionScope.cL}" var="g" begin="${(currentPage-1)*5}" end="${currentPage*5-1}">
-    	<c:if test="${g.number > 0}">
-		        <tr>
-		            <td>
-		                <c:set var="mediaFiles" value="${fn:split(g.picture, ',')}" /> <!-- 分割媒体文件路径字符串 -->
-		                <div class="media-container ${g.state != 0 ? 'sold-out' : ''}">
-		                    <button class="prev-button">＜</button>
-		                    <button class="next-button">＞</button>
-		                    <c:forEach var="file" items="${mediaFiles}"> <!-- 遍历媒体文件路径数组 -->
-		                        <c:choose>
-		                            <c:when test="${fn:endsWith(file, '.mp4')}"> <!-- 如果文件是MP4视频 -->
-		                                <video src="${file}" controls></video>
-		                            </c:when>
-		                            <c:otherwise> <!-- 否则，我们假设文件是图片 -->
-		                                <img src="${file}" alt="">
-		                            </c:otherwise>
-		                        </c:choose>
-		                    </c:forEach>
-		                    <c:if test="${g.state != 0}">
-			                    <div class="overlay">商品不可购买</div>
-			                </c:if>
-		                </div>
-		            </td>
-		            <c:if test="${g.state == 0}">
-			            <td>${g.goodname}</td>
-			            <td>
-			                 <button class="decrement-button" style="display: none;" onclick="decrementNumber('number-input-${g.buyingid}')">-</button>
-			                <input type="number" id="number-input-${g.buyingid}" min="1" max="${g.numbermax}" value="${g.number}" class="number-input" disabled>
-			                <button class="increment-button" style="display: none;" onclick="incrementNumber('number-input-${g.buyingid}',${g.numbermax})">+</button>
-			            </td>
-			            <td>
-			                <button class="delete-button" style="display: none;" onclick="deleteItem(${g.buyingid})">删除商品</button>
-			            </td>
-		            </c:if>
-		            <c:if test="${g.state ne 0}">
-			            <td></td>
-			            <td></td>
-			            <td>
-			               <button class="delete-button" style="display: none;" onclick="deleteItem(${g.buyingid})">删除商品</button>
-			            </td>
-		            </c:if>
-		        </tr>
-		  </c:if>
+    <c:forEach items="${sessionScope.likeList}" var="g" begin="${(currentPage-1)*5}" end="${currentPage*5-1}">
+       <tr>
+           <td>
+               <c:set var="mediaFiles" value="${fn:split(g.picture, ',')}" /> <!-- 分割媒体文件路径字符串 -->
+               <div class="media-container ${g.state != 0 ? 'sold-out' : ''}">
+                   <button class="prev-button">＜</button>
+                   <button class="next-button">＞</button>
+                   <c:forEach var="file" items="${mediaFiles}"> <!-- 遍历媒体文件路径数组 -->
+                       <c:choose>
+                           <c:when test="${fn:endsWith(file, '.mp4')}"> <!-- 如果文件是MP4视频 -->
+                               <video src="${file}" controls></video>
+                           </c:when>
+                           <c:otherwise> <!-- 否则，我们假设文件是图片 -->
+                               <img src="${file}" alt="">
+                           </c:otherwise>
+                       </c:choose>
+                   </c:forEach>
+                   <c:if test="${g.state != 0}">
+                    <div class="overlay">商品不可购买</div>
+                </c:if>
+               </div>
+           </td>
+           <td>${g.goodname}</td>
+           <td>
+                <button class="decrement-button" style="display: none;" onclick="decrementNumber('number-input-${g.buyingid}')">-</button>
+               <input type="number" id="number-input-${g.buyingid}" min="1" max="${g.numbermax}" value="${g.number}" class="number-input" disabled>
+               <button class="increment-button" style="display: none;" onclick="incrementNumber('number-input-${g.buyingid}',${g.numbermax})">+</button>
+           </td>
+           <td>
+               <button class="delete-button" onclick="dislike(${g.buyingid})">取消收藏</button>
+           </td>
+       </tr>
+		  
 	</c:forEach>
 
 		</table>

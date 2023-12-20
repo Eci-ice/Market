@@ -1,10 +1,11 @@
 package goodservlet;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,23 +14,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import sql.goodsql;
-import sql.ordersql;
 import sqlimpl.goodsqlimpl;
-import sqlimpl.ordersqlimpl;
 import vo.good;
-import vo.order;
 import vo.user;
 
 /**
- * Servlet implementation class findallorderservlet
+ * Servlet implementation class addlikeservlet
  */
-public class createcartservlet extends HttpServlet {
+public class addlikeservlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public createcartservlet() {
+    public addlikeservlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -38,6 +36,7 @@ public class createcartservlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doPost(request, response);
 	}
 
@@ -49,31 +48,44 @@ public class createcartservlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");	
 		HttpSession session = request.getSession();
 		user u = (user)session.getAttribute("admin");
+		String iscancel = (String) request.getParameter("iscancel");
 	 	int goodid = Integer.parseInt(request.getParameter("goodid"));
 	 	
 	        goodsql gs = new goodsqlimpl();
-	        try {
-	        	//检测商品id是否存在
-	        	int buyingid=gs.findcart(goodid,u.getUserid());
-				if(buyingid==-1) {
-					gs.addtocart(goodid, u.getUserid());
-				}
-				else {
-					gs.modifybuynumber(buyingid, -1);//负一表示自增1
-				}
-				List<good> gList = null;
-				 try {
-    					gList = gs.showall(u.getUserid());
-    			 } catch (SQLException e) {
-    				e.printStackTrace();
-    			 }
-    			session.setAttribute("cL", gList);
-				 request.setAttribute("message","成功添加到购物车");
-				 request.setAttribute("to","buyermain");
+	    if(iscancel.equals("0")) {
+	    	try {
+				gs.addtolike(goodid, u.getUserid());
+    			request.setAttribute("message","成功收藏");
+    			request.setAttribute("to","buyermain");
 				request.getRequestDispatcher("success.jsp").forward(request,response); 
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+	    }else {
+	    	//取消收藏
+	    	try {
+				Class.forName("org.sqlite.JDBC");
+				Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+		        PreparedStatement ps = null;
+		        String sql = "update MLbuying set islike =0 where goodid = ?";
+				ps = conn.prepareStatement(sql);
+				ps.setInt(1, goodid);
+				ps.executeUpdate();
+		        ps.close();
+		        conn.close();
+		        request.setAttribute("message","成功取消收藏");
+    			request.setAttribute("to","buyermain");
+				request.getRequestDispatcher("success.jsp").forward(request,response); 
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    }
+	        
+	}
+
 }

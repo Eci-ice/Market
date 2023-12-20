@@ -250,6 +250,12 @@ form {
     function addToCart(goodid) {
         window.location.href = 'createcartservlet?goodid=' + goodid;
     }
+    function addToLike(goodid) {
+    	var url = 'addlikeservlet?goodid=' + goodid+'&iscancel='+0;
+        console.log(url); // 添加这一行来打印URL
+        window.location.href = url;
+    }
+
 
 </script>
 <body style="margin:0px">
@@ -265,14 +271,17 @@ form {
 		            <td class="head4"><a  href="allcartservlet" class="head4-1">我的购物车</a></td>
 		        </tr>
 		        <tr>
-		            <td class="head4"><a  href="userorderservlet?userId=${sessionScope.admin.username}" class="head4-1">我的收藏</a></td>
+		            <td class="head4"><a  href="showlikeservlet" class="head4-1">我的收藏</a></td>
 		        </tr>
 		        <tr>
 		            <td class="head4"><a  href="userorderservlet?userId=${sessionScope.admin.username}" class="head4-1">历史购买记录</a></td>
 		        </tr>
-	        <tr >
-	            <td class="head5"><a href="quitloginservlet" class="head5-1">退出登录</a></td>
-	        </tr>
+		        <tr>
+			            <td class="head4"><a  href="BuyerMain.jsp" class="head4-1">返回主页</a></td>
+	        	</tr>
+		        <tr >
+		            <td class="head5"><a href="quitloginservlet" class="head5-1">退出登录</a></td>
+		        </tr>
 	    </c:if>
 	    <c:if test="${empty sessionScope.admin }">
 	    	<tr>
@@ -332,6 +341,7 @@ form {
      <a href="BuyerFillInfo.jsp" alt="" title="购买">
      <button class="butt-1" >购买该商品</button></a>
      <button class="butt-1" onclick="addToCart(${nowg.goodid})">加入购物车</button>
+     <button class="butt-1" onclick="addToLike(${nowg.goodid})">收藏商品</button>
 </div>
 
 </body>

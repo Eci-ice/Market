@@ -293,7 +293,7 @@ form {
 		            <td class="head4"><a  href="allcartservlet" class="head4-1">我的购物车</a></td>
 		        </tr>
 		        <tr>
-		            <td class="head4"><a  href="userorderservlet?userId=${sessionScope.admin.username}" class="head4-1">我的收藏</a></td>
+		            <td class="head4"><a  href="showlikeservlet" class="head4-1">我的收藏</a></td>
 		        </tr>
 		        <tr>
 		            <td class="head4"><a  href="userorderservlet?userId=${sessionScope.admin.username}" class="head4-1">历史购买记录</a></td>

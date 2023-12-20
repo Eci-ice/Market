@@ -17,9 +17,11 @@ public interface goodsql {
 	public List<good> searchls(String keyword,String kind,int power,int userid,int ishistory) throws SQLException;
 	public void modifystate(int goodid,int tostate) throws SQLException;
 	public List<good> showall(int userid) throws SQLException;
+	public List<good> showlike(int userid) throws SQLException;
 	public List<good> showhistoryall(int userid) throws SQLException;
 	public List<good> showbuyerall(int userid) throws SQLException;
 	public List<good> shownow() throws SQLException;
 	public good getGoodById(int goodId) throws SQLException;
     public boolean updateGood(good good) throws SQLException;
+	void addtolike(int goodid, int buyer) throws SQLException;
 }
