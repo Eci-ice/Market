@@ -14,4 +14,5 @@ public interface ordersql {
 	public int searchid(int orderid) throws SQLException;
 	public List<order> showall2(String buyername) throws SQLException ;
 	public List<order> showall(int userid) throws SQLException;
+	public int searchstate(int orderid) throws SQLException;
 }

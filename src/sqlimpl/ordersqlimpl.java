@@ -64,6 +64,29 @@ public class ordersqlimpl implements ordersql{
         }
 		
 	}
+	
+	@Override
+	public int searchstate(int orderid) throws SQLException{
+		try {
+			Class.forName("org.sqlite.JDBC");
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+			PreparedStatement ps = null;
+            String sql = "SELECT orderstate FROM MLorder WHERE orderid = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, orderid);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+            	int ans=rs.getInt(1);
+            	ps.close();
+   	         	conn.close();
+	            return ans;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		return -1;
+		
+	}
 
 	@Override
 	public void deletegood(int goodid) throws SQLException {

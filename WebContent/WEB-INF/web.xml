@@ -223,6 +223,27 @@
 		<servlet-name>addlikeservlet1</servlet-name>
 		<servlet-class>goodservlet.addlikeservlet</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>buyerdeleteorderservlet</display-name>
+		<servlet-name>buyerdeleteorderservlet</servlet-name>
+		<servlet-class>orderservlet.buyerdeleteorderservlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>buyerconfirmorderservlet</display-name>
+		<servlet-name>buyerconfirmorderservlet</servlet-name>
+		<servlet-class>orderservlet.buyerconfirmorderservlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>sellerconfirmorderservlet</display-name>
+		<servlet-name>sellerconfirmorderservlet</servlet-name>
+		<servlet-class>orderservlet.sellerconfirmorderservlet</servlet-class>
+	</servlet>
 	
 
 
@@ -350,6 +371,18 @@
 	<servlet-mapping>
 		<servlet-name>addlikeservlet1</servlet-name>
 		<url-pattern>/addlikeservlet1</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>buyerdeleteorderservlet</servlet-name>
+		<url-pattern>/buyerdeleteorderservlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>buyerconfirmorderservlet</servlet-name>
+		<url-pattern>/buyerconfirmorderservlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>sellerconfirmorderservlet</servlet-name>
+		<url-pattern>/sellerconfirmorderservlet</url-pattern>
 	</servlet-mapping>
 
 

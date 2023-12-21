@@ -161,32 +161,81 @@ a{
 	    <th>购买人姓名</th>
 	    <th>商品ID</th>
 	    <th>操作</th>
+	    <th>订单状态</th>
 	    <%--
 	    <th>意向人数</th>
 	    <th>最终购买人</th>
 	    --%>
 	    </tr>
 		<c:forEach items="${requestScope.orL}" var="order">
-		<tr>
-		<td>${order.orderid}</td>
-		<td>${order.address}</td>
-		<td>${order.telephone}</td>
-		<td>${order.buyername}</td>
-		<td>${order.goodid}</td>
-		<c:if test="${order.orderstate eq 0}">
-		<td>
-		<button class="green-btn"><a href="confirmorderservlet?&orderid=${order.orderid}">接受订单</a></button>
-        <button class="red-btn"><a href="deleteorderservlet?&orderid=${order.orderid}">拒绝订单</a></button>
+    <tr>
+        <td>${order.orderid}</td>
+        <td>${order.address}</td>
+        <td>${order.telephone}</td>
+        <td>${order.buyername}</td>
+        <td>${order.goodid}</td>
+        <td>
+            <c:choose>
+	            <c:when test="${order.orderstate eq 0}">
+		            <button class="green-btn">
+	                        	等买家确认
+                    </button>
+	                    <button class="red-btn">
+	                        <a href="deleteorderservlet?&orderid=${order.orderid}">取消订单</a>
+	                    </button>
+                </c:when>
+                <c:when test="${order.orderstate eq 1}">
+                    <button class="green-btn">
+                        <a href="sellerconfirmorderservlet?&orderid=${order.orderid}">接受订单</a>
+                    </button>
+                    <button class="red-btn">
+                        <a href="deleteorderservlet?&orderid=${order.orderid}">取消订单</a>
+                    </button>
+                </c:when>
+                <c:when test="${order.orderstate eq 2}">
+                    <button class="green-btn">
+                        <a href="sellerconfirmorderservlet?&orderid=${order.orderid}" style="text-decoration: none; color: white;">确认备货</a>
+                    </button>
+                    <button class="red-btn">
+                        <a href="deleteorderservlet?&orderid=${order.orderid}">取消订单</a>
+                    </button>
+                </c:when>
+                <c:when test="${order.orderstate eq 3}">
+                    <button class="green-btn">
+                        <a href="sellerconfirmorderservlet?&orderid=${order.orderid}" style="text-decoration: none; color: white;">确认发货</a>
+                    </button>
+                    <button class="red-btn">
+                        <a href="deleteorderservlet?&orderid=${order.orderid}">取消订单</a>
+                    </button>
+                </c:when>
+                <c:when test="${order.orderstate eq 4}">
+                    <button class="green-btn">
+                        <a href="sellerconfirmorderservlet?&orderid=${order.orderid}" style="text-decoration: none; color: white;">确认交易</a>
+                    </button>
+                    <button class="red-btn">
+                        <a href="deleteorderservlet?&orderid=${order.orderid}">无法操作</a>
+                    </button>
+                </c:when>
+                <c:otherwise>
+<span>交易完成，已无法操作</span>                   
+                    
+                </c:otherwise>
+            </c:choose>
         </td>
-        </c:if>
-        <c:if test="${order.orderstate eq 1}">
-		<td>
-        <button class="green-btn"><a href="successorderservlet?&orderid=${order.orderid}">交易成功</a></button>
-        <button class="red-btn"><a href="failorderservlet?&orderid=${order.orderid}">交易失败</a></button>
-		</td>
-		</c:if>
-	    </tr>
-	    </c:forEach>
+        <td>
+            <c:choose>
+                <c:when test="${order.orderstate == 0}">等待客户下单</c:when>
+                <c:when test="${order.orderstate == 1}">等待商家确认</c:when>
+                <c:when test="${order.orderstate == 2}">等待备货确认</c:when>
+                <c:when test="${order.orderstate == 3}">等待发货确认</c:when>
+                <c:when test="${order.orderstate == 4}">等待交易确认</c:when>
+                <c:when test="${order.orderstate > 4}">交易已经完成</c:when>
+
+            </c:choose>
+            
+        </td>
+    </tr>
+</c:forEach>
 	</table>
 
        	<div class="pagination">

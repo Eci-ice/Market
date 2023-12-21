@@ -199,40 +199,69 @@ form {
 	   </c:if>
 
 <c:if test="${not empty sessionScope.admin }">
-<div id="right">
+	<div id="right">
+		<div class="container">
+			<c:if test="${sessionScope.admin.power eq '1' }"><!-- 管理员权限显示以下内容 -->
+				<a href="allcustomservlet">返回</a>
+			</c:if>
+			<c:if test="${sessionScope.admin.power eq '0' }">
+				<a href="BuyerMain.jsp">返回</a>
+			</c:if>
+    		<center>
+				<h2>历史下单记录</h2>
+			</center>
+			<table style="border-collapse: collapse; width: 80%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" border="1" align="center" cellpadding="10">
+                    <tr>
+                        <th>ID</th>
+                        <th>地址</th>
+                        <th>电话</th>
+                        <th>购买人姓名</th>
+                        <th>商品ID</th>
+                        <th>操作</th>
+                        <th>订单状态</th> <!-- 新增的表头 -->
+                    </tr>
+                    <c:forEach items="${requestScope.orL}" var="order">
+                        <tr>
+                            <td>${order.orderid}</td>
+                            <td>${order.address}</td>
+                            <td>${order.telephone}</td>
+                            <td>${order.buyername}</td>
+                            <td>${order.goodid}</td>
+                            <td>
+                                <c:choose>
+                                	<c:when test="${order.orderstate eq 0}">
+						                    <button style="background-color: transparent; color: #f44336; border: 2px solid #f44336; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+						                       <a href="buyerconfirmorderservlet?&orderid=${order.orderid}">接受订单</a>
+						                    </button>
+						                    <button style="background-color: transparent; color: #f44336; border: 2px solid #f44336; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+                                            <a href="buyerdeleteorderservlet?&orderid=${order.orderid}" style="text-decoration: none; color: #f44336;">取消订单</a>
+                                        </button>
+					                </c:when>
+                                    <c:when test="${order.orderstate lt 3}">
+                                        <button style="background-color: transparent; color: #f44336; border: 2px solid #f44336; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+                                            <a href="buyerdeleteorderservlet?&orderid=${order.orderid}" style="text-decoration: none; color: #f44336;">取消订单</a>
+                                        </button>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span>无法操作</span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                            <td>
+                                <c:choose>
+                <c:when test="${order.orderstate == 0}">等待客户下单</c:when>
+                <c:when test="${order.orderstate == 1}">等待商家确认</c:when>
+                <c:when test="${order.orderstate == 2}">等待备货确认</c:when>
+                <c:when test="${order.orderstate == 3}">等待发货确认</c:when>
+                <c:when test="${order.orderstate == 4}">等待交易确认</c:when>
+                <c:when test="${order.orderstate > 4}">交易已经完成</c:when>
 
-<div class="container">
-<c:if test="${sessionScope.admin.power eq '1' }"><!-- 管理员权限显示以下内容 -->
-<a href="allcustomservlet">返回</a>
-</c:if>
-<c:if test="${sessionScope.admin.power eq '0' }">
-<a href="BuyerMain.jsp">返回</a>
-</c:if>
-    <center>
-	<h2>历史下单记录</h2>
-	</center>
-	<table border="1px" align=center cellspacing="0">
-	    <tr>
-	    <th>ID</th>
-	    <th>地址</th>
-	    <th>电话</th>
-	    <th>购买人姓名</th>
-	    <th>商品ID</th>
-	    <%--
-	    <th>意向人数</th>
-	    <th>最终购买人</th>
-	    --%>
-	    </tr>
-		<c:forEach items="${requestScope.orL}" var="order">
-		<tr>
-		<td>${order.orderid}</td>
-		<td>${order.address}</td>
-		<td>${order.telephone}</td>
-		<td>${order.buyername}</td>
-		<td>${order.goodid}</td>
-	    </tr>
-	    </c:forEach>
-	</table>
+            </c:choose>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </table>
+
 
         <!-- 获取当前页码，默认为1 -->
 		<c:set var="currentPage" value="${param.page != null ? param.page : '1'}" />
