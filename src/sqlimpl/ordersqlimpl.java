@@ -20,13 +20,14 @@ public class ordersqlimpl implements ordersql{
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
 	         PreparedStatement pstmt = null;
-	         String sql = "insert into MLorder(address,telephone,buyername,goodid,orderstate,owner) values(?,?,?,?,0,?)";
+	         String sql = "insert into MLorder(address,telephone,buyername,goodid,number,orderstate,owner) values(?,?,?,?,?,0,?)";
 	         PreparedStatement ps  = conn.prepareStatement(sql);
 	         ps.setString(1, order.getAddress());
 	         ps.setString(2, order.getTelephone());
 	         ps.setString(3, order.getBuyername());
 	         ps.setInt(4, order.getGoodid());
-	         ps.setInt(4, order.getOwner());
+	         ps.setInt(5, order.getNumber());
+	         ps.setInt(6, order.getOwner());
 	         ps.executeUpdate();
 	         ps.close();
 	         conn.close();
@@ -62,29 +63,6 @@ public class ordersqlimpl implements ordersql{
         } catch (Exception e) {
             e.printStackTrace();
         }
-		
-	}
-	
-	@Override
-	public int searchstate(int orderid) throws SQLException{
-		try {
-			Class.forName("org.sqlite.JDBC");
-			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
-			PreparedStatement ps = null;
-            String sql = "SELECT orderstate FROM MLorder WHERE orderid = ?";
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, orderid);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-            	int ans=rs.getInt(1);
-            	ps.close();
-   	         	conn.close();
-	            return ans;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-		return -1;
 		
 	}
 
@@ -153,8 +131,9 @@ public class ordersqlimpl implements ordersql{
 				or.setTelephone(rs.getString(3));
 				or.setBuyername(rs.getString(4));
 				or.setGoodid(rs.getInt(5));
-				or.setOrderstate(rs.getInt(6));
-				or.setOwner(rs.getInt(7));
+				or.setNumber(rs.getInt(6));
+				or.setOrderstate(rs.getInt(7));
+				or.setOwner(rs.getInt(8));
 				orL.add(or);
 			}
 			ps.close();
@@ -196,8 +175,9 @@ public class ordersqlimpl implements ordersql{
 				or.setTelephone(rs.getString(3));
 				or.setBuyername(rs.getString(4));
 				or.setGoodid(rs.getInt(5));
-				or.setOrderstate(rs.getInt(6));
-				or.setOwner(rs.getInt(7));
+				or.setNumber(rs.getInt(6));
+				or.setOrderstate(rs.getInt(7));
+				or.setOwner(rs.getInt(8));
 				orL.add(or);
 				System.out.println("or:");
 				System.out.println(or);
@@ -239,6 +219,27 @@ public class ordersqlimpl implements ordersql{
 			e.printStackTrace();
 		}
 	}
-	
+	@Override
+	public int searchstate(int orderid) throws SQLException{
+		try {
+			Class.forName("org.sqlite.JDBC");
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+			PreparedStatement ps = null;
+            String sql = "SELECT orderstate FROM MLorder WHERE orderid = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, orderid);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+            	int ans=rs.getInt(1);
+            	ps.close();
+   	         	conn.close();
+	            return ans;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		return -1;
+
+	}
 
 }

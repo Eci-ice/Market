@@ -45,7 +45,7 @@ public class allcartservlet extends HttpServlet {
 		goodsql gs=new goodsqlimpl();
 		 List<good> gList = null;
 		 try {
-			 gList = gs.showbuyerall(u.getUserid());
+				gList = gs.showbuyerall(u.getUserid());
 		 } catch (SQLException e) {
 			e.printStackTrace();
 		 }

@@ -180,6 +180,7 @@ input[type="text"]{
     <form action="createorderservlet" method="post" name="myform" class="buy-imf" onsubmit="return validateForm()">
 		<input type="hidden" name="goodid" value="${nowg.goodid}"/><br/>
         <label class="username">
+       	购买数量：<input type="text" name="number" min="1" max="${g.numbermax}"  value="1" required="required"/><br/>
                    姓名：<input type="text" name="buyername" value="${sessionScope.admin.username}" required="required" ><br><br>
 	        电话：<input type="text" name="telephone" value="${sessionScope.admin.phone}" required="required" ><br><br>
 	        交易地点：<input type="text" name="address" value="${sessionScope.admin.address}" required="required" ><br><br>

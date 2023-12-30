@@ -47,10 +47,21 @@ public class createorderservlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");	
 		HttpSession session = request.getSession();
 		user u = (user)session.getAttribute("admin");
-		String  address = request.getParameter("address");
-	 	String  telephone = request.getParameter("telephone");
-	 	String  buyername = request.getParameter("buyername");
+		String  address ;
+		String  telephone  ;
+		String  buyername  ;
+		if(null==u) {
+			address = request.getParameter("address");
+	 		telephone = request.getParameter("telephone");
+	 		buyername = request.getParameter("buyername");
+		}
+		else {
+			address=u.getAddress();
+			telephone=u.getPhone();
+			buyername=u.getUsername();
+		}
 	 	int goodid = Integer.parseInt(request.getParameter("goodid"));
+	 	int number = Integer.parseInt(request.getParameter("number"));
         int orderstate = 0;//状态零：未成功订单
         
         goodsql gs=new goodsqlimpl();
@@ -72,6 +83,7 @@ public class createorderservlet extends HttpServlet {
 				orf.setTelephone(telephone);
 				orf.setBuyername(buyername);
 				orf.setGoodid(goodid);
+				orf.setNumber(number);
 				orf.setOrderstate(orderstate);
 				orf.setOwner(owner);
 				ors.add(orf);

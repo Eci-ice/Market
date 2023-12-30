@@ -251,11 +251,12 @@ tr td, tr th {
 
             updateMedia();
         });
-
+        updateTotalPrice();//刷新
         var modal = document.querySelector('#modal');
         modal.querySelector('.close-button').addEventListener('click', function() {
             modal.style.display = 'none';
         });
+        
     };
     
     var isEditing = false;  // 全局变量，用于跟踪编辑状态
@@ -281,6 +282,7 @@ tr td, tr th {
             if (!isEditing) {
             	var buyingid = numberInputs[i].id.split('-')[2];  // 从id中获取buyingid
                 modifyNumber(buyingid, numberInputs[i].value);
+                updateTotalPrice();//刷新
             }
 	     }
         
@@ -325,6 +327,70 @@ tr td, tr th {
 	            }
 	        };
 	        xhr.send("buyingid=" + buyingid + "&number=0");
+	    }
+	    
+	    var cart = {}; // 购物车
+
+	    function toggleBuy(buyingid,goodid) {
+	        var button = document.getElementById('buy-button-' + buyingid);
+	        if (button.innerText == '购买') {
+	            // 添加到购物车
+	            button.innerText = '取消购买';
+	            var number = document.getElementById('number-input-' + buyingid).value;
+	            cart[goodid] = number;
+	        } else {
+	            // 从购物车中移除
+	            button.innerText = '购买';
+	            delete cart[goodid];
+	        }
+	        updateTotalPrice();
+	    }
+
+	    function updateTotalPrice() {
+	        var total = 0;
+	        for (var buyingid in cart) {
+	            var number = cart[buyingid];
+	            var price = document.getElementById('price-' + buyingid).innerText;
+	            total += number * price;
+	        }
+	        document.getElementById('total-price').innerText = total;
+	    }
+	    
+	    function addToLike(goodid) {
+	    	var url = 'addlikeservlet?goodid=' + goodid+'&iscancel='+0;
+	        //console.log(url); // 添加这一行来打印URL
+	        window.location.href = url;
+	    }
+	    function submitOrder() {
+	        // 创建一个新的表单数据对象
+	        var formData = new FormData();
+
+	        // 遍历购物车中的每一项
+	        for (var goodid in cart) {
+	            // 将商品ID和数量添加到表单数据对象中
+	            formData.append('goodid[]', goodid);
+	            formData.append('number[]', cart[goodid]);
+	        }
+
+	        // 创建一个新的XHR对象
+	        var xhr = new XMLHttpRequest();
+
+	        // 设置XHR对象的回调函数
+	        xhr.onload = function() {
+	            if (xhr.status >= 200 && xhr.status < 300) {
+	                // 请求成功，处理响应数据
+	                console.log(xhr.responseText);
+	            } else {
+	                // 请求失败，打印错误信息
+	                console.error(xhr.statusText);
+	            }
+	        };
+
+	        // 打开一个POST请求
+	        xhr.open('POST', '/createcartorderservlet', true);
+
+	        // 发送请求
+	        xhr.send(formData);
 	    }
 
 </script>
@@ -373,12 +439,13 @@ tr td, tr th {
 			<h2>我的购物车</h2>
 		</center>
 		<button id="editall-button" onclick="toggleEdit()">编辑</button>
-	   
+
 <table border="1px" align=center cellspacing="0">
     <tr>
         <th>展示内容</th>
         <th>名称</th>
         <th>购买数量</th>
+        <th>小计</th>
         <th>操作</th>
     </tr>
     <c:forEach items="${sessionScope.cL}" var="g" begin="${(currentPage-1)*5}" end="${currentPage*5-1}">
@@ -408,14 +475,24 @@ tr td, tr th {
 			            <td>${g.goodname}</td>
 			            <td>
 			                 <button class="decrement-button" style="display: none;" onclick="decrementNumber('number-input-${g.buyingid}')">-</button>
-			                <input type="number" id="number-input-${g.buyingid}" min="1" max="${g.numbermax}" value="${g.number}" class="number-input" disabled>
+			                <input type="number" id="number-input-${g.buyingid}" min="1" max="${g.numbermax}" value="${g.number}" class="number-input" onchange="updatePrice('${g.buyingid}',${g.numbermax});" disabled>
 			                <button class="increment-button" style="display: none;" onclick="incrementNumber('number-input-${g.buyingid}',${g.numbermax})">+</button>
 			            </td>
+			            <td id="price-${g.buyingid}" style="display: none;">
+			                ${g.price}
+			            </td>
+			            <td id="total-${g.buyingid}">
+			                ${g.price * g.number}
+			            </td>
 			            <td>
+			            	<button onclick="addToLike(${g.goodid})">收藏商品</button>
 			                <button class="delete-button" style="display: none;" onclick="deleteItem(${g.buyingid})">删除商品</button>
+			                <button id="buy-button-${g.buyingid}" onclick="toggleBuy('${g.buyingid}','${g.goodid}');">购买</button>
+                			<input type="hidden" id="buy-number-${g.buyingid}" name="buy-number-${g.buyingid}" value="${g.number}">
 			            </td>
 		            </c:if>
 		            <c:if test="${g.state ne 0}">
+			            <td></td>
 			            <td></td>
 			            <td></td>
 			            <td>
@@ -427,7 +504,10 @@ tr td, tr th {
 	</c:forEach>
 
 		</table>
-
+		<div>
+		   <h3> 总计:<span id="total-price"></span><h3>
+		     <button onclick="submitOrder();">提交订单</button>
+		</div>
 	    <div class="pagination">
 		    <button class="prev" onclick="goToPrevPage()">上一页</button>
 		    <span id="page-info">第${currentPage}页 </span>

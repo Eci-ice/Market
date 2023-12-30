@@ -575,7 +575,7 @@ public class goodsqlimpl implements goodsql{
 				ps2.setInt(1, rs.getInt(2));
 				ResultSet rs2=ps2.executeQuery();
 				g.setGoodname(rs2.getString(2));
-				g.setPrice(rs2.getDouble(4)*rs.getInt(3));
+				g.setPrice(rs2.getDouble(4));
 				g.setPicture(rs2.getString(5));
 				g.setState(rs2.getInt(6));
 				g.setNumbermax(rs2.getInt(7));//数量上限为库存

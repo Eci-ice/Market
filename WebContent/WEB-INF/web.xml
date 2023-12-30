@@ -244,7 +244,13 @@
 		<servlet-name>sellerconfirmorderservlet</servlet-name>
 		<servlet-class>orderservlet.sellerconfirmorderservlet</servlet-class>
 	</servlet>
-	
+	<servlet>
+		<description>
+		</description>
+		<display-name>createcartorderservlet</display-name>
+		<servlet-name>createcartorderservlet</servlet-name>
+		<servlet-class>orderservlet.createcartorderservlet</servlet-class>
+	</servlet>
 
 
 
@@ -383,6 +389,10 @@
 	<servlet-mapping>
 		<servlet-name>sellerconfirmorderservlet</servlet-name>
 		<url-pattern>/sellerconfirmorderservlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>createcartorderservlet</servlet-name>
+		<url-pattern>/createcartorderservlet</url-pattern>
 	</servlet-mapping>
 
 

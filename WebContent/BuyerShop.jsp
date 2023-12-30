@@ -252,7 +252,7 @@ form {
     }
     function addToLike(goodid) {
     	var url = 'addlikeservlet?goodid=' + goodid+'&iscancel='+0;
-        console.log(url); // 添加这一行来打印URL
+        //console.log(url); // 添加这一行来打印URL
         window.location.href = url;
     }
 

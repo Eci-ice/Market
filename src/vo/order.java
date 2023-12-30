@@ -6,6 +6,7 @@ public class order {
 	private String telephone;
 	private String buyername;
 	private int goodid;
+	private int number;
 	private int orderstate;
 	private int owner;
 	
@@ -18,6 +19,7 @@ public class order {
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
 		result = prime * result + ((buyername == null) ? 0 : buyername.hashCode());
 		result = prime * result + goodid;
+		result = prime * result + number;
 		result = prime * result + orderid;
 		result = prime * result + orderstate;
 		result = prime * result + owner;
@@ -45,6 +47,8 @@ public class order {
 			return false;
 		if (goodid != other.goodid)
 			return false;
+		if (number != other.number)
+			return false;
 		if (orderid != other.orderid)
 			return false;
 		if (orderstate != other.orderstate)
@@ -57,6 +61,18 @@ public class order {
 		} else if (!telephone.equals(other.telephone))
 			return false;
 		return true;
+	}
+	@Override
+	public String toString() {
+		return "order [orderid=" + orderid + ", address=" + address + ", telephone=" + telephone + ", buyername="
+				+ buyername + ", goodid=" + goodid + ", number=" + number + ", orderstate=" + orderstate + ", owner="
+				+ owner + "]";
+	}
+	public int getNumber() {
+		return number;
+	}
+	public void setNumber(int number) {
+		this.number = number;
 	}
 	public int getOwner() {
 		return owner;
