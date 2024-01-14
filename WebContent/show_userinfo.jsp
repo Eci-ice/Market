@@ -125,6 +125,13 @@ a{
             background-color: tomato;
      }
 </style>
+<%
+    int currentPage = 1;
+    if (request.getParameter("currentPage") != null) {
+        currentPage = Integer.parseInt(request.getParameter("currentPage"));
+    }
+    request.setAttribute("currentPage", currentPage);
+%>
 <script>
 	var currentPage = ${requestScope.currentPage};
 	var totalItems = ${sessionScope.gL.size()}; // 商品总数
@@ -168,6 +175,7 @@ a{
 	    --%>
 	    </tr>
 		<c:forEach items="${requestScope.orL}" var="order">
+		<c:if test="${order.orderstate ne -1}">
     <tr>
         <td>${order.orderid}</td>
         <td>${order.address}</td>
@@ -186,7 +194,7 @@ a{
                 </c:when>
                 <c:when test="${order.orderstate eq 1}">
                     <button class="green-btn">
-                        <a href="sellerconfirmorderservlet?&orderid=${order.orderid}">接受订单</a>
+                        <a href="sellerconfirmorderservlet?&orderid=${order.orderid}">确认订单</a>
                     </button>
                     <button class="red-btn">
                         <a href="deleteorderservlet?&orderid=${order.orderid}">取消订单</a>
@@ -210,10 +218,10 @@ a{
                 </c:when>
                 <c:when test="${order.orderstate eq 4}">
                     <button class="green-btn">
-                        <a href="sellerconfirmorderservlet?&orderid=${order.orderid}" style="text-decoration: none; color: white;">确认交易</a>
+                        <a >无法操作</a>
                     </button>
                     <button class="red-btn">
-                        <a href="deleteorderservlet?&orderid=${order.orderid}">无法操作</a>
+                        <a href="deleteorderservlet?&orderid=${order.orderid}">取消订单</a>
                     </button>
                 </c:when>
                 <c:otherwise>
@@ -225,16 +233,17 @@ a{
         <td>
             <c:choose>
                 <c:when test="${order.orderstate == 0}">等待客户下单</c:when>
-                <c:when test="${order.orderstate == 1}">等待商家确认</c:when>
-                <c:when test="${order.orderstate == 2}">等待备货确认</c:when>
-                <c:when test="${order.orderstate == 3}">等待发货确认</c:when>
-                <c:when test="${order.orderstate == 4}">等待交易确认</c:when>
-                <c:when test="${order.orderstate > 4}">交易已经完成</c:when>
+                <c:when test="${order.orderstate == 1}">客户已确认</c:when>
+                <c:when test="${order.orderstate == 2}">商家已确认</c:when>
+                <c:when test="${order.orderstate == 3}">备货已完成</c:when>
+                <c:when test="${order.orderstate == 4}">发货已完成</c:when>
+                <c:when test="${order.orderstate > 4}">交易已完成</c:when>
 
             </c:choose>
             
         </td>
     </tr>
+    </c:if>
 </c:forEach>
 	</table>
 

@@ -41,6 +41,7 @@ public class userorderservlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+	    String viewType = request.getParameter("viewType");
 		String buyerid = request.getParameter("userId");
 		ordersql ors=new ordersqlimpl();
 		 List<order> orList = null;
@@ -51,6 +52,10 @@ public class userorderservlet extends HttpServlet {
 		 }
 			
 		 request.setAttribute("orL", orList);
+		 if ("userInfo".equals(viewType)) {
+	        // 假设您有一个叫做 "view_user_info.jsp" 的页面
+	        request.getRequestDispatcher("view_user_info.jsp").forward(request, response);
+	    }else 
 		 request.getRequestDispatcher("BuyerHistory.jsp").forward(request,response);
 	}
 

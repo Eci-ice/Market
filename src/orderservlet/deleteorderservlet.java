@@ -1,6 +1,10 @@
 package orderservlet;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -48,15 +52,68 @@ public class deleteorderservlet extends HttpServlet {
 		int  orderid = Integer.parseInt(request.getParameter("orderid")); 
 		ordersql ors=new ordersqlimpl();
 		List<order> orList = null;
-		 try {
-			ors.deleteorder(orderid);
-  			orList = ors.showall(u.getUserid());
-		 } catch (SQLException e) {
+		int goodid=-1;
+		
+		try {
+			ors.modifystate(orderid,-1);
+			//查询订单里good的id
+  			goodid = ors.searchid(orderid);
+  			//根据查询到ord对象
+  			order ord = ors.getOrderById(orderid);
+  			goodsql gs = new goodsqlimpl();
+  			//获取订单的数量
+            int number = ord.getNumber();
+            System.out.println("number = "+ number);
+            good gd = gs.search(goodid); // 获取商品信息
+            //如果商品是冻结状态
+            if(gd.getState()==1) {
+            	//解冻商品
+            	gd.setState(0);
+            	System.out.println("candel");
+            }
+
+            // 获取商品当前库存并更新
+            
+            if (gd != null) {
+            	int tmp=gd.getNumber();
+            	gd.setNumber(tmp+number);
+            }
+            gs.updateGood(gd);
+            orList = ors.showall(u.getUserid());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		 }
-			
+			System.out.println("no found");
+		}
+
 		 request.setAttribute("orL", orList);
 		 request.getRequestDispatcher("show_userinfo.jsp").forward(request,response);
+	}
+	
+	public int returnState(int goodid) throws SQLException {
+		try {
+			Class.forName("org.sqlite.JDBC");
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+			PreparedStatement ps = null;
+			String sql = "select number from MLgood  where state = ?";
+		    ps = conn.prepareStatement(sql);
+		    ps.setInt(1, goodid);
+		    ps.executeQuery();
+		    ResultSet rs=ps.executeQuery();
+		    int num = 0;
+   			if(rs.next()) {
+   				num=rs.getInt(1);
+   				System.out.println("num="+num);
+   				ps.close();
+   	   			conn.close();
+   	   			
+   	         }
+   			conn.close();
+   			return num;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		return 0;
 	}
 
 }

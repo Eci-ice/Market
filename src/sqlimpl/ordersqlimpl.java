@@ -20,7 +20,7 @@ public class ordersqlimpl implements ordersql{
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
 	         PreparedStatement pstmt = null;
-	         String sql = "insert into MLorder(address,telephone,buyername,goodid,number,orderstate,owner) values(?,?,?,?,?,0,?)";
+	         String sql = "insert into MLorder(address,telephone,buyername,goodid,number,orderstate,owner) values(?,?,?,?,?,1,?)";
 	         PreparedStatement ps  = conn.prepareStatement(sql);
 	         ps.setString(1, order.getAddress());
 	         ps.setString(2, order.getTelephone());
@@ -29,6 +29,11 @@ public class ordersqlimpl implements ordersql{
 	         ps.setInt(5, order.getNumber());
 	         ps.setInt(6, order.getOwner());
 	         ps.executeUpdate();
+//	         String sql2 = "Update MLorder set number = number - ? where goodid = ?";
+//	         ps  = conn.prepareStatement(sql2);
+//	         ps.setInt(1, order.getNumber());
+//	         ps.setInt(2, order.getGoodid());
+//	         ps.executeUpdate();
 	         ps.close();
 	         conn.close();
 		} catch (SQLException e) {
@@ -73,7 +78,7 @@ public class ordersqlimpl implements ordersql{
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
 	        PreparedStatement ps = null;
 
-	        String sql = "DELETE FROM MLorder WHERE goodid = ?";
+	        String sql = "UPDATE MLorder SET orderstate = -1 WHERE orderid = ?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, goodid);
 			ps.executeUpdate();
@@ -157,11 +162,7 @@ public class ordersqlimpl implements ordersql{
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
             PreparedStatement ps = null;
 			String sql = "select * from MLorder WHERE buyername = ?";
-            
-			System.out.println("现在是showall2");
-			
-//            String sql = "select * from MLorder";
-            
+
 			ps=conn.prepareStatement(sql);
 			ps.setString(1, buyername);
 			
@@ -204,7 +205,7 @@ public class ordersqlimpl implements ordersql{
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
 	        PreparedStatement ps = null;
-	        String sql = "DELETE FROM MLorder WHERE orderid = ?";
+	        String sql = "update orderstate = 1 FROM MLorder WHERE orderid = ?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, orderid);
 			ps.executeUpdate();
@@ -240,6 +241,53 @@ public class ordersqlimpl implements ordersql{
         }
 		return -1;
 
+	}
+
+	@Override
+	public order getOrderById(int orderId) throws SQLException {
+		order resultOrder = null;
+
+	    try {
+	        // 加载JDBC驱动
+	        Class.forName("org.sqlite.JDBC");
+	        // 建立数据库连接
+	        Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+
+	        // 准备SQL语句
+	        String sql = "SELECT * FROM MLorder WHERE orderid = ?";
+	        PreparedStatement ps = conn.prepareStatement(sql);
+	        
+	        // 设置参数
+	        ps.setInt(1, orderId);
+
+	        // 执行查询
+	        ResultSet rs = ps.executeQuery();
+
+	        // 如果查询结果存在，创建order对象并填充数据
+	        if (rs.next()) {
+	            resultOrder = new order();
+	            resultOrder.setOrderid(rs.getInt("orderid"));
+	            resultOrder.setAddress(rs.getString("address"));
+	            resultOrder.setTelephone(rs.getString("telephone"));
+	            resultOrder.setBuyername(rs.getString("buyername"));
+	            resultOrder.setGoodid(rs.getInt("goodid"));
+	            resultOrder.setNumber(rs.getInt("number"));
+	            resultOrder.setOrderstate(rs.getInt("orderstate"));
+	            resultOrder.setOwner(rs.getInt("owner"));
+	            // 更多字段...
+	        }
+
+	        // 关闭资源
+	        rs.close();
+	        ps.close();
+	        conn.close();
+
+	    } catch (ClassNotFoundException | SQLException e) {
+	        e.printStackTrace();
+	        // 可以考虑更详细的错误处理
+	    }
+
+	    return resultOrder;
 	}
 
 }

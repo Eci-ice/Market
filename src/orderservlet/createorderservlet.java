@@ -62,7 +62,8 @@ public class createorderservlet extends HttpServlet {
 		}
 	 	int goodid = Integer.parseInt(request.getParameter("goodid"));
 	 	int number = Integer.parseInt(request.getParameter("number"));
-        int orderstate = 0;//状态零：未成功订单
+	 	System.out.println("order = "+ number);
+        int orderstate = 1;//状态零：未成功订单
         
         goodsql gs=new goodsqlimpl();
         good g=null;
@@ -74,10 +75,26 @@ public class createorderservlet extends HttpServlet {
 			e1.printStackTrace();
 		}
         int owner=g.getOwner();//要的是卖家id而不是买家
-        if(null!= g) {
+        if(null!= g&&g.getNumber()>=number) {
+        	int tmp=g.getNumber();
+        	//设置商品库存
+        	g.setNumber(tmp-number);
+        	//如果剩余库存等于下单库存，就设为冻结
+        	if(tmp==number) {
+    				g.setState(1);
+        	}
+        	try {
+        		
+				gs.updateGood(g);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 	        ordersql ors = new ordersqlimpl();
 	        order orf = null;
+	        System.out.println("order1 = "+ number);
 	        try {
+	        	System.out.println("enter");
 				orf=new order();
 				orf.setAddress(address);
 				orf.setTelephone(telephone);

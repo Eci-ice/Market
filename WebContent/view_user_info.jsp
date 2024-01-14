@@ -217,7 +217,6 @@ form {
                         <th>电话</th>
                         <th>购买人姓名</th>
                         <th>商品ID</th>
-                        <th>操作</th>
                         <th>订单状态</th> <!-- 新增的表头 -->
                     </tr>
                     <c:forEach items="${requestScope.orL}" var="order">
@@ -227,31 +226,7 @@ form {
                             <td>${order.telephone}</td>
                             <td>${order.buyername}</td>
                             <td>${order.goodid}</td>
-                            <td>
-                                <c:choose>
-                                	<c:when test="${order.orderstate eq -1}">
-                                            <a >无法操作订单</a>
-                                        </button>
-					                </c:when>
-                                	<c:when test="${order.orderstate eq 4}">
-                                        <button style="background-color: transparent; color: #f44336; border: 2px solid #f44336; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
-						                       <a href="buyerconfirmorderservlet?&orderid=${order.orderid}">确认交易完成</a>
-						                    </button>
-<%-- 						                    <button style="background-color: transparent; color: #f44336; border: 2px solid #f44336; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
-                                            <a href="buyerdeleteorderservlet?&orderid=${order.orderid}" style="text-decoration: none; color: #f44336;">取消订单</a> --%>
-                                        </button>
-					                </c:when>
-                                    <c:when test="${order.orderstate lt 4}">
-                                        <button style="background-color: transparent; color: #f44336; border: 2px solid #f44336; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
-                                            <a href="buyerdeleteorderservlet?&orderid=${order.orderid}" style="text-decoration: none; color: #f44336;">取消订单</a>
-                                        </button>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <span>无法操作订单</span>
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
-                            <td>
+<td>
                                 <c:choose>
                 <c:when test="${order.orderstate == -1}">交易取消</c:when>
                 <c:when test="${order.orderstate == 0}">等待客户下单</c:when>

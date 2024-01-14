@@ -18,7 +18,32 @@ import vo.good;
 public class goodsqlimpl implements goodsql{
 
     Connection conn = null;
-    
+
+    @Override
+	public boolean updateGood(int number) throws SQLException {
+	    try {
+			Class.forName("org.sqlite.JDBC");
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+	        String updateQuery = "UPDATE MLgood SET number = number + ? WHERE goodid = ?";
+	        PreparedStatement preparedStatement = conn.prepareStatement(updateQuery);
+
+	        preparedStatement.setInt(1, number);
+	        System.out.println("update1");
+	        int rowsAffected = preparedStatement.executeUpdate();
+
+	        preparedStatement.close();
+	        conn.close();
+
+	        return rowsAffected > 0; // 返回更新是否成功
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	    return false;
+	}
 	@Override
 	public void add(good good) throws SQLException {
 		try {
@@ -290,6 +315,7 @@ public class goodsqlimpl implements goodsql{
 	        ps.setInt(1, tostate);
 	        ps.setInt(2, goodid);
 	        ps.executeUpdate();
+	        System.out.println("ippp");
 	        ps.close();
 	        conn.close();
         } catch (Exception e) {
@@ -597,6 +623,23 @@ public class goodsqlimpl implements goodsql{
 		return null;
 	}
 	
+	public void removeBuyingItem(int buyingId) throws SQLException {
+	    try {
+	        Class.forName("org.sqlite.JDBC");
+	        Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+	        String sql = "DELETE FROM MLbuying WHERE buyingid = ?";
+	        PreparedStatement ps = conn.prepareStatement(sql);
+	        ps.setInt(1, buyingId);
+	        ps.executeUpdate();
+	        ps.close();
+	        conn.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } catch (ClassNotFoundException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
 	public good getGoodById(int goodId) throws SQLException {
 	    try {
 			Class.forName("org.sqlite.JDBC");
@@ -673,5 +716,11 @@ public class goodsqlimpl implements goodsql{
 
 	    return false;
 	}
+
+//	@Override
+//	public void modifystate(int goodid, int tostate) throws SQLException {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 }

@@ -1,6 +1,10 @@
 package orderservlet;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -49,7 +53,10 @@ public class sellerconfirmorderservlet extends HttpServlet {
             	try {
             		int tmp=os.searchstate(orderid);
             		os.modifystate(orderid, tmp+1);
-					gs.modifystate(goodid, 1);
+//            		if(returnState(goodid)==0) {
+//            			gs.modifystate(goodid, 1);
+//            		}
+					
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -63,8 +70,30 @@ public class sellerconfirmorderservlet extends HttpServlet {
 			    request.setAttribute("to","show_goods");
 			    request.getRequestDispatcher("error.jsp").forward(request,response);
 	     }
-        
-
     }
+    public int returnState(int goodid) throws SQLException {
+		try {
+			Class.forName("org.sqlite.JDBC");
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
+			PreparedStatement ps = null;
+			String sql = "select number from MLgood  where goodid = ?";
+		    ps = conn.prepareStatement(sql);
+		    ps.setInt(1, goodid);
+		    ps.executeQuery();
+		    ResultSet rs=ps.executeQuery();
+		    int num = 0;
+   			if(rs.next()) {
+   				num=rs.getInt(1);
+   				ps.close();
+   	   			conn.close();
+   	   			
+   	         }
+   			conn.close();
+   			return num;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		return 0;
+	}
 
 }

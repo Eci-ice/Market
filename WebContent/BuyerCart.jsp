@@ -211,6 +211,10 @@ tr td, tr th {
         containers.forEach(function(container) {
             var mediaFiles = container.querySelectorAll('img, video');
             var index = 0;
+            var favoritesButton = document.getElementById('favorites-button');
+            if (favoritesButton) {
+                favoritesButton.addEventListener('click', addToFavoritesSelectedItems);
+            }
 
             function updateMedia() {
                 mediaFiles.forEach(function(file, i) {
@@ -361,6 +365,9 @@ tr td, tr th {
 	        //console.log(url); // 添加这一行来打印URL
 	        window.location.href = url;
 	    }
+	    
+	    
+	    
 	    function submitOrder() {
 	        // 创建一个新的表单数据对象
 	        var formData = new FormData();
@@ -392,6 +399,90 @@ tr td, tr th {
 	        // 发送请求
 	        xhr.send(formData);
 	    }
+		
+	    document.querySelectorAll('.product-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                updateTotalPrice();
+            });
+        });
+
+        function updateTotalPrice() {
+            let totalPrice = 0;
+            document.querySelectorAll('.product-checkbox:checked').forEach(checkbox => {
+                let price = parseFloat(checkbox.getAttribute('data-price'));
+                let number = parseInt(checkbox.getAttribute('data-number'));
+                totalPrice += price * number;
+            });
+            document.getElementById('total-price').innerText = totalPrice.toFixed(2);
+        }
+        function deleteCartItem(buyingId) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'deleteCartItemServlet', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function() {
+                if (this.readyState === 4) {
+                    if (this.status === 200) {
+                        alert("购物车商品删除成功");
+                        // 可以在这里添加代码更新页面以反映购物车的变化
+                        window.location.href = "BuyerCart.jsp"; // 重新加载页面
+                    } else {
+                        alert("错误：无法删除购物车商品");
+                    }
+                }
+            };
+            xhr.send('buyingid=' + buyingId);
+        }
+        function submitSelectedOrders() {
+            var totalOrders = document.querySelectorAll('.product-checkbox:checked').length;
+            var processedOrders = 0;
+
+            if (totalOrders === 0) {
+                alert("请选择要购买的商品！");
+                return;
+            }
+
+            document.querySelectorAll('.product-checkbox:checked').forEach(checkbox => {
+                var goodId = checkbox.getAttribute('data-id');
+                var number = checkbox.getAttribute('data-number');
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'createorderservlet', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function() {
+                    if (this.readyState === 4) {
+                        processedOrders++;
+                        if (this.status === 200) {
+                            deleteCartItem(goodId); // 调用删除购物车商品的函数
+                            console.log("Order for good ID " + goodId + " processed successfully.");
+                        } else {
+                            console.error("Order for good ID " + goodId + " failed.");
+                        }
+
+                        if (processedOrders === totalOrders) {
+                            alert("所有选中的订单已处理完成。");
+                            // 可以在这里执行其他操作，如更新页面元素等
+                        }
+                    }
+                };
+                xhr.send("goodid=" + goodId + "&number=" + number);
+            });
+        }
+        function addToFavoritesSelectedItems() {
+            document.querySelectorAll('.product-checkbox:checked').forEach(checkbox => {
+                var goodId = checkbox.getAttribute('data-id');
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "addlikeservlet?goodid=" + goodId + "&iscancel=0", true);
+                xhr.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log("商品 ID " + goodId + " 已收藏");
+                        alert("商品 ID " + goodId + " 已成功收藏"); // 弹窗反馈
+                    }
+                };
+                xhr.send();
+            });
+        }
+
+
 
 </script>
 <body style="margin: 0px;">
@@ -447,6 +538,7 @@ tr td, tr th {
         <th>购买数量</th>
         <th>小计</th>
         <th>操作</th>
+        <th>选择</th>
     </tr>
     <c:forEach items="${sessionScope.cL}" var="g" begin="${(currentPage-1)*5}" end="${currentPage*5-1}">
     	<c:if test="${g.number > 0}">
@@ -499,15 +591,19 @@ tr td, tr th {
 			               <button class="delete-button" style="display: none;" onclick="deleteItem(${g.buyingid})">删除商品</button>
 			            </td>
 		            </c:if>
+		            <td>
+						<input type="checkbox" class="product-checkbox" data-id="${g.goodid}" data-price="${g.price}" data-number="${g.number}" onchange="updateTotalPrice()">
+	              </td>
 		        </tr>
 		  </c:if>
 	</c:forEach>
 
 		</table>
 		<div>
-		   <h3> 总计:<span id="total-price"></span><h3>
-		     <button onclick="submitOrder();">提交订单</button>
-		</div>
+            <h3>总计: <span id="total-price">0</span></h3>
+            <button onclick="submitSelectedOrders()">提交订单</button>
+			<button id="favorites-button" onclick="addToFavoritesSelectedItems()">一键收藏选中商品</button>
+        </div>
 	    <div class="pagination">
 		    <button class="prev" onclick="goToPrevPage()">上一页</button>
 		    <span id="page-info">第${currentPage}页 </span>

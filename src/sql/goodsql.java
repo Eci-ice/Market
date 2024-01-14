@@ -22,6 +22,8 @@ public interface goodsql {
 	public List<good> showbuyerall(int userid) throws SQLException;
 	public List<good> shownow() throws SQLException;
 	public good getGoodById(int goodId) throws SQLException;
-    public boolean updateGood(good good) throws SQLException;
 	void addtolike(int goodid, int buyer) throws SQLException;
+	public void removeBuyingItem(int buyingId) throws SQLException;
+	boolean updateGood(int number) throws SQLException;
+	boolean updateGood(good good) throws SQLException;
 }

@@ -108,7 +108,7 @@ public class Setup{
       statement.executeUpdate("INSERT INTO `MLgood` VALUES (2, '猫湿粮', '美味猫湿粮', 1.0,'./img/buyer/food-2.jpg',0,3,'猫咪主粮','猫湿粮',1)");
       statement.executeUpdate("INSERT INTO `MLhistorygood` VALUES (1, '猫干粮', '美味猫干粮', 13.9,'./img/buyer/food-1.jpg',1,'猫咪主粮','猫干粮','2023-11-11 13:13:13',1)");
       statement.executeUpdate("INSERT INTO `MLhistorygood` VALUES (2, '猫湿粮', '美味猫湿粮', 9.9,'./img/buyer/food-2.jpg',1,'猫湿粮','猫湿粮','2023-11-11 13:13:14',1)");
-      statement.executeUpdate("INSERT INTO `MLorder` VALUES (1, 'zjsu','11111111111', '111',1, 1,0,1)");
+      statement.executeUpdate("INSERT INTO `MLorder` VALUES (1, 'zjsu','11111111111', '111',1, 1,1,1)");
       
       System.out.println("Success Setup");
       
