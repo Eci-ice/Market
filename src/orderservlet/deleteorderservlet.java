@@ -89,31 +89,4 @@ public class deleteorderservlet extends HttpServlet {
 		 request.setAttribute("orL", orList);
 		 request.getRequestDispatcher("show_userinfo.jsp").forward(request,response);
 	}
-	
-	public int returnState(int goodid) throws SQLException {
-		try {
-			Class.forName("org.sqlite.JDBC");
-			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
-			PreparedStatement ps = null;
-			String sql = "select number from MLgood  where state = ?";
-		    ps = conn.prepareStatement(sql);
-		    ps.setInt(1, goodid);
-		    ps.executeQuery();
-		    ResultSet rs=ps.executeQuery();
-		    int num = 0;
-   			if(rs.next()) {
-   				num=rs.getInt(1);
-   				System.out.println("num="+num);
-   				ps.close();
-   	   			conn.close();
-   	   			
-   	         }
-   			conn.close();
-   			return num;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-		return 0;
-	}
-
 }

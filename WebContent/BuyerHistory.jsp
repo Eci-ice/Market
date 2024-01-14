@@ -243,7 +243,7 @@ form {
 					                </c:when>
                                     <c:when test="${order.orderstate lt 4}">
                                         <button style="background-color: transparent; color: #f44336; border: 2px solid #f44336; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
-                                            <a href="buyerdeleteorderservlet?&orderid=${order.orderid}" style="text-decoration: none; color: #f44336;">取消订单</a>
+                                            <a href="deleteorderservlet?&orderid=${order.orderid}" style="text-decoration: none; color: #f44336;">取消订单</a>
                                         </button>
                                     </c:when>
                                     <c:otherwise>

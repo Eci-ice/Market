@@ -205,7 +205,7 @@ public class ordersqlimpl implements ordersql{
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:D:/maoliang.db");
 	        PreparedStatement ps = null;
-	        String sql = "update orderstate = 1 FROM MLorder WHERE orderid = ?";
+	        String sql = "update MLorder set orderstate = 1 WHERE orderid = ?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, orderid);
 			ps.executeUpdate();
