@@ -61,16 +61,16 @@
         }
         
         .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-.close:hover {
-    color: #000;
-    text-decoration: none;
-}
+		    color: #aaa;
+		    float: right;
+		    font-size: 28px;
+		    font-weight: bold;
+		    cursor: pointer;
+		}
+		.close:hover {
+		    color: #000;
+		    text-decoration: none;
+		}
     .close:focus {
         color: black;
         text-decoration: none;
@@ -89,7 +89,6 @@
     height: 200px;
     border: 1px solid #ccc;
     position: relative;
-    overflow: hidden;
 }
 
 #preview img {
@@ -146,11 +145,9 @@
             <div id="preview">
 			    <!-- 预览窗口 -->
 			</div>
-			<button type="button" id="prevButton" onclick="prevImage()">＜</button>
-			<button type="button" id="nextButton" onclick="nextImage()">＞</button>
 
 		    <!-- 底部是一个上传按钮，在上传图片为空的时候时它显示的是“上传图片/视频”，在有内容的时候为“继续上传”-->
-		    <input type="file" id="fileInput" name="picture" accept="image/png, image/jpeg, video/mp4" onchange="previewFiles()" multiple style="display: none;" required="required">
+		   <input type="file" id="fileInput" name="picture" accept="image/png, image/jpeg, video/mp4" onchange="previewFiles()" style="display: none;" required="required">
 
 			<!-- 添加自定义的上传按钮 -->
 			<button type="button" id="customUploadButton" onclick="document.getElementById('fileInput').click()">上传图片/视频</button>
@@ -173,7 +170,6 @@
         </table>
          <form id="productForm" action="createmoregoodservlet"  enctype="multipart/form-data" method="post">
           	<input type="hidden" id="productListInput" name="productList">
-        	
          </form>
          <button onclick="submitProducts()">确认发布所有商品</button>
     </div>
@@ -294,11 +290,10 @@
                 price: price,
                 description: description,
                 number: number,
-                mediaFiles: allFiles.slice(),  // 将当前的所有文件添加到产品的数据中
+                mediaFile: pictureFile,  // 将当前的文件添加到产品的数据中
                 kind: kind,
                 subkind: subkind
             };
-            allFiles = [];  // 清空全局的文件数组，以便下一个产品可以添加新的文件
 
             productList.push(product);
             displayProducts();
@@ -308,103 +303,109 @@
             document.querySelector("input[name='number']").value = "";
             document.querySelector("input[name='description']").value = "";
             document.querySelector("input[name='picture']").value = "";
-
+            document.getElementById('preview').innerHTML = '';
         }
-		/* 将待添加的内容显示在表格中 */
-      function displayProducts() {
-		    var table = document.getElementById("productTable");
-		
-		    while (table.rows.length > 1) {
-		        table.deleteRow(1);
-		    }
-		
-		    for (var i = 0; i < productList.length; i++) {
-		        var product = productList[i];
-		        var row = table.insertRow(-1);
-		
-		        var cell1 = row.insertCell(0);
-		        var cell2 = row.insertCell(1);
-		        var cell3 = row.insertCell(2);
-		        var cell4 = row.insertCell(3);
-		        var cell5 = row.insertCell(4);
-		        var cell6 = row.insertCell(5);
-		        var cell7 = row.insertCell(6);
-		
-		        cell1.innerHTML = product.goodname;
-		        cell2.innerHTML = product.price;
-		        cell3.innerHTML = product.number;
-		        cell4.innerHTML = product.description;
-		
-		        var mediaContainer = document.createElement('div');
-		        var prevButton = document.createElement('button');
-		        prevButton.innerHTML = '＜';
-		        var nextButton = document.createElement('button');
-		        nextButton.innerHTML = '＞';
-		        mediaContainer.appendChild(prevButton);
-		        mediaContainer.appendChild(nextButton);
-		
-		        var currentIndex = 0;  // 当前显示的媒体文件的索引
-		        var allMediaFiles = product.mediaFiles;  // 当前产品的所有媒体文件
-		
-		        function displayMedia() {
-		            var file = allMediaFiles[currentIndex];
-		            var media;
-		            if (file.type === "video/mp4") {
-		                media = document.createElement("video");
-		                media.controls = true;
-		            } else {
-		                media = document.createElement("img");
-		            }
-		            media.src = URL.createObjectURL(file);
-		            media.width = 100;
-		            media.height = 100;
-		            media.style.objectFit = "contain";
-		            mediaContainer.innerHTML = '';  // 清空容器
-		            mediaContainer.appendChild(media);  // 将媒体元素添加到容器中
-		        }
-		
-		        // 前一个按钮的点击事件处理函数
-		        prevButton.addEventListener('click', function() {
-		            currentIndex--;
-		            if (currentIndex < 0) {
-		                currentIndex = allMediaFiles.length - 1;  // 如果超出范围，就回到最后一个文件
-		            }
-		            displayMedia();  // 显示当前的媒体文件
-		        });
-		
-		        // 后一个按钮的点击事件处理函数
-		        nextButton.addEventListener('click', function() {
-		            currentIndex++;
-		            if (currentIndex >= allMediaFiles.length) {
-		                currentIndex = 0;  // 如果超出范围，就回到第一个文件
-		            }
-		            displayMedia();  // 显示当前的媒体文件
-		        });
-		
-		        displayMedia();  // 显示第一个媒体文件
-		
-		        cell5.appendChild(mediaContainer);
-		
-		        cell6.innerHTML = product.kind;
-		        cell7.innerHTML = product.subkind;
-		    }
-		}
+        
+			/* 将待添加的内容显示在表格中 */
+	    function displayProducts() {
+	    var table = document.getElementById("productTable");
+	
+	    while (table.rows.length > 1) {
+	        table.deleteRow(1);
+	    }
+	
+	    for (var i = 0; i < productList.length; i++) {
+	        var product = productList[i];
+	        var row = table.insertRow(-1);
+	
+	        var cell1 = row.insertCell(0);
+	        var cell2 = row.insertCell(1);
+	        var cell3 = row.insertCell(2);
+	        var cell4 = row.insertCell(3);
+	        var cell5 = row.insertCell(4);
+	        var cell6 = row.insertCell(5);
+	        var cell7 = row.insertCell(6);
+	
+	        cell1.innerHTML = product.goodname;
+	        cell2.innerHTML = product.price;
+	        cell3.innerHTML = product.number;
+	        cell4.innerHTML = product.description;
+	
+	        var mediaContainer = document.createElement('div');
+	
+	        var file = product.mediaFile;  // 获取当前产品的文件
+	        var media;
+	        if (file.type === "video/mp4") {
+	            media = document.createElement("video");
+	            media.controls = true;
+	        } else {
+	            media = document.createElement("img");
+	        }
+	        media.src = URL.createObjectURL(file);
+	        media.width = 100;
+	        media.height = 100;
+	        media.style.objectFit = "contain";
+	        mediaContainer.appendChild(media);  // 将媒体元素添加到容器中
+	
+	        cell5.appendChild(mediaContainer);
+	
+	        cell6.innerHTML = product.kind;
+	        cell7.innerHTML = product.subkind;
+	    }
+	}
+
 
 
         
-        function submitProducts() {
-	       	 if (productList.length === 0) {
-	             alert("请先添加商品信息。");
-	             return;
-	         }
-            var productListInput = document.getElementById("productListInput");
-            productListInput.value = JSON.stringify(productList);
-            console.log(JSON.stringify(productList));
-            
-         // 手动提交表单
-            var form = document.getElementById("productForm");
-            form.submit();
-        }
+	    function submitProducts() {
+	        if (productList.length === 0) {
+	            alert("请先添加商品信息。");
+	            return false;
+	        }
+
+	        var formData = new FormData();
+	        for (var i = 0; i < productList.length; i++) {
+	            var product = productList[i];
+	            formData.append('goodname[]', product.goodname);
+	            formData.append('price[]', product.price);
+	            formData.append('description[]', product.description);
+	            formData.append('number[]', product.number);
+	            formData.append('mediaFile[]', product.mediaFile);
+	            formData.append('kind[]', product.kind);
+	            formData.append('subkind[]', product.subkind);
+	        }
+	        console.log(formData);
+	        var xhr = new XMLHttpRequest();
+
+	        xhr.onload = function() {
+	            if (xhr.status === 200) {
+	                try {
+	                    var response = JSON.parse(xhr.responseText);
+	                    if (response.isUnique) {
+	                        window.location.href = 'show_goods.jsp';
+	                    } else {
+	                        window.location.href = 'error.jsp';
+	                    }
+	                } catch (e) {
+	                    console.error('解析错误，返回的内容：' + xhr.responseText);
+	                }
+	            } else {
+	                console.error('请求失败，状态码：' + xhr.status);
+	            }
+	        };
+
+
+	        xhr.onerror = function() {
+	            console.error('发生网络错误');
+	        };
+
+	        xhr.open('POST', 'createmoregoodservlet', true);
+	        xhr.send(formData);
+
+	        event.preventDefault();
+	        return true;
+	    }
+
 
         function updateSubcategories() {
             var categorySelect = document.getElementById("kind");
@@ -437,24 +438,18 @@
 
         var imageIndex = 0;
 
-        function previewFiles() {
-            var files   = document.querySelector('input[type=file]').files;
 
-            // 将新选择的文件添加到全局的文件数组中
-            for (var i = 0; i < files.length; i++) {
-                allFiles.push(files[i]);
-            }
+        function previewFiles() {
+            var file  = document.querySelector("input[name='picture']").files[0];
             var preview = document.querySelector('#preview');
 
             function readAndPreview(file) {
                 // 确保 `file.name` 符合我们的扩展名要求
                 if ( /\.(jpe?g|png|mp4)$/i.test(file.name) ) {
                     var reader = new FileReader();
-
                     reader.addEventListener("load", function () {
                         var container = document.createElement("div");
                         container.className = "slide"; // 添加类名
-
                         var media;
                         if (file.type === "video/mp4") {
                             media = document.createElement("video");
@@ -469,10 +464,11 @@
                         container.appendChild(media);
                         
                         imageIndex = preview.children.length;
-
+                        
                         // 添加删除按钮
                         var removeButton = document.createElement("button");
                         removeButton.innerHTML = "X";
+                        removeButton.className = "close";
                         removeButton.addEventListener("click", function(e) {
                             e.target.parentNode.remove();
                             imageIndex = (imageIndex - 1 + preview.children.length) % preview.children.length;
@@ -483,55 +479,30 @@
 
                         preview.appendChild(container);
 
-                        // 更新预览窗口
-                        updatePreview();
-                        
-                        updateUploadLabel();
                     }, false);
 
                     reader.readAsDataURL(file);
                 }
             }
 
-            if (files) {
-                [].forEach.call(files, readAndPreview);
+            if (file) {
+                readAndPreview(file);
             }
         }
-
+        
         function updateUploadLabel() {
             var uploadLabel = document.querySelector('#customUploadButton');
             var fileInput = document.querySelector('#fileInput');
             var preview = document.querySelector('#preview');
             console.log(preview.children.length);
-            if (preview.children.length >= 3) { // 每个文件有一个子节点（图片），所以这里检查子节点数量是否大于或等于3
-                uploadLabel.innerHTML = "最多上传3个文件";
+            if (preview.children.length > 0) {
+                uploadLabel.innerHTML = "已上传文件";
                 uploadLabel.style.color = "red";
                 fileInput.disabled = true; // 禁用上传按钮
-            } else if (preview.children.length > 0) {
-                uploadLabel.innerHTML = "继续上传";
-                uploadLabel.style.color = "black";
-                fileInput.disabled = false; // 启用上传按钮
             } else {
                 uploadLabel.innerHTML = "上传图片/视频";
                 uploadLabel.style.color = "black";
                 fileInput.disabled = false; // 启用上传按钮
-            }
-        }
-
-
-        function prevImage() {
-            var preview = document.querySelector('#preview');
-            if (preview.hasChildNodes()) {
-            	imageIndex = (imageIndex - 1 + preview.children.length) % preview.children.length;
-                updatePreview();
-            }
-        }
-
-        function nextImage() {
-            var preview = document.querySelector('#preview');
-            if (preview.hasChildNodes()) {
-            	imageIndex = (imageIndex + 1) % preview.children.length;
-                updatePreview();
             }
         }
 

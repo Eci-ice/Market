@@ -336,15 +336,14 @@ tr td, tr th {
 	    var cart = {}; // 购物车
 
 	    function toggleBuy(buyingid,goodid) {
-	        var button = document.getElementById('buy-button-' + buyingid);
-	        if (button.innerText == '购买') {
+	        var checkbox = document.getElementById('buy-check-' + buyingid);
+	        
+	        if (checkbox.checked) {
 	            // 添加到购物车
-	            button.innerText = '取消购买';
 	            var number = document.getElementById('number-input-' + buyingid).value;
 	            cart[goodid] = number;
 	        } else {
 	            // 从购物车中移除
-	            button.innerText = '购买';
 	            delete cart[goodid];
 	        }
 	        updateTotalPrice();
@@ -357,7 +356,7 @@ tr td, tr th {
 	            var price = document.getElementById('price-' + buyingid).innerText;
 	            total += number * price;
 	        }
-	        document.getElementById('total-price').innerText = total;
+	        document.getElementById('total-price').innerText = total.toFixed(2);
 	    }
 	    
 	    function addToLike(goodid) {
@@ -406,32 +405,20 @@ tr td, tr th {
             });
         });
 
-        function updateTotalPrice() {
-            let totalPrice = 0;
-            document.querySelectorAll('.product-checkbox:checked').forEach(checkbox => {
-                let price = parseFloat(checkbox.getAttribute('data-price'));
-                let number = parseInt(checkbox.getAttribute('data-number'));
-                totalPrice += price * number;
-            });
-            document.getElementById('total-price').innerText = totalPrice.toFixed(2);
-        }
-        function deleteCartItem(buyingId) {
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'deleteCartItemServlet', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onreadystatechange = function() {
-                if (this.readyState === 4) {
-                    if (this.status === 200) {
-                        alert("购物车商品删除成功");
-                        // 可以在这里添加代码更新页面以反映购物车的变化
-                        window.location.href = "BuyerCart.jsp"; // 重新加载页面
-                    } else {
-                        alert("错误：无法删除购物车商品");
-                    }
-                }
-            };
-            xhr.send('buyingid=' + buyingId);
-        }
+
+	    function deleteItem(buyingid) {
+	        var xhr = new XMLHttpRequest();
+	        xhr.open("POST", "modifycartservlet", true);
+	        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	        xhr.onreadystatechange = function() {
+	            if (this.readyState == 4 && this.status == 200) {
+	                window.location.href = "BuyerCart.jsp";  // 在这里设置跳转的页面
+	            }
+	        };
+	        xhr.send("buyingid=" + buyingid + "&number=0");
+	    }
+	    
+	   
         function submitSelectedOrders() {
             var totalOrders = document.querySelectorAll('.product-checkbox:checked').length;
             var processedOrders = 0;
@@ -452,10 +439,10 @@ tr td, tr th {
                     if (this.readyState === 4) {
                         processedOrders++;
                         if (this.status === 200) {
-                            deleteCartItem(goodId); // 调用删除购物车商品的函数
+                        	deleteItem(goodId); // 调用删除购物车商品的函数
                             console.log("Order for good ID " + goodId + " processed successfully.");
                         } else {
-                            console.error("Order for good ID " + goodId + " failed.");
+                            console.error("good ID " + goodId + "商品库存不足");
                         }
 
                         if (processedOrders === totalOrders) {
@@ -467,6 +454,7 @@ tr td, tr th {
                 xhr.send("goodid=" + goodId + "&number=" + number);
             });
         }
+        
         function addToFavoritesSelectedItems() {
             document.querySelectorAll('.product-checkbox:checked').forEach(checkbox => {
                 var goodId = checkbox.getAttribute('data-id');
@@ -579,7 +567,7 @@ tr td, tr th {
 			            <td>
 			            	<button onclick="addToLike(${g.goodid})">收藏商品</button>
 			                <button class="delete-button" style="display: none;" onclick="deleteItem(${g.buyingid})">删除商品</button>
-			                <button id="buy-button-${g.buyingid}" onclick="toggleBuy('${g.buyingid}','${g.goodid}');">购买</button>
+			                <button id="buy-button-${g.buyingid}" onclick="">购买</button>
                 			<input type="hidden" id="buy-number-${g.buyingid}" name="buy-number-${g.buyingid}" value="${g.number}">
 			            </td>
 		            </c:if>
@@ -592,7 +580,7 @@ tr td, tr th {
 			            </td>
 		            </c:if>
 		            <td>
-						<input type="checkbox" class="product-checkbox" data-id="${g.goodid}" data-price="${g.price}" data-number="${g.number}" onchange="updateTotalPrice()">
+						<input type="checkbox" class="product-checkbox" id="buy-check-${g.buyingid}" data-id="${g.goodid}" data-price="${g.price}" data-number="${g.number}" onchange="toggleBuy('${g.buyingid}','${g.goodid}');">
 	              </td>
 		        </tr>
 		  </c:if>

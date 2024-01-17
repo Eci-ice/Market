@@ -114,7 +114,7 @@ public class createorderservlet extends HttpServlet {
 					
 				 request.setAttribute("orL", orList);
 				 request.setAttribute("message","成功创建订单");
-				    request.setAttribute("to","buyermain");
+				request.setAttribute("to","buyermain");
 				request.getRequestDispatcher("success.jsp").forward(request,response); 
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
