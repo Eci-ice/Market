@@ -10,7 +10,7 @@
 <html>
 <head>
 <!--     <link rel="stylesheet" type="text/css" href="BMain.css"/> -->
-    <title>买家购物首页</title>
+    <title>商品搜索结果</title>
     <meta charset="UTF-8">
 </head>
 

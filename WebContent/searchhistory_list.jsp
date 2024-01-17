@@ -15,7 +15,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>历史商品</title>
+<title>搜索历史商品</title>
 </head>
 <body>
 <!-- 未登录框 -->

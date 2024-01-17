@@ -11,7 +11,7 @@
 <html>
 <head>
 <!--     <link rel="stylesheet" type="text/css" href="BMain.css"/> -->
-    <title>买家购物首页</title>
+    <title>购物车</title>
     <meta charset="UTF-8">
 </head>
 
@@ -567,7 +567,6 @@ tr td, tr th {
 			            <td>
 			            	<button onclick="addToLike(${g.goodid})">收藏商品</button>
 			                <button class="delete-button" style="display: none;" onclick="deleteItem(${g.buyingid})">删除商品</button>
-			                <button id="buy-button-${g.buyingid}" onclick="">购买</button>
                 			<input type="hidden" id="buy-number-${g.buyingid}" name="buy-number-${g.buyingid}" value="${g.number}">
 			            </td>
 		            </c:if>

@@ -11,7 +11,7 @@
 <html>
 <head>
 <!--     <link rel="stylesheet" type="text/css" href="BMain.css"/> -->
-    <title>买家购物首页</title>
+    <title>全部收藏</title>
     <meta charset="UTF-8">
 </head>
 

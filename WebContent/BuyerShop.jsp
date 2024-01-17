@@ -11,7 +11,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>买家商品主页</title>
+    <title>商品内容详情</title>
     <link rel="stylesheet" type="text/css" href="BShop.css"/>
 </head>
 <style>

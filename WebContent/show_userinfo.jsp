@@ -14,7 +14,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>历史商品</title>
+<title>全部订单</title>
 </head>
 <body>
 <!-- 未登录框 -->
@@ -167,6 +167,7 @@ a{
 	    <th>电话</th>
 	    <th>购买人姓名</th>
 	    <th>商品ID</th>
+	    <th>购买数量</th>
 	    <th>操作</th>
 	    <th>订单状态</th>
 	    <%--
@@ -182,6 +183,7 @@ a{
         <td>${order.telephone}</td>
         <td>${order.buyername}</td>
         <td>${order.goodid}</td>
+        <td>${order.number}</td>
         <td>
             <c:choose>
 	            <c:when test="${order.orderstate eq 0}">
