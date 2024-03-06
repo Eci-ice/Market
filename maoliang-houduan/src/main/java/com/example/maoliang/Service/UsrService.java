@@ -29,6 +29,7 @@ public class UsrService {
         return usr;
     }
 
+
 //    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, SQLException {
 //        Usr user = usrRepository.search(username);
 //        if (user == null) {

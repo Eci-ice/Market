@@ -24,7 +24,7 @@ public class Setup {
 					"  userid INTEGER PRIMARY KEY AUTO_INCREMENT," +
 					"  username char(10) NOT NULL," +
 					"  pwd char(15) NOT NULL," +
-					"  power int NOT NULL," +
+					"  role char(15) NOT NULL," +
 					"  question varchar(50) NOT NULL," +
 					"  answer varchar(30) NOT NULL )");
 
@@ -94,8 +94,8 @@ public class Setup {
 					"  buyer INTEGER NOT NULL," +
 					"  FOREIGN KEY (buyer) REFERENCES MLuser (userid))");
 
-			statement.executeUpdate("INSERT INTO MLuser VALUES (1, '123', '123', 1,'who are you?','Xiaoming')");
-			statement.executeUpdate("INSERT INTO MLuser VALUES (2, '111', '111', 0,'who are you?','Xiaoming')");
+			statement.executeUpdate("INSERT INTO MLuser VALUES (1, '123', '123', 'seller','who are you?','Xiaoming')");
+			statement.executeUpdate("INSERT INTO MLuser VALUES (2, '111', '111', 'buyer','who are you?','Xiaoming')");
 			statement.executeUpdate("INSERT INTO MLinfo VALUES (2, '15911111234','浙江工商大学')");
 			statement.executeUpdate("INSERT INTO MLgood VALUES (1, '猫干粮', '美味猫干粮', 13.9,'./img/buyer/food-1.jpg',0,12,'猫咪主粮','猫干粮',1)");
 			statement.executeUpdate("INSERT INTO MLgood VALUES (2, '猫湿粮', '美味猫湿粮', 1.0,'./img/buyer/food-2.jpg',0,3,'猫咪主粮','猫湿粮',1)");

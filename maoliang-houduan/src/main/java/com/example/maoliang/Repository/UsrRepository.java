@@ -31,10 +31,10 @@ public class UsrRepository {
                 usr.setUserid(rs.getInt("userid"));
                 usr.setUsername(rs.getString("username"));
                 usr.setPwd(rs.getString("pwd"));
-                usr.setPower(rs.getInt("power"));
+                usr.setRole(rs.getString("role"));
                 usr.setQuestion(rs.getString("question"));
                 usr.setAnswer(rs.getString("answer"));
-                if (usr.getPower() == 0) { // 买家
+                if (usr.getRole().equals("buyer")) { // 买家
                     String infoSql = "SELECT * FROM MLinfo WHERE userid=?";
                     jdbcTemplate.query(infoSql, new Object[]{usr.getUserid()}, infoRs -> {
                         usr.setPhone(infoRs.getString("phone"));
@@ -72,9 +72,9 @@ public class UsrRepository {
 
     public void register(Usr usr) throws SQLException {
         String sql = "INSERT INTO MLuser (username, pwd, power, question, answer) VALUES (?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, usr.getUsername(), usr.getPwd(), usr.getPower(), usr.getQuestion(), usr.getAnswer());
+        jdbcTemplate.update(sql, usr.getUsername(), usr.getPwd(), usr.getRole(), usr.getQuestion(), usr.getAnswer());
 
-        if (usr.getPower() == 0) { // 买家
+        if (usr.getRole().equals("buyer")) { // 买家
             Integer userId = jdbcTemplate.queryForObject("SELECT MAX(userid) FROM MLuser", Integer.class);
             if (userId != null) {
                 sql = "INSERT INTO MLinfo (userid, phone, address) VALUES (?, ?, ?)";

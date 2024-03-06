@@ -16,7 +16,7 @@ public class Usr {
     private String address;
     private String question;
     private String answer;
-    private int power;
+    private String role;
 
 
 	@Override
@@ -105,13 +105,11 @@ public class Usr {
 		this.pwd = pwd;
 	}
 
-	public int getPower() {
-		return power;
+	public String getRole() {
+		return role;
 	}
 
-	public void setPower(int power) {
-		this.power = power;
+	public void setRole(String role) {
+		this.role = role;
 	}
-
-
 }

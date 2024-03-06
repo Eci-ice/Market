@@ -4,10 +4,12 @@ package com.example.maoliang.Controller;
 import com.example.maoliang.Controller.utils.Result;
 import com.example.maoliang.Entity.Good;
 import com.example.maoliang.Entity.Usr;
+import com.example.maoliang.Repository.UsrRepository;
 import com.example.maoliang.Service.GoodService;
 import com.example.maoliang.Service.UsrService;
 import com.example.maoliang.dto.Errordata;
 import com.example.maoliang.dto.Logindata;
+import com.example.maoliang.dto.RegisterData;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -30,6 +32,8 @@ public class UsrController {
     @Autowired
     private GoodService goodService;
     @Autowired
+    private UsrRepository usrRepository;
+    @Autowired
     public HttpSession session;//存储session数据
 
     @RequestMapping( "/login-control")
@@ -38,24 +42,17 @@ public class UsrController {
                                ) {
         String username=login.getUsername();
         String pwd=login.getPassword();
-//        System.out.println("hhh");
-//        System.out.println(username);
-//        System.out.println(pwd);
         try {
             Usr usr = usrService.search(username);
- //             System.out.println(usr.getUsername());
-//            System.out.println(pwd+ pwd.length());
-//            System.out.println(usr.getPwd()+ usr.getPwd().length());
             if (usr != null && pwd.equals(usr.getPwd().trim())) {//数据库导出字符串有后置空格
-                System.out.println(usr.getPower());
                 session.setAttribute("admin", usr);
                 //System.out.println(session.getAttribute("admin"));
-                if (usr.getPower() == 0) {
+                if (usr.getRole().equals("buyer")) {
                     // 买家权限，进入商品首页
                     List<Good> gList = goodService.showNowGoods();
                     System.out.println("hhh");
                     return new Result(BUYER_PAGE,"success", gList);
-                } else if (usr.getPower() == 1) {
+                } else if (usr.getRole().equals("seller")) {
                     // 卖家权限，进入后台管理all商品页面
                     List<Good> gList = goodService.showAllGoods(usr.getUserid());
                     return new Result(SELLER_PAGE,"success", gList);
@@ -71,6 +68,38 @@ public class UsrController {
             LOGGER.error("Error handling login", e);
             return new Result(ERROR_PAGE,"登录出错，请稍后重试","login");
         }
+    }
+    @RequestMapping( "/register-control")
+    public Result RegisterControl(@RequestBody RegisterData register
+                               ) {
+        String username = register.getUsername();
+
+        try {
+            Usr usr = usrService.search(username);
+            if (usr == null){
+                Usr newUsr = new Usr();
+                newUsr.setUsername(username);
+                newUsr.setPwd(register.getPassword());
+                newUsr.setQuestion(register.getQuestion());
+                newUsr.setAnswer(register.getAnswer());
+                newUsr.setRole(register.getRole());
+                //买家与卖家不同设定
+                if(register.getRole().equals("buyer")){
+                    newUsr.setAddress(register.getAddress());
+                    newUsr.setPhone(register.getPhone());
+                }else{
+                    newUsr.setAddress(null);
+                    newUsr.setPhone(null);
+                }
+                //注册
+                usrRepository.register(usr);
+                return new Result(LOGIN_PAGE,"success",username);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Error handling register", e);
+            return new Result(ERROR_PAGE,"注册出错，请稍后重试","register");
+        }
+
     }
 
     //user相关的servlet
