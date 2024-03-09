@@ -82,12 +82,6 @@ export default {
         const usr = response.data;
         // 更新组件的 currentUser 数据
         this.currentUser = usr;
-        // console.log(this.isSeller);
-        // console.log(this.currentUser.power);
-        // console.log(this.currentUser.power === 1);
-        // console.log(this.currentUser && this.currentUser.power === 1);
-        // console.log("aa");
-        // console.log(!!this.currentUser);
 
         return true;
       } catch (error) {

@@ -7,7 +7,7 @@ public class RegisterData {
     private String username;
     private String password;
 
-    private String role;
+    private int power;
     private String question;
     private String answer;
     private String address;

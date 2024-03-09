@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 //连接到MLUser的其他数据库操作方法
 @Repository
@@ -21,8 +22,16 @@ public class UsrRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    public boolean searchName(String username) {
+        String sql = "SELECT * FROM MLuser WHERE username=?";
+        List<Map<String, Object>> resultList = jdbcTemplate.queryForList(sql, username);
+        return !resultList.isEmpty();
+    }
+
+
     public Usr search(String username) throws SQLException {
         String sql = "SELECT * FROM MLuser WHERE username=?";
+        System.out.println("username"+username);
         try {
             //System.out.println("hhh");
             return jdbcTemplate.queryForObject(sql, new Object[]{username}, (rs, rowNum) -> {
@@ -31,10 +40,12 @@ public class UsrRepository {
                 usr.setUserid(rs.getInt("userid"));
                 usr.setUsername(rs.getString("username"));
                 usr.setPwd(rs.getString("pwd"));
-                usr.setRole(rs.getString("role"));
+                usr.setPower(rs.getInt("power"));
                 usr.setQuestion(rs.getString("question"));
                 usr.setAnswer(rs.getString("answer"));
-                if (usr.getRole().equals("buyer")) { // 买家
+                System.out.println("enter:"+usr.getUserid() );
+                System.out.println("ano:"+rs.getString("power"));
+                if (usr.getPower()==0) { // 买家
                     String infoSql = "SELECT * FROM MLinfo WHERE userid=?";
                     jdbcTemplate.query(infoSql, new Object[]{usr.getUserid()}, infoRs -> {
                         usr.setPhone(infoRs.getString("phone"));
@@ -60,7 +71,7 @@ public class UsrRepository {
         String sql = "SELECT * FROM MLuser WHERE username = ?";
         try {
             jdbcTemplate.queryForObject(sql, new Object[]{name}, (rs, rowNum) -> {
-                // 如果找到结果，返回1
+                System.out.println("yes");
                 return 1;
             });
         } catch (EmptyResultDataAccessException e) {
@@ -72,9 +83,9 @@ public class UsrRepository {
 
     public void register(Usr usr) throws SQLException {
         String sql = "INSERT INTO MLuser (username, pwd, power, question, answer) VALUES (?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, usr.getUsername(), usr.getPwd(), usr.getRole(), usr.getQuestion(), usr.getAnswer());
+        jdbcTemplate.update(sql, usr.getUsername(), usr.getPwd(), usr.getPower(), usr.getQuestion(), usr.getAnswer());
 
-        if (usr.getRole().equals("buyer")) { // 买家
+        if (usr.getPower()==0) { // 买家
             Integer userId = jdbcTemplate.queryForObject("SELECT MAX(userid) FROM MLuser", Integer.class);
             if (userId != null) {
                 sql = "INSERT INTO MLinfo (userid, phone, address) VALUES (?, ?, ?)";

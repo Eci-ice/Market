@@ -39,20 +39,21 @@ public class UsrController {
     @RequestMapping( "/login-control")
     public Result LoginControl(@RequestBody Logindata login//RequestBody用于传输数据
                                //Logindata自命,需要从前端传入的【所有】数据
-                               ) {
+    ) {
         String username=login.getUsername();
         String pwd=login.getPassword();
         try {
             Usr usr = usrService.search(username);
             if (usr != null && pwd.equals(usr.getPwd().trim())) {//数据库导出字符串有后置空格
+                System.out.println(usr.getPower());
                 session.setAttribute("admin", usr);
                 //System.out.println(session.getAttribute("admin"));
-                if (usr.getRole().equals("buyer")) {
+                if (usr.getPower() == 0) {
                     // 买家权限，进入商品首页
                     List<Good> gList = goodService.showNowGoods();
                     System.out.println("hhh");
                     return new Result(BUYER_PAGE,"success", gList);
-                } else if (usr.getRole().equals("seller")) {
+                } else if (usr.getPower() == 1) {
                     // 卖家权限，进入后台管理all商品页面
                     List<Good> gList = goodService.showAllGoods(usr.getUserid());
                     return new Result(SELLER_PAGE,"success", gList);
@@ -73,18 +74,17 @@ public class UsrController {
     public Result RegisterControl(@RequestBody RegisterData register
                                ) {
         String username = register.getUsername();
-
+        System.out.println("power="+register.getPower());
         try {
-            Usr usr = usrService.search(username);
-            if (usr == null){
+            if (usrService.searchName(username) == false){
                 Usr newUsr = new Usr();
                 newUsr.setUsername(username);
                 newUsr.setPwd(register.getPassword());
                 newUsr.setQuestion(register.getQuestion());
                 newUsr.setAnswer(register.getAnswer());
-                newUsr.setRole(register.getRole());
+                newUsr.setPower(register.getPower());
                 //买家与卖家不同设定
-                if(register.getRole().equals("buyer")){
+                if(register.getPower()==0){
                     newUsr.setAddress(register.getAddress());
                     newUsr.setPhone(register.getPhone());
                 }else{
@@ -92,14 +92,16 @@ public class UsrController {
                     newUsr.setPhone(null);
                 }
                 //注册
-                usrRepository.register(usr);
+                usrRepository.register(newUsr);
                 return new Result(LOGIN_PAGE,"success",username);
+            }else{
+                LOGGER.error("Error handling register");
+                return new Result(RENAME_PAGE,"rename","register");
             }
         } catch (SQLException e) {
             LOGGER.error("Error handling register", e);
-            return new Result(ERROR_PAGE,"注册出错，请稍后重试","register");
+            return new Result(ERROR_PAGE,"error","register");
         }
-
     }
 
     //user相关的servlet

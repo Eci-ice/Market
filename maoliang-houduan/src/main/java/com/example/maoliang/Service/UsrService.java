@@ -28,6 +28,9 @@ public class UsrService {
 //        System.out.println(usr.getUserid());
         return usr;
     }
+    public boolean searchName(String username) throws SQLException {
+        return usrRepository.searchName(username);
+    }
 
 
 //    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, SQLException {

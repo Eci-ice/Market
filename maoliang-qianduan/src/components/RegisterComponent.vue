@@ -11,7 +11,7 @@
       <h2 v-if="isSeller">请您注册卖家账户！</h2>
       <h2 v-else>请您注册买家账户！</h2>
 
-      <form @submit.prevent="submitForm">
+      <form @submit.prevent="handleRegister">
         <input type="hidden" v-model="form.userType">
 <!--id密码-->
         <div class="input">
@@ -25,19 +25,19 @@
 <!--密保问题-->
         <div class="input">
           <label for="newquestion" style="top: -30px; font-size: 20px; font-weight: bold;">设置密保问题</label>
-          <input id="newquestion" type="text" v-model="form.securityQuestion" required>
+          <input id="newquestion" type="text" v-model="form.question" required>
         </div>
         <div class="input">
           <label for="newanswer" style="top: -30px; font-size: 20px; font-weight: bold;">设置答案</label>
-          <input id="newanswer" type="text" v-model="form.securityAnswer" required>
+          <input id="newanswer" type="text" v-model="form.answer" required>
         </div>
 
         <!-- 用户类型选择 -->
         <div class="input">
           <label>我是：</label>
           <div>
-            <input type="radio" id="buyer" value="buyer" v-model="userType" @change="updateUserType('buyer')"> 买家
-            <input type="radio" id="seller" value="seller" v-model="userType" @change="updateUserType('seller')"> 卖家
+            <input type="radio" id="buyer" value="0" v-model="form.userType" @change="updateUserType('0')" > 买家
+            <input type="radio" id="seller" value="1" v-model="form.userType" @change="updateUserType('1')" required> 卖家
           </div>
         </div>
 
@@ -60,63 +60,66 @@
 </template>
 
 <script>
-// import axios from 'axios';
+import axios from 'axios';
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+
 
 export default {
   data() {
     return {
-
-      //先用个默认值
-      isSeller: false,
+      isSeller: true,
       form: {
-        userType: '',
-        username: 'testuser',
+        power: '1',
+        username: 'user',
         phone: '1234567890',
         address: '测试地址',
-        password: 'password123',
-        securityQuestion: '我的生日？',
-        securityAnswer: '1月1日'
+        password: 'user',
+        question: '我的生日？',
+        answer: '1月1日'
       }
-
-      // isSeller: false,
-      // form: {
-      //   userType: '',
-      //   username: '',
-      //   phone: '',
-      //   address: '',
-      //   password: '',
-      //   securityQuestion: '',
-      //   securityAnswer: ''
-      // }
     };
   },
   methods: {
-    submitForm() {
+    async handleRegister(){
+      try{
+        const credentials = {
+          username: this.form.username,
+          password: this.form.password,
+          question: this.form.question,
+          answer: this.form.answer,
+          power: this.form.userType,
+          address: this.form.address,
+          phone: this.form.phone
 
-      // 模拟成功响应
-      const mockResponse = { success: true, message: '注册成功' };
-      console.log('Form submitted:', this.form);
-      console.log('Mock Response:', mockResponse);
-      
-      alert("注册成功！");
-      // 模拟注册成功后的重定向
-      if (mockResponse.success) {
-        this.$router.push('/choose-register'); // 这会导航回 ChooseRegister.vue
+        };
+
+        const response = await fetch('/usr/register-control', {
+          method: 'POST',
+          body: JSON.stringify(credentials),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        const responseData = await response.json();
+        console.log(responseData)
+
+        if (responseData.msg === 'error') {
+          console.log(responseData.msg); // 输出消息
+        }else if (responseData.msg === 'rename'){
+          alert(responseData.msg);
+        } else if (responseData.msg === 'success') {
+          console.log("success");
+          console.log(responseData.msg);
+          alert("Register Success!");
+          this.$router.push('/'); // 跳转到登录页面
+        }
+      }catch (error){
+        alert("Register fail!");
+        // this.error = 'register fail!';
       }
-
-      // TODO: 移除下面的注释并实现真正的服务器请求
-      // axios.post('/registerservlet', this.form)
-      //   .then(response => {
-      //     console.log(response.data);
-      //     // 处理成功响应，比如跳转到登录页面或显示成功信息
-      //   })
-      //   .catch(error => {
-      //     console.error(error);
-      //     // 处理错误，比如显示错误信息
-      //   });
     },
     updateUserType(userType) {
-      this.isSeller = userType === 'seller';
+      this.isSeller = userType === '1';
       this.form.userType = userType;
     }
   },

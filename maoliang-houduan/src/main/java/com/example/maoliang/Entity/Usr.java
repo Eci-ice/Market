@@ -9,14 +9,14 @@ public class Usr {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userid;
-    private String username;
-    private String pwd;
-    private String phone;
-    private String address;
-    private String question;
-    private String answer;
-    private String role;
+	private int userid;
+	private String username;
+	private String pwd;
+	private String phone;
+	private String address;
+	private String question;
+	private String answer;
+	private int power;
 
 
 	@Override
@@ -105,11 +105,13 @@ public class Usr {
 		this.pwd = pwd;
 	}
 
-	public String getRole() {
-		return role;
+	public int getPower() {
+		return power;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setPower(int power) {
+		this.power = power;
 	}
+
+
 }

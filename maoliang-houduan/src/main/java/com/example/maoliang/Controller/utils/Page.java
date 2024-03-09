@@ -10,4 +10,5 @@ public class Page {
     public static final String BUYER_PAGE="buyer";
     public static final String ERROR_PAGE="error";
     public static final String SUCCESS_PAGE="success";
+    public static final String RENAME_PAGE="rename";
 }
