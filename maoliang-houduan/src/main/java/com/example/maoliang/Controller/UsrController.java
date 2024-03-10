@@ -71,10 +71,8 @@ public class UsrController {
         }
     }
     @RequestMapping( "/register-control")
-    public Result RegisterControl(@RequestBody RegisterData register
-                               ) {
+    public Result RegisterControl(@RequestBody RegisterData register) {
         String username = register.getUsername();
-        System.out.println("power="+register.getPower());
         try {
             if (usrService.searchName(username) == false){
                 Usr newUsr = new Usr();

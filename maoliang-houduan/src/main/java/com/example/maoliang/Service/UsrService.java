@@ -33,22 +33,8 @@ public class UsrService {
     }
 
 
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, SQLException {
-//        Usr user = usrRepository.search(username);
-//        if (user == null) {
-//            throw new UsernameNotFoundException("User not found with username: " + username);
-//        }
-//
-//        // 获取用户权限信息
-//        // 假设power字段为0表示买家，1表示卖家
-//        List<GrantedAuthority> authorities = new ArrayList<>();
-//        if (user.getPower() == 0) {
-//            authorities.add(new SimpleGrantedAuthority("BUYER"));
-//        } else if (user.getPower() == 1) {
-//            authorities.add(new SimpleGrantedAuthority("SELLER"));
-//        }
-//
-//        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPwd(), authorities);
-//    }
+    public List<Usr> loadBuyer() throws  SQLException {
+        return usrRepository.loadBuyer();
+    }
 
 }

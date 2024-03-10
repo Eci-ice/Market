@@ -11,4 +11,6 @@ public class Page {
     public static final String ERROR_PAGE="error";
     public static final String SUCCESS_PAGE="success";
     public static final String RENAME_PAGE="rename";
+    public static final String ANSWER_PAGE="answer";
+
 }
