@@ -46,7 +46,7 @@ export default {
       },
       error: '',
       mockAdminData: null,
-      currentUser :null
+      currentUser : null
     };
   },
 
