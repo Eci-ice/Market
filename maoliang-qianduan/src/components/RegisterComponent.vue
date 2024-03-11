@@ -101,7 +101,6 @@ export default {
           }
         });
         const responseData = await response.json();
-        console.log(responseData)
 
         if (responseData.msg === 'error') {
           console.log(responseData.msg); // 输出消息
