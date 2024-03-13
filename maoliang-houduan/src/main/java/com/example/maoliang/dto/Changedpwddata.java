@@ -1,10 +1,11 @@
 package com.example.maoliang.dto;
 
-import lombok.Data;
 
+import lombok.Data;
 @Data
 public class Changedpwddata {
-    private String oldpwd;
     private String newpwd;
     private String newpwd1;
+    private String oldpwd;
+
 }

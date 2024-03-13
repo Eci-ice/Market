@@ -16,7 +16,7 @@
             <td>{{ user.userid }}</td>
             <td>{{ user.username }}</td>
             <td>
-              <router-link :to="{ name: 'UserOrderHistory', props:[user.userid]}">
+              <router-link :to="{ name: 'UserOrderHistory', params: { userId: user.userid } }">
                 查看购买历史
               </router-link>
             </td>
@@ -36,30 +36,17 @@
 </template>
 
 <script>
+import axios from 'axios'; // 确保已经安装并导入axios
+
 export default {
   data() {
     return {
-      isLoggedIn: true, // 假设您从某处获取登录状态
+      isLoggedIn: false, // 一开始设为false，等到验证后可能会改变
       currentPage: 1,
-      users: [
-        { userid: 1, username: "user1" },
-        { userid: 2, username: "user2" },
-        { userid: 3, username: "user3" },
-        { userid: 4, username: "user4" },
-        { userid: 5, username: "user5" },
-        { userid: 6, username: "user6" },
-        { userid: 7, username: "user7" },
-        { userid: 8, username: "user8" },
-        { userid: 9, username: "user9" },
-        { userid: 10, username: "user10" },
-        { userid: 11, username: "user11" },
-        { userid: 12, username: "user12" },
-        { userid: 13, username: "user13" },
-        { userid: 14, username: "user14" },
-        { userid: 15, username: "user15" },
-      ], // 假设您从后端获取用户数据
+      users: [], // 从后端获取的用户数据将存储在这里
       pageSize: 5,
-      filteredUsers: [], // 存储过滤后的用户 
+      currentUser: null,
+      filteredUsers: [], // 存储过滤后的用户
     };
   },
   computed: {
@@ -70,27 +57,61 @@ export default {
     },
     totalPages() {
       return Math.ceil(this.filteredUsers.length / this.pageSize);
-    }
+    },
   },
   methods: {
+    async fetchUsers() { 
+      try {
+  var power = this.currentUser.power;
+  // 使用 GET 方法发送请求，将数据作为查询参数发送
+
+  const response = await axios.get('/usr/UserList-control', {
+    params: { power: power }
+  });
+
+  if (response.data ) {
+    this.users = response.data.data;
+    this.filteredUsers = this.users;
+    console.log("获取用户列表成功")
+  } else {
+    console.error("获取用户列表失败");
+  }
+} catch (error) {
+  console.error('请求用户列表错误', error);
+}}
+,
+    async fetchUsrFromSession() {
+      try {
+        const response = await axios.get('/now-usr');
+        this.currentUser = response.data;
+        if (this.currentUser) {
+          this.isLoggedIn = true;
+        }
+      } catch (error) {
+        console.error('获取用户数据错误:', error);
+        this.isLoggedIn = false;
+      }
+    },
     goToPrevPage() {
       if (this.currentPage > 1) this.currentPage--;
     },
     goToNextPage() {
       if (this.currentPage < this.totalPages) this.currentPage++;
     },
-    fetchUsers() {
-      // 在这里写 AJAX 请求获取用户数据
-    },
   },
   mounted() {
-    // 示例：假设从后端获取成功消息
-    // 在实际应用中，您可能需要在某个操作成功后调用 showSuccessModal
-    this.filteredUsers = this.users; // 初始时显示所有用户
-    this.fetchUsers();
+    this.fetchUsrFromSession().then(() => {
+      if (this.isLoggedIn) {
+        this.fetchUsers();
+      }
+    });
   },
 };
 </script>
+
+<!-- 未登录框和其他样式 -->
+
+
 
 <!-- 未登录框 -->
 <style type="text/css" scoped>
@@ -214,12 +235,7 @@ a{
 	#search_list div {
     border-bottom: 1px solid black; 
 	}
-	
-	
-	
-	
-	
-	
+
 	
 	
     .modal {

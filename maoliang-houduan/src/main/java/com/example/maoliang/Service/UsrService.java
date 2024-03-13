@@ -1,5 +1,6 @@
 package com.example.maoliang.Service;
 
+import com.example.maoliang.Entity.Order;
 import com.example.maoliang.Entity.Usr;
 import com.example.maoliang.Repository.UsrListRepository;
 import com.example.maoliang.Repository.UsrRepository;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,22 +28,22 @@ public class UsrService {
 //        System.out.println(usr.getUserid());
         return usr;
     }
-
-    public void modifyPwd(String username,String password) throws SQLException {
-        usrRepository.modifyPwd(username,password);
-//        System.out.println(usr.getUserid());
-    }
-
-    public List<Usr> loadBuyer() throws  SQLException {
-        return usrListRepository.loadBuyer();
-    }
-
     public boolean searchName(String username) throws SQLException {
         return usrRepository.searchName(username);
     }
 
-    public void register(Usr usr) throws SQLException {
-        usrRepository.register(usr);
+    public void modifyPwd(String username,String newpwd) throws SQLException {
+        usrRepository.modifyPwd(username,newpwd );
+        return ;
+    }
+    public List<Usr> loadBuyer() throws  SQLException {
+        return usrRepository.loadBuyer();
     }
 
+    public List<Usr> showAllUsers() throws SQLException {
+        return usrListRepository.searchAllUsers();
+    }
+    public List<Order> showUserOrderHistory(int pow,int userid){
+        return usrListRepository.searchUserOrderHistory(pow,userid);
+    }
 }

@@ -1,126 +1,134 @@
 <template>
-<div style="margin: 0px;">
-  <div v-if="isLoggedIn">
-    <div class="container">
-      <router-link :to="{ name: 'ShowAllUsers'}">
-        返回
-      </router-link>
-      <!-- <button @click="goBack">返回</button> -->
-      <div class="centered-container">
-        <h2>用户 {{ userId }} 的购买历史</h2>
-      </div>
-      <table style="border-collapse: collapse; width: 80%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" border="1" align="center" cellpadding="10">
-        <tr>
-          <th>ID</th>
-          <th>地址</th>
-          <th>电话</th>
-          <th>购买人姓名</th>
-          <th>商品ID</th>
-          <th>订单状态</th>
-        </tr>
-        <tr v-for="order in paginatedOrders" :key="order.orderid">
-          <td>{{ order.orderid }}</td>
-          <td>{{ order.address }}</td>
-          <td>{{ order.telephone }}</td>
-          <td>{{ order.buyername }}</td>
-          <td>{{ order.goodid }}</td>
-          <td>{{ getOrderStatus(order.orderstate) }}</td>
-        </tr>
-      </table>
-      <div class="pagination">
-        <button @click="goToPrevPage" :disabled="isPrevDisabled">上一页</button>
-        <span>{{ currentPage }} / {{ totalPages }}</span>
-        <button @click="goToNextPage" :disabled="isNextDisabled">下一页</button>
+  <div style="margin: 0px;">
+    <div v-if="isLoggedIn">
+      <div class="container">
+        <router-link :to="{ name: 'ShowAllUsers'}">返回</router-link>
+        <div class="centered-container">
+          <h2>用户 {{ userId }} 的购买历史</h2>
+        </div>
+        <table style="border-collapse: collapse; width: 80%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" border="1" align="center" cellpadding="10">
+          <tr>
+            <th>ID</th>
+            <th>地址</th>
+            <th>电话</th>
+            <th>购买人姓名</th>
+            <th>商品ID</th>
+            <th>订单状态</th>
+          </tr>
+          <tr v-for="order in paginatedOrders" :key="order.orderid">
+            <td>{{ order.orderid }}</td>
+            <td>{{ order.address }}</td>
+            <td>{{ order.telephone }}</td>
+            <td>{{ order.buyername }}</td>
+            <td>{{ order.goodid }}</td>
+            <td>{{ getOrderStatus(order.orderstate) }}</td>
+          </tr>
+        </table>
+        <div class="pagination">
+          <button @click="goToPrevPage" :disabled="isPrevDisabled">上一页</button>
+          <span>{{ currentPage }} / {{ totalPages }}</span>
+          <button @click="goToNextPage" :disabled="isNextDisabled">下一页</button>
+        </div>
       </div>
     </div>
+    <div v-else>
+      <span>您还未登录，请先<a href="/login">登录</a></span>
+    </div>
   </div>
-  <div v-else>
-    <span>您还未登录，请先<a href="/login">登录</a></span>
-  </div>
-</div>
-</template>
-
-<script>
-import { mapGetters } from 'vuex';
-
-export default {
-  props: ['userId'],
-  data() {
-    return {
-      isLoggedIn: true, // 根据实际登录状态设置
-      orders: [
-        { orderid: 1, address: "地址1", telephone: "1234567890", buyername: "user1", goodid: 101, orderstate: 4 },
-        { orderid: 2, address: "地址2", telephone: "1234567891", buyername: "user1", goodid: 102, orderstate: 3 },
-        { orderid: 3, address: "地址3", telephone: "1234567892", buyername: "user1", goodid: 103, orderstate: 2 },
-        { orderid: 4, address: "地址4", telephone: "1234567893", buyername: "user1", goodid: 104, orderstate: 1 },
-        { orderid: 5, address: "地址5", telephone: "1234567894", buyername: "user1", goodid: 105, orderstate: 0 },
-        { orderid: 6, address: "地址6", telephone: "1234567895", buyername: "user1", goodid: 106, orderstate: -1 },
-        { orderid: 7, address: "地址7", telephone: "1234567896", buyername: "user1", goodid: 107, orderstate: 5 },
-        { orderid: 8, address: "地址8", telephone: "1234567897", buyername: "user1", goodid: 108, orderstate: 4 },
-        // ... 添加更多假数据以超过一页...
-      ],
-      currentPage: 1,
-      pageSize: 5,
-    };
-  },
-  computed: {
-    ...mapGetters(['isSeller', 'isBuyer']),
-    totalPages() {
-      if(1>Math.ceil(this.orders.length / this.pageSize)) return 1;
-      return Math.ceil(this.orders.length / this.pageSize);
-    },
-    paginatedOrders() {
-      const start = (this.currentPage - 1) * this.pageSize;
-      const end = start + this.pageSize;
-      return this.orders.slice(start, end);
-    },
-    isSeller() {
-      // 您可以根据实际情况判断用户是否是卖家
-      return this.$store.getters.isSeller;
-    },
-    isPrevDisabled() {
-      return this.currentPage === 1;
-    },
-
-    isNextDisabled() {
-      return this.currentPage === this.totalPages;
-    },
-  },
-  methods: {
-    goBack() {
-      this.$router.push({ name: 'ShowAllUsers' }); // 假设 ShowUserInfo 是用户信息列表组件的路由名称
-    },
-    fetchOrders() {
-      // AJAX 请求获取订单数据
-      // 示例：this.orders = fetch('/api/orders').then(response => response.json());
-    },
-    getOrderStatus(statusCode) {
-      const statusMap = {
-        '-1': '交易取消',
-        '0': '等待客户下单',
-        '1': '等待商家确认',
-        '2': '等待备货确认',
-        '3': '等待发货确认',
-        '4': '商家已发货，等待交易确认',
-        '5': '交易成功',
-        // 添加其他状态映射
+  </template>
+  <script>
+  import { mapGetters } from 'vuex';
+  import axios from 'axios';
+  
+  export default {
+    props: ['userId'],
+    data() {
+      return {
+        isLoggedIn: true, // 应从 Vuex 或父组件动态获取
+        orders: [],
+        currentPage: 1,
+        pageSize: 5,
+        currentUser: {}, // 将 currentUser 初始化为一个空对象
       };
-      return statusMap[statusCode] || '未知状态';
     },
-    goToPrevPage() {
+    computed: {
+      ...mapGetters(['isSeller', 'isBuyer']), // 确保这些 getter 在 Vuex store 中定义
+      totalPages() {
+        return Math.max(1, Math.ceil(this.orders.length / this.pageSize));
+      },
+      paginatedOrders() {
+        const start = (this.currentPage - 1) * this.pageSize;
+        const end = start + this.pageSize;
+        return this.orders.slice(start, end);
+      },
+      isPrevDisabled() {
+        return this.currentPage === 1;
+      },
+      isNextDisabled() {
+        return this.currentPage >= this.totalPages;
+      },
+    },
+    methods: {
+      async fetchUsrFromSession() {
+        try {
+          const response = await axios.get('/now-usr');
+          this.currentUser = response.data;
+          if (this.currentUser) {
+            this.isLoggedIn = true;
+          }
+        } catch (error) {
+          console.error('获取用户数据错误:', error);
+          this.isLoggedIn = false;
+        }
+      },
+      async fetchOrders() {
+        try {
+          // 在获取订单前先获取当前用户信息
+          await this.fetchUsrFromSession();
+  
+          // 获取当前用户权限
+          const power = this.currentUser.power;
+  
+          // 根据用户权限和用户ID获取订单列表
+          const response = await axios.get('/usr/UserOrderHistory-control', { params: { power: power, userid: this.userId } });
+  
+          if (response.data) {
+            this.orders = response.data.data || [];
+            console.log("获取用户历史数据列表成功")
+          } else {
+            console.error("获取用户历史数据列表失败");
+          }
+        } catch (error) {
+          console.error('请求用户历史数据列表错误', error);
+        }
+      },
+      getOrderStatus(statusCode) {
+        const statusMap = {
+          '-1': '交易取消',
+          '0': '等待客户下单',
+          '1': '等待商家确认',
+          '2': '等待备货确认',
+          '3': '等待发货确认',
+          '4': '商家已发货，等待交易确认',
+          '5': '交易成功',
+        };
+        return statusMap[statusCode] || '未知状态';
+      },
+      goToPrevPage() {
         if (this.currentPage > 1) this.currentPage--;
-    },
-    goToNextPage() {
+      },
+      goToNextPage() {
         if (this.currentPage < this.totalPages) this.currentPage++;
+      },
     },
-  },
-  mounted() {
-    this.fetchOrders();
-    this.filteredUsers = this.orders;
-  },
-};
-</script>
-
+    mounted() {
+      // 在组件挂载时获取订单数据
+      this.fetchOrders();
+    },
+  };
+  </script>
+  
+  
 <style scoped>
 .centered-container {
   text-align: center;
