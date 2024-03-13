@@ -40,7 +40,7 @@ export default {
           username: this.forgetName,
         };
         const response = await axios.post(
-          "/forget/forgetPwd-control",
+          "/usr/forgetPwd-control",
           postData,
           {
             headers: {

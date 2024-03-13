@@ -3,7 +3,7 @@
     <div id="a">
     <div class="container">
       <div class="centered-container">
-        <h2>历史商品信息</h2><br>
+        <h2>搜索商品信息</h2><br>
       </div>
       <div class="centered-container">
       <div class="search-bar">
@@ -127,7 +127,7 @@ export default {
     async fetchgoodListSession() {
       try {
         // 发起 GET 请求获取商品列表
-        const goodsResponse = await axios.get('/good/seller-all-historygood-list-control');
+        const goodsResponse = await axios.get('/searchList');
         // 解析响应数据
         // console.log('goodList:', goodsResponse);
         const goodList = goodsResponse.data.data;//goodsResponse的数据的data属性

@@ -2,8 +2,10 @@ const webpack = require('webpack');
 
 module.exports = {
   transpileDependencies: true,
+  filenameHashing: false,//前后端图片文件名保持一致
+
   devServer: {
-    port: 8888,
+    port: 3000,
   },
   configureWebpack: {
     plugins: [
@@ -15,3 +17,5 @@ module.exports = {
     ],
   },
 };
+
+

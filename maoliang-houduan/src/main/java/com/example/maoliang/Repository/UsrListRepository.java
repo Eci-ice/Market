@@ -30,5 +30,16 @@ public class UsrListRepository {
         }
     }
 
+    public List<Usr> loadBuyer(){
+        String sql = "SELECT * FROM MLuser WHERE power=0";
+        try {
+//            BeanPropertyRowMapper.newInstance  查询结果映射到Usr的实例
+            return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Usr.class));
+        } catch (EmptyResultDataAccessException e) {
+            // 如果查询结果为空，返回 null
+            return null;
+        }
+    }
+
 
 }

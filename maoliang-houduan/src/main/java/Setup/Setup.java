@@ -97,10 +97,10 @@ public class Setup {
 			statement.executeUpdate("INSERT INTO MLuser VALUES (1, '123', '123', 1,'who are you?','Xiaoming')");
 			statement.executeUpdate("INSERT INTO MLuser VALUES (2, '111', '111', 0,'who are you?','Xiaoming')");
 			statement.executeUpdate("INSERT INTO MLinfo VALUES (2, '15911111234','浙江工商大学')");
-			statement.executeUpdate("INSERT INTO MLgood VALUES (1, '猫干粮', '美味猫干粮', 13.9,'./img/buyer/food-1.jpg',0,12,'猫咪主粮','猫干粮',1)");
-			statement.executeUpdate("INSERT INTO MLgood VALUES (2, '猫湿粮', '美味猫湿粮', 1.0,'./img/buyer/food-2.jpg',0,3,'猫咪主粮','猫湿粮',1)");
-			statement.executeUpdate("INSERT INTO MLhistorygood VALUES (1, '猫干粮', '美味猫干粮', 13.9,'./img/buyer/food-1.jpg',1,'猫咪主粮','猫干粮','2023-11-11 13:13:13',1)");
-			statement.executeUpdate("INSERT INTO MLhistorygood VALUES (2, '猫湿粮', '美味猫湿粮', 9.9,'./img/buyer/food-2.jpg',1,'猫湿粮','猫湿粮','2023-11-11 13:13:14',1)");
+			statement.executeUpdate("INSERT INTO MLgood VALUES (1, '猫干粮', '美味猫干粮', 13.9,'./img/food-1.jpg',0,12,'猫咪主粮','猫干粮',1)");
+			statement.executeUpdate("INSERT INTO MLgood VALUES (2, '猫湿粮', '美味猫湿粮', 1.0,'./img/food-2.jpg',0,3,'猫咪主粮','猫湿粮',1)");
+			statement.executeUpdate("INSERT INTO MLhistorygood VALUES (1, '猫干粮', '美味猫干粮', 13.9,'./img/food-1.jpg',1,'猫咪主粮','猫干粮','2023-11-11 13:13:13',1)");
+			statement.executeUpdate("INSERT INTO MLhistorygood VALUES (2, '猫湿粮', '美味猫湿粮', 9.9,'./img/food-2.jpg',1,'猫湿粮','猫湿粮','2023-11-11 13:13:14',1)");
 			statement.executeUpdate("INSERT INTO MLorder VALUES (1, '浙江工商大学','15911111234', '张三',1, 1,1,1)");
 			conn.commit();
 			System.out.println("Success Setup");

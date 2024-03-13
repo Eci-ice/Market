@@ -34,8 +34,11 @@
       <!-- 右侧内容区域 -->
       <div class="right">
         <div class="centered-container">
-          <h2>欢迎来到猫咪美食坊！</h2>
+          <h2>搜索结果</h2>
         </div>
+        <router-link :to="{ name: 'BuyerMain'}">
+          返回
+        </router-link>
         <div class="centered-container">
           <form @submit.prevent="handleSearch">
             <input type="text" v-model="searchQuery" class="custom-input" placeholder="搜索商品">&nbsp;&nbsp;&nbsp;
@@ -52,8 +55,8 @@
             <div class="show-1" v-for="item in paginatedItems" :key="item.id">
               <div class="media-container">
                   <div v-for="(media, index) in item.mediaFiles" :key="index" v-show="media.isActive">
-                    <img v-if="!isVideo(media)" :src="media.url" alt="商品图片" v-show="media.isActive">
-                    <video v-else :src="media.url" controls v-show="media.isActive"></video>
+                  <img v-if="!media.isVideo" :src="media.url" alt="商品图片" v-show="media.isActive">
+                  <video v-if="media.isVideo" :src="media.url" controls v-show="media.isActive"></video>
                   </div>
               </div>
               <div class="media-navigation">
@@ -99,8 +102,11 @@
       <!-- 右侧内容区域 -->
       <div class="right">
         <div class="centered-container">
-          <h2>欢迎来到猫咪美食坊！</h2>
+          <h2>搜索结果</h2>
         </div>
+        <router-link :to="{ name: 'BuyerMain'}">
+          返回
+        </router-link>
         <div class="centered-container">
           <form @submit.prevent="handleSearch">
             <input type="text" v-model="searchQuery" class="custom-input" placeholder="搜索商品">&nbsp;&nbsp;&nbsp;
@@ -117,8 +123,8 @@
             <div class="show-1" v-for="item in paginatedItems" :key="item.id">
               <div class="media-container">
                   <div v-for="(media, index) in item.mediaFiles" :key="index" v-show="media.isActive">
-                    <img v-if="!isVideo(media)" :src="media.url" alt="商品图片" v-show="media.isActive">
-                    <video v-else :src="media.url" controls v-show="media.isActive"></video>
+                  <img v-if="!media.isVideo" :src="media.url" alt="商品图片" v-show="media.isActive">
+                  <video v-if="media.isVideo" :src="media.url" controls v-show="media.isActive"></video>
                   </div>
               </div>
               <div class="media-navigation">
@@ -148,7 +154,42 @@ import axios from "axios";
 export default {
   data() {
     return {
-      items: [ ],
+      items: [
+      {
+        id: 1,
+        name: "猫咪粮食",
+        price: "99",
+        description: "高营养猫粮",
+        kind: '猫咪主粮',
+        mediaFiles: [
+          { url: require('@/assets/img/buyer/food-1.jpg'), isActive: true, isVideo: false },
+          { url: require('@/assets/img/buyer/food-2.jpg'), isActive: false, isVideo: false },
+        ],
+      },
+      {
+        id: 2,
+        name: "猫咪玩具",
+        price: "49",
+        description: "好玩的猫咪玩具",
+        kind: '猫咪日用',
+        mediaFiles: [
+          { url: require('@/assets/img/buyer/food-2.jpg'), isActive: true, isVideo: false },
+          { url: require('@/assets/img/buyer/food-1.jpg'), isActive: false, isVideo: false },
+        ],
+      },
+      {
+        id: 3,
+        name: "猫咪窝",
+        price: "299",
+        description: "舒适的猫咪小窝",
+        kind: '猫咪主粮',
+        mediaFiles: [
+          { url: require('@/assets/img/buyer/food-1.jpg'), isActive: true, isVideo: false },
+          { url: require('@/assets/img/buyer/food-2.jpg'), isActive: false, isVideo: false },
+        ],
+      },
+      // ...更多商品
+     ],
      searchQuery: '',
      selectedCategory: '猫咪主粮', // 设置初始值为“猫咪主粮”
      filteredItems: [], // 添加这个新数组
@@ -210,51 +251,6 @@ export default {
         console.error('获取用户数据错误:', error);
         return false;
       }
-    },
-    async fetchgoodListSession() {
-      try {
-        // 发起 GET 请求获取商品列表
-        const goodsResponse = await axios.get('/good/buyer-all-good-list-controll');
-        // 解析响应数据
-        // console.log('goodList:', goodsResponse);
-        const goodList = goodsResponse.data.data;//goodsResponse的数据的data属性
-        // 将商品列表添加到 products 中
-        // 解析picture属性并添加mediaFiles属性
-        //  console.log('goodList:', goodList);
-
-        this.goods = goodList.map( good => {
-          //    console.log('Before trimming:', good.picture); // 添加调试语句
-          const trimmedPicture = good.picture.trim();
-          //     console.log('After trimming:', trimmedPicture); // 添加调试语句
-          const paths = trimmedPicture.split(',');
-          const mediaFiles = paths.map((path, i) => {
-            return {
-              url: path,
-              isActive: i === 0 // 默认第一个是true，其他是false
-            };
-          });
-          return {
-            ...good,
-            mediaFiles,
-            // 保留原始属性
-            goodname: good.goodname.trim(),
-            description: good.description.trim(),
-            price: good.price,
-            number: good.number,
-            kind: good.kind,
-            subkind: good.subkind
-          };
-        });
-        console.log('this.goods:', this.goods);
-        return true;
-      } catch (error) {
-        console.error('获取商品列表数据错误:', error);
-        return false;
-      }
-    },
-    isVideo(media) {
-      //判断是否是视频
-      return media.url.endsWith('.mp4') || media.url.endsWith('.avi');
     },
     async handleLogout() {
       try {

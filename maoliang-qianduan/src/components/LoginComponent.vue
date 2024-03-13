@@ -107,9 +107,11 @@ export default {
         const responseData = await response.json();
 
         if (responseData.page === 'error') {
-          // 如果返回的是原始页面，处理消息并执行相应操作
-          console.log(responseData.msg); // 输出消息
-          // 执行其他操作，例如显示消息给用户
+          // 重定向到错误页面，并将错误消息和重定向目标作为参数传递
+          this.$router.push({ path: '/error', query: { err: responseData.msg, to: responseData.data }})
+        } else if (responseData.page === 'success') {
+          // 重定向到成功界面，并将成功消息和重定向目标作为参数传递
+          this.$router.push({ path: '/success', query: { message: responseData.msg, to: responseData.data }})
         } else if (responseData.page === 'buyer') {// 处理其他情况，例如重定向等
             // 重定向到买家主界面
             this.$router.push({ name: 'BuyerMain' });
@@ -117,7 +119,7 @@ export default {
             // 重定向到卖家主界面
             this.$router.push({ name: 'SellerMain' });
           } else {
-          // 其他情况，可以根据具体需求进行处理
+          // 如果返回的是原始页面，处理消息并执行相应操作
           console.log("未知页面类型");
         }
       } catch (error) {

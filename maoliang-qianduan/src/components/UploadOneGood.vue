@@ -14,8 +14,8 @@
             <!-- 预览窗口 -->
             <div v-if="selectedFiles.length > 0">
               <div v-for="(file, index) in selectedFiles" :key="index" v-show="index === currentPreviewIndex">
-                <img v-if="file.isImage" :src="file.url" alt="预览图">
-                <video v-else controls :src="file.url"></video>
+                <img v-if="isImage(file)" :src="getURL(file)" alt="预览图">
+                <video v-else controls :src="getURL(file)"></video>
                 <button @click="removeFile(index)">X</button>
               </div>
             </div>
@@ -52,13 +52,13 @@
             </div>
             <div class="form-group">
               <label for="price">商品价格：</label>
-              <input type="text" v-model="price" placeholder="请输入商品价格" required><br><br>
+              <input type="number" v-model="price" placeholder="请输入商品价格" required><br><br>
               <span v-if="errors.price" class="error">{{ errors.price }}</span>
             </div>
 
             <div class="form-group">
               <label for="stock">商品库存：</label>
-              <input type="text" v-model="stock" placeholder="请输入商品库存" required><br><br>
+              <input type="number" v-model="stock" placeholder="请输入商品库存" required><br><br>
               <span v-if="errors.stock" class="error">{{ errors.stock }}</span>
             </div>
 
@@ -107,9 +107,11 @@ export default {
         stock: null,
         description: null
       },
+      currentUser:null,
     };
   },
   methods: {
+
     updateSubcategories() {
       // 根据selectedKind更新subkinds数组
       if (this.selectedKind === '猫咪主粮') {
@@ -126,7 +128,7 @@ export default {
           this.selectedSubkind = '';
       }
     },
-    submitForm() {
+    async submitForm() {
       // 在这里处理表单提交逻辑
       // 验证商品名称长度
       if (this.goodName.length > 20) {
@@ -158,30 +160,64 @@ export default {
         return;
       }
 
-      // 如果验证通过，则添加商品
-      const newProduct = {
-        name: this.goodName,
-        price: this.price,
-        stock: this.stock,
-        description: this.description,
-        kind: this.selectedKind,
-        subkind: this.selectedSubkind,
-        // 可以添加更多属性，如图片等
-      };
-      this.products.push(newProduct); // 将新商品添加到数组
+      const formData = new FormData();
 
-      alert("商品已添加"); // 提示用户
+      // 添加newProduct数据到FormData对象
+      formData.append('goodname', this.goodName);
+      formData.append('price', this.price);
+      formData.append('number', this.stock);
+      formData.append('description', this.description);
+      formData.append('kind', this.selectedKind);
+      formData.append('subkind', this.selectedSubkind);
+
+      // 添加MultipartFile文件数据到FormData对象
+      this.selectedFiles.forEach(file => {
+        formData.append('mediaFiles', file);
+      //  console.log(file);
+      });
+
+  //    console.log(this.selectedFiles.length);
+   //   console.log(formData);
+
+      // 发起fetch请求
+      const response = await fetch('/good/upload-good', {
+        method: 'POST',
+        body: formData
+      });
+
+      this.selectedFiles = []; // 清空照片列表
+
+      // 解析响应数据
+      const responseData = await response.json();
+
+      if (responseData.page === 'error') {
+        // 重定向到错误页面，并将错误消息和重定向目标作为参数传递
+        this.$router.push({ path: '/error', query: { err: responseData.msg, to: responseData.data }})
+      } else if (responseData.page === 'success') {
+        // 重定向到成功界面，并将成功消息和重定向目标作为参数传递
+        this.$router.push({ path: '/success', query: { message: responseData.msg, to: responseData.data }})
+      } else if (responseData.page === 'upload-multiplegoods') {// 处理其他情况，例如重定向等
+        this.$router.push({ name: 'UploadMultipleGoods' });
+      } else if (responseData.page === 'upload-good') {
+        this.$router.push({ name: 'UploadOneGood' });
+      } else {
+        // 如果返回的是原始页面，处理消息并执行相应操作
+        console.log("未知页面类型");
+      }
     },
     isImage(file) {
-      return !(file && file.type) || file && file.type && file.type.startsWith('image/');
+      return file && file.type && file.type.startsWith('image/');
+    },
+    getURL(file){
+      return URL.createObjectURL(file);
     },
     handleFileChange(event) {
       const files = Array.from(event.target.files);
-
+      // console.log(files);
       // 检查文件类型
       const validTypes = ['image/png', 'image/jpeg', 'video/mp4'];
       const validFiles = files.filter(file => validTypes.includes(file.type));
-
+      console.log(validFiles);
       // 如果有不支持的文件类型，提醒用户并返回
       if (validFiles.length < files.length) {
         alert("不支持的文件格式。请上传png、jpg或mp4格式的文件。");
@@ -213,15 +249,11 @@ export default {
         return;
       }
 
-      // 创建 URL 并更新 selectedFiles 数组
-      const selectedFilesWithUrls = validFiles.map(file => ({
-        ...file,
-        url: URL.createObjectURL(file),
-        isImage: file.type.startsWith('image/')
-      }));
+    //  console.log(validFiles);
 
       // 更新selectedFiles数组，只包含到3个文件的限制
-      this.selectedFiles = [...this.selectedFiles, ...selectedFilesWithUrls];
+      this.selectedFiles = [...this.selectedFiles, ...validFiles];
+   //   console.log(this.selectedFiles);
 
       // 更新input file控件以反映文件的更改
       if (this.selectedFiles.length === 3) {
@@ -245,7 +277,7 @@ export default {
       this.$router.go(-1);
     },
     removeFile(index) {
-      URL.revokeObjectURL(this.selectedFiles[index].url); // 释放内存中的URL
+      URL.revokeObjectURL(this.selectedFiles[index]); // 释放内存中的URL
       this.selectedFiles.splice(index, 1); // 从数组中移除选定文件
 
       // 如果现在少于3个文件，确保input是可用的

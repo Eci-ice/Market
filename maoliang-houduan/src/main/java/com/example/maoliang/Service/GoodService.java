@@ -25,14 +25,31 @@ public class GoodService {
         goodRepository.modifylike(goodId, userId, nowLike); // 根据 nowLike 参数执行相应操作
     }
 
-    public List<Good> showBuyerAll(int userId) {
-        return goodListRepository.showbuyerall(userId);
-    }
     public List<Good> showNowGoods(){
         return goodListRepository.shownow();
     }
 
     public List<Good> showAllGoods(int userId) {
         return goodListRepository.showall(userId);
+    }
+
+    public List<Good> showAllHistoryGoods(int userId) {
+        return goodListRepository.showhistoryall(userId);
+    }
+
+    public List<Good> showBuyerAll(int userId) {
+        return goodListRepository.showbuyerall(userId);
+    }
+
+    public List<Good> showSearchGoods(String keyword,String kind,int power,int userid,int ishistory) {
+        return goodListRepository.searchls(keyword,kind,power,userid,ishistory);
+    }
+
+    public int isUnique(String name) {
+        return goodRepository.unique(name);
+    }
+
+    public void add(Good g) {
+        goodRepository.add(g);
     }
 }

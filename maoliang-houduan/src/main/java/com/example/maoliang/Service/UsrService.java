@@ -21,20 +21,29 @@ public class UsrService {
     private UsrRepository usrRepository;
 
     @Autowired
-    UsrListRepository goodListRepository;
+    UsrListRepository usrListRepository;
 
     public Usr search(String username) throws SQLException {
         Usr usr=usrRepository.search(username);
 //        System.out.println(usr.getUserid());
         return usr;
     }
+
+    public void modifyPwd(String username,String password) throws SQLException {
+        usrRepository.modifyPwd(username,password);
+//        System.out.println(usr.getUserid());
+    }
+
+    public List<Usr> loadBuyer() throws  SQLException {
+        return usrListRepository.loadBuyer();
+    }
+
     public boolean searchName(String username) throws SQLException {
         return usrRepository.searchName(username);
     }
 
-
-    public List<Usr> loadBuyer() throws  SQLException {
-        return usrRepository.loadBuyer();
+    public void register(Usr usr) throws SQLException {
+        usrRepository.register(usr);
     }
 
 }
