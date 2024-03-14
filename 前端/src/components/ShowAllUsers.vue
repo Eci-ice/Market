@@ -1,5 +1,5 @@
 <template>
-<!--  <div v-if="isLoggedIn">-->
+  <div v-if="isLoggedIn">
     <div id="a">
       <div class="container">
         <div class="centered-container">
@@ -29,10 +29,10 @@
         </div>
       </div>
     </div>
-<!--  </div>-->
-<!--  <div v-else class="else">-->
-<!--    <span>您还未登录，请先<a href="/login">登录</a></span>-->
-<!--  </div>-->
+  </div>
+  <div v-else class="else">
+    <span>您还未登录，请先<a href="/">登录</a></span>
+  </div>
 </template>
 
 <script>
@@ -67,9 +67,9 @@ export default {
         // 发起 GET 请求到后端接口
         const response = await axios.get('/now-usr');
         // 解析响应数据
-        const usr = response.data;
+        const getUsr = response.data;
         // 更新组件的 currentUser 数据
-        this.currentUser = usr;
+        this.currentUser = getUsr;
 
         return true;
       } catch (error) {
@@ -94,6 +94,7 @@ export default {
     }
   },
   mounted() {
+    this.fetchUsrFromSession(); // 获取当前用户数据
     this.fetchUsers();
   },
 };
