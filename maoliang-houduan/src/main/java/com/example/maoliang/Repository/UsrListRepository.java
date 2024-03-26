@@ -20,6 +20,17 @@ public class UsrListRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    public List<Usr> loadBuyer() {
+        String sql = "SELECT * FROM MLuser WHERE power=0";
+        try {
+
+            return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Usr.class));
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+
+
+    }
 
     public List<Usr> searchAllUsers() throws SQLException {
         String sql = "SELECT * FROM MLuser";

@@ -10,13 +10,13 @@
       </div>
       <div class="form-group">
         <label for="price">商品价格：</label>
-        <input type="number" v-model="price" placeholder="请输入商品价格" required>
+        <input type="text" v-model="price" placeholder="请输入商品价格" required>
         <span v-if="errors.price" class="error">{{ errors.price }}</span>
       </div>
 
       <div class="form-group">
         <label for="stock">商品数量：</label>
-        <input type="number" v-model="stock" placeholder="请输入商品库存" required>
+        <input type="text" v-model="stock" placeholder="请输入商品库存" required>
         <span v-if="errors.stock" class="error">{{ errors.stock }}</span>
       </div>
 
@@ -42,8 +42,8 @@
           <!-- 预览窗口 -->
           <div v-if="selectedFiles.length > 0">
             <div v-for="(file, index) in selectedFiles" :key="index" v-show="index === currentPreviewIndex">
-              <img v-if="isImage(file)" :src="getURL(file)" alt="预览图">
-              <video v-else controls :src="getURL(file)"></video>
+              <img v-if="file.isImage" :src="file.url" alt="预览图">
+              <video v-else controls :src="file.url"></video>
               <button @click="removeFile(index)">X</button>
             </div>
           </div>
@@ -84,8 +84,8 @@
         <td>{{ product.description }}</td>
         <td>
           <div v-for="(file, fileIndex) in product.mediaFiles" :key="fileIndex">
-            <img v-if="isImage(file)" :src="getURL(file)" alt="Image view" style="max-width: 100px; max-height: 100px; object-fit: contain;">
-            <video v-else controls :src="getURL(file)" style="max-width: 100px; max-height: 100px;"></video>
+            <img v-if="file.isImage" :src="file.url" alt="Image Preview" style="max-width: 100px; max-height: 100px; object-fit: contain;">
+            <video v-else controls :src="file.url" style="max-width: 100px; max-height: 100px;"></video>
           </div>
         </td>
         <td>{{ product.kind }}</td>
@@ -102,12 +102,11 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   data() {
     return {
       products: [], // 用于存储商品的数组
+      isLoggedIn: true,
       goodName: '',
       price: '',
       stock: '',
@@ -130,45 +129,9 @@ export default {
         stock: '',
         description: ''
       },
-      formData: new FormData(),
-      currentUser:null,
     };
   },
-  created() {
-    this.fetchUsrFromSession();
-  },
-  mounted() {
-    // 初始化默认选项
-    this.updateSubcategories();
-  },
-  computed: {
-    isLoggedIn() {
-      // 根据当前用户数据判断用户是否登录
-      return !!this.currentUser;
-    },
-    currentFile() {
-      return this.selectedFiles[this.currentPreviewIndex];
-    },
-    isFileInputDisabled() {
-      return this.selectedFiles.length >= 3;
-    },
-  },
   methods: {
-    async fetchUsrFromSession() {
-      try {
-        // 发起 GET 请求到后端接口
-        const response = await axios.get('/now-usr');
-        // 解析响应数据
-        const usr = response.data;
-        // 更新组件的 currentUser 数据
-        this.currentUser = usr;
-
-        return true;
-      } catch (error) {
-        console.error('获取用户数据错误:', error);
-        return false;
-      }
-    },
     addProduct() {
       // 在这里处理表单提交逻辑
       // 验证商品名称长度
@@ -208,16 +171,12 @@ export default {
         stock: this.stock,
         description: this.description,
         kind: this.selectedKind,
-        subkind: this.selectedSubkind
+        subkind: this.selectedSubkind,
+        mediaFiles: this.selectedFiles.map(f => ({ url: f.url, isImage: f.isImage }))
       };
 
       // 添加商品到列表
       this.productList.push(newProduct);
-
-      // 将商品的媒体文件添加到 FormData 对象中
-      this.selectedFiles.forEach((file, index) => {
-        this.formData.append(`mediaFiles-${this.goodName}-${index}`, file);
-      });
 
       // 清空输入
       this.goodName = '';
@@ -229,10 +188,7 @@ export default {
       alert("商品已添加"); // 提示用户
     },
     isImage(file) {
-      return file && file.type && file.type.startsWith('image/');
-    },
-    getURL(file){
-      return URL.createObjectURL(file);
+      return !(file && file.type) || file && file.type && file.type.startsWith('image/');
     },
     updateSubcategories() {
       // 根据selectedKind更新subkinds数组
@@ -288,9 +244,15 @@ export default {
         return;
       }
 
+      // 创建 URL 并更新 selectedFiles 数组
+      const selectedFilesWithUrls = validFiles.map(file => ({
+        ...file,
+        url: URL.createObjectURL(file),
+        isImage: file.type.startsWith('image/')
+      }));
 
       // 更新selectedFiles数组，只包含到3个文件的限制
-      this.selectedFiles = [...this.selectedFiles, ...validFiles];
+      this.selectedFiles = [...this.selectedFiles, ...selectedFilesWithUrls];
 
       // 更新input file控件以反映文件的更改
       if (this.selectedFiles.length === 3) {
@@ -314,7 +276,7 @@ export default {
       this.$router.go(-1);
     },
     removeFile(index) {
-      URL.revokeObjectURL(this.selectedFiles[index]); // 释放内存中的URL
+      URL.revokeObjectURL(this.selectedFiles[index].url); // 释放内存中的URL
       this.selectedFiles.splice(index, 1); // 从数组中移除选定文件
 
       // 如果现在少于3个文件，确保input是可用的
@@ -334,50 +296,26 @@ export default {
         console.error('未找到文件输入框。');
       }
     },
-    async submitProducts() {
-        // FormData 对象 在data()中
+    submitProducts() {
+      console.log('提交的产品:', this.productList);
 
-      // 遍历商品列表
-      this.productList.forEach(product => {
-          // 将商品信息添加到 FormData 对象中
-        this.formData.append('goodName', product.goodName);
-        this.formData.append('description', product.description);
-        this.formData.append('price', product.price);
-        this.formData.append('number', product.stock);
-        this.formData.append('kind', product.kind);
-        this.formData.append('subkind', product.subkind);
-          // 媒体文件在添加文件时定义
-        });
-      try {
-        // 使用 fetch API 发送 POST 请求
-        const response = await fetch('/good/upload-multiple-goods', {
-          method: 'POST',
-          body: this.formData
-        });
+      // 模拟异步请求
+      new Promise((resolve) => {
+        setTimeout(() => {
+          resolve('提交成功');
+        }, 2000); // 模拟2秒的网络延迟
+      })
+      .then((message) => {
+        console.log(message);
+        // 这里可以执行提交成功后的操作
         this.productList = []; // 清空产品列表
-
-        // 解析响应数据
-        const responseData = await response.json();
-
-        if (responseData.page === 'error') {
-          // 重定向到错误页面，并将错误消息和重定向目标作为参数传递
-          this.$router.push({ path: '/error', query: { err: responseData.msg, to: responseData.data }})
-        } else if (responseData.page === 'success') {
-          // 重定向到成功界面，并将成功消息和重定向目标作为参数传递
-          this.$router.push({ path: '/success', query: { message: responseData.msg, to: responseData.data }})
-        } else if (responseData.page === 'upload-multiplegoods') {// 处理其他情况，例如重定向等
-          this.$router.push({ name: 'UploadMultipleGoods' });
-        } else if (responseData.page === 'upload-good') {
-          this.$router.push({ name: 'UploadOneGood' });
-        } else {
-          // 如果返回的是原始页面，处理消息并执行相应操作
-          console.log("未知页面类型");
-        }
-      } catch (error) {
-        // 错误处理
+        alert('所有商品已成功发布！');
+      })
+      .catch((error) => {
         console.error('模拟错误:', error);
+        // 错误处理
         alert('发布商品时发生错误。');
-      }
+      });
     },
     prevImage() {
       // 显示上一张图片的逻辑
@@ -393,7 +331,18 @@ export default {
     }
     // 其他方法
   },
-
+  mounted() {
+    // 初始化默认选项
+    this.updateSubcategories();
+  },
+  computed: {
+    currentFile() {
+      return this.selectedFiles[this.currentPreviewIndex];
+    },
+    isFileInputDisabled() {
+      return this.selectedFiles.length >= 3;
+    },
+  },
 };
 </script>
 

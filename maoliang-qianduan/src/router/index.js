@@ -58,7 +58,7 @@ const routes = [
       {
         path: 'show-userinfo',
         name: 'ShowUserInfo',
-        component: ShowUserInfo
+        component: ShowUserInfo,
       },
       {
         path: ':userId/user-order-history',

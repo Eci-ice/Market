@@ -83,7 +83,6 @@
 
 <script>
 import PriceModal from './PriceModal.vue';
-import axios from "axios";
 
 export default {
     components: {
@@ -91,108 +90,52 @@ export default {
     },
     data() {    
     return {
+      isLoggedIn: true, // 这应该来自 Vuex store 或父组件
       searchQuery: '', // 默认选中的分类
       showPriceModal: false, // 控制 PriceModal 的显示
       selectedGood: null, // 当前选中的商品对象
       showModal: false,  // 初始化为 false 或根据需要设置初始值
       selectedCategory: '猫咪主粮', // 初始化为空字符串或其他初始值
       currentPage: 1,
-      pageSize: 6, // 每页显示的商品数量
+      pageSize: 1, // 每页显示的商品数量
       filteredGoods: [],
-      isHistory: 0, // 这个值可以根据需要在data中定义，或者在方法中直接使用
+      isHistory: '0', // 这个值可以根据需要在data中定义，或者在方法中直接使用
       showSuccessMessage: false,
       successMessage: '',
-      goods: [],
-      currentUser:null,
+      goods: [
+        {
+            goodid: 1,
+            goodname: '猫粮',
+            description: '营养全面',
+            number: 10,
+            price: 100.0,
+            state: 0,   
+            kind: '猫咪主粮',
+            mediaFiles: [
+                { url: require('@/assets/img/buyer/food-1.jpg'), isActive: true },
+                { url: require('@/assets/img/buyer/food-2.jpg'), isActive: false },
+                // ... 其他媒体文件 ...
+            ],
+        },
+        {
+            goodid: 2,
+            goodname: '猫砂',
+            description: '吸水性强',
+            number: 20,
+            price: 50.0,
+            state: 0,
+            kind: '猫咪日用',
+            mediaFiles: [
+                { url: require('@/assets/img/buyer/food-2.jpg'), isActive: true },
+                { url: require('@/assets/img/buyer/food-1.jpg'), isActive: false },
+                // ... 其他媒体文件 ...
+            ],
+            }
+        // ...更多商品数据
+        ],
     };
   },
-  created() {
-    this.fetchUsrFromSession();
-    this.fetchgoodListSession();
-  },
-  computed: {
-    isLoggedIn() {
-      // 根据当前用户数据判断用户是否登录
-      return !!this.currentUser;
-    },
-    // 计算当前页的商品
-    paginatedGoods() {
-      const start = (this.currentPage - 1) * this.pageSize;
-      const end = start + this.pageSize;
-      return this.filteredGoods.slice(start, end);
-    },
-    // 计算总页数
-    totalPages() {
-      return Math.ceil(this.filteredGoods.length / this.pageSize);
-    }
-  },
-  async mounted() {
-    console.log('ShowGoods 组件已挂载');
-    await this.fetchgoodListSession(); // 等待 fetchgoodListSession 完成!!
-    // 示例：假设从后端获取成功消息
-    // 在实际应用中，您可能需要在某个操作成功后调用 showSuccessModal
-    this.filteredGoods = this.goods; // 初始时显示所有商品
-    console.log('this.filteredGoods:', this.filteredGoods);
-    this.showSuccessModal('价格修改成功！');
-  },
-
   methods: {
-    async fetchUsrFromSession() {
-      try {
-        // 发起 GET 请求到后端接口
-        const response = await axios.get('/now-usr');
-        // 解析响应数据
-        const usr = response.data;
-        // 更新组件的 currentUser 数据
-        this.currentUser = usr;
-
-        return true;
-      } catch (error) {
-        console.error('获取用户数据错误:', error);
-        return false;
-      }
-    },
-    async fetchgoodListSession() {
-      try {
-        // 发起 GET 请求获取商品列表
-        const goodsResponse = await axios.get('/good/seller-all-good-list-control');
-        // 解析响应数据
-       // console.log('goodList:', goodsResponse);
-        const goodList = goodsResponse.data.data;//goodsResponse的数据的data属性
-        // 将商品列表添加到 products 中
-        // 解析picture属性并添加mediaFiles属性
-      //  console.log('goodList:', goodList);
-
-        this.goods = goodList.map( good => {
-      //    console.log('Before trimming:', good.picture); // 添加调试语句
-          const trimmedPicture = good.picture.trim();
-     //     console.log('After trimming:', trimmedPicture); // 添加调试语句
-          const paths = trimmedPicture.split(',');
-          const mediaFiles = paths.map((path, i) => {
-            return {
-              url: path,
-              isActive: i === 0 // 默认第一个是true，其他是false
-            };
-          });
-          return {
-            ...good,
-            mediaFiles,
-            // 保留原始属性
-            goodname: good.goodname.trim(),
-            description: good.description.trim(),
-            price: good.price,
-            number: good.number,
-            kind: good.kind,
-            subkind: good.subkind
-          };
-        });
-        console.log('this.goods:', this.goods);
-        return true;
-      } catch (error) {
-        console.error('获取商品列表数据错误:', error);
-        return false;
-      }
-    },
     showPrevMedia(good) {
         const currentIndex = good.mediaFiles.findIndex(media => media.isActive);
         console.log('Current active index:', currentIndex);
@@ -305,7 +248,18 @@ export default {
         return stateMap[value] || '未知';
     },
   },
-
+  computed: {
+    // 计算当前页的商品
+    paginatedGoods() {
+        const start = (this.currentPage - 1) * this.pageSize;
+        const end = start + this.pageSize;
+        return this.filteredGoods.slice(start, end);
+    },
+    // 计算总页数
+    totalPages() {
+        return Math.ceil(this.filteredGoods.length / this.pageSize);
+    }
+  },
   watch: {
     // 监视搜索结果的变化
     filteredGoods(newValue, oldValue) {
@@ -313,6 +267,13 @@ export default {
             this.resetPage();
         }
     }
+  },
+  mounted() {
+    console.log('ShowGoods 组件已挂载');
+    // 示例：假设从后端获取成功消息
+    // 在实际应用中，您可能需要在某个操作成功后调用 showSuccessModal
+    this.filteredGoods = this.goods; // 初始时显示所有商品
+    this.showSuccessModal('价格修改成功！');
   }
 };
 </script>

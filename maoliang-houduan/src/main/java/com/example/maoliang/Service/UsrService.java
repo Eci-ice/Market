@@ -37,7 +37,7 @@ public class UsrService {
         return ;
     }
     public List<Usr> loadBuyer() throws  SQLException {
-        return usrRepository.loadBuyer();
+        return usrListRepository.loadBuyer();
     }
 
     public List<Usr> showAllUsers() throws SQLException {

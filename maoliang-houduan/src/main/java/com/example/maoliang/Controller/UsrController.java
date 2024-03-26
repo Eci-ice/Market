@@ -112,7 +112,7 @@ public class UsrController {
     }
     @RequestMapping("/UserOrderHistory-control")
     public Result UserOrderHistoryController(@RequestParam ("power") int power,@RequestParam("userid") int userid){
-        System.out.println("对");
+
         return new Result(SUCCESS_PAGE,"查询用户购买历史记录列表成功",usrService.showUserOrderHistory(power,userid));
     }
 

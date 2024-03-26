@@ -12,11 +12,11 @@
             <th>用户名</th>
             <th>操作</th>
           </tr>
-          <tr v-for="buyer in paginatedUsers" :key="buyer.userid">
-            <td>{{ buyer.userid }}</td>
-            <td>{{ buyer.username }}</td>
+          <tr v-for="user in paginatedUsers" :key="user.userid">
+            <td>{{ user.userid }}</td>
+            <td>{{ user.username }}</td>
             <td>
-              <router-link :to="{ name: 'UserOrderHistory', props: [buyer.userid] }">
+              <router-link :to="{ name: 'UserOrderHistory', params: { userId: user.userid } }">
                 查看购买历史
               </router-link>
             </td>
@@ -31,50 +31,65 @@
     </div>
   </div>
   <div v-else class="else">
-    <span>您还未登录，请先<a href="/">登录</a></span>
+    <span>您还未登录，请先<a href="/login">登录</a></span>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios'; // 确保已经安装并导入axios
 
 export default {
   data() {
     return {
-      currentUser : null,
+      isLoggedIn: false, // 一开始设为false，等到验证后可能会改变
       currentPage: 1,
+      users: [], // 从后端获取的用户数据将存储在这里
       pageSize: 5,
-      users: [], // 存储所有用户
+      currentUser: null,
+      filteredUsers: [], // 存储过滤后的用户
     };
   },
   computed: {
-    isLoggedIn() {
-      // 根据当前用户数据判断用户是否登录
-      return !!this.currentUser;
-    },
     paginatedUsers() {
       const start = (this.currentPage - 1) * this.pageSize;
       const end = start + this.pageSize;
-      return this.users.slice(start, end);
+      return this.filteredUsers.slice(start, end);
     },
     totalPages() {
-      return Math.ceil(this.users.length / this.pageSize);
+      return Math.ceil(this.filteredUsers.length / this.pageSize);
     },
   },
   methods: {
+    async fetchUsers() {
+      try {
+        var power = this.currentUser.power;
+
+        const response = await axios.get('/usr/UserList-control', {
+          params: { power: power }
+        });
+
+        if (response.data) {
+          this.users = response.data.data;
+          this.filteredUsers = this.users;
+          console.log("获取用户列表成功")
+        } else {
+          console.error("获取用户列表失败");
+        }
+      } catch (error) {
+        console.error('请求用户列表错误', error);
+      }
+    }
+    ,
     async fetchUsrFromSession() {
       try {
-        // 发起 GET 请求到后端接口
         const response = await axios.get('/now-usr');
-        // 解析响应数据
-        const getUsr = response.data;
-        // 更新组件的 currentUser 数据
-        this.currentUser = getUsr;
-
-        return true;
+        this.currentUser = response.data;
+        if (this.currentUser) {
+          this.isLoggedIn = true;
+        }
       } catch (error) {
         console.error('获取用户数据错误:', error);
-        return false;
+        this.isLoggedIn = false;
       }
     },
     goToPrevPage() {
@@ -83,22 +98,20 @@ export default {
     goToNextPage() {
       if (this.currentPage < this.totalPages) this.currentPage++;
     },
-    fetchUsers() {
-      axios.post('http://localhost:8080/buyer/allBuyer').then(response => {
-          this.users = response.data.data;
-          console.log(response.data);
-        }).catch(error => {
-          // 错误处理函数
-          console.error('There was an error!', error);
-        });
-    }
   },
   mounted() {
-    this.fetchUsrFromSession(); // 获取当前用户数据
-    this.fetchUsers();
+    this.fetchUsrFromSession().then(() => {
+      if (this.isLoggedIn) {
+        this.fetchUsers();
+      }
+    });
   },
 };
 </script>
+
+<!-- 未登录框和其他样式 -->
+
+
 
 <!-- 未登录框 -->
 <style type="text/css" scoped>
@@ -109,14 +122,15 @@ export default {
   transform: translate(-50%, -50%);
   width: 450px;
   padding: 30px;
-  background: rgba(224, 224, 224, 0.8);
+  background: rgba(224, 224, 224, .8);
   box-sizing: border-box;
-  box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 15px 25px rgba(0, 0, 0, .5);
   border-radius: 16px;
   text-align: center;
   font-family: KaiTi;
   font-size: 26px;
 }
+
 a {
   text-decoration: none;
 }
@@ -125,6 +139,7 @@ a {
 .centered-container {
   text-align: center;
 }
+
 .container {
   font-family: Arial, sans-serif;
   width: 80%;
@@ -198,24 +213,30 @@ img {
 .history-btn a:hover {
   text-decoration: none;
 }
+
 .left-btn-container {
   margin-right: auto;
   display: flex;
   align-items: center;
 }
+
 form {
-  display: flex; /* 让表单内的元素在同一行显示 */
+  display: flex;
+  /* 让表单内的元素在同一行显示 */
 }
 
 input[type="text"] {
-  flex-grow: 1; /* 让搜索框占据剩余的空间 */
+  flex-grow: 1;
+  /* 让搜索框占据剩余的空间 */
 }
+
 input[name="keyword"] {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
 #search_list {
   position: fixed;
   top: 140px;
@@ -224,20 +245,30 @@ input[name="keyword"] {
   background-color: white;
 }
 
+
 #search_list div {
   border-bottom: 1px solid black;
 }
 
+
+
 .modal {
-  display: none; /* 默认隐藏 */
-  position: fixed; /* 固定在页面上 */
-  z-index: 1; /* 处于顶层 */
+  display: none;
+  /* 默认隐藏 */
+  position: fixed;
+  /* 固定在页面上 */
+  z-index: 1;
+  /* 处于顶层 */
   left: 0;
   top: 0;
-  width: 100%; /* 宽度为整个屏幕 */
-  height: 100%; /* 高度为整个屏幕 */
-  overflow: auto; /* 如果内容过多则启用滚动条 */
-  background-color: rgba(0, 0, 0, 0.4); /* 半透明的黑色背景 */
+  width: 100%;
+  /* 宽度为整个屏幕 */
+  height: 100%;
+  /* 高度为整个屏幕 */
+  overflow: auto;
+  /* 如果内容过多则启用滚动条 */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* 半透明的黑色背景 */
   padding-top: 60px;
 }
 
@@ -271,9 +302,15 @@ input[name="keyword"] {
 }
 
 .price-modal-content {
-  background-image: url("@/assets/img/a.jpg"); /* 更改为您自己的图片路径 */
-  background-size: cover; /* 调整背景图片大小以填充整个容器 */
-  background-position: center; /* 居中显示背景图片 */
-  opacity: 1; /* 调整透明度（0.8表示80%的不透明度） */
+  background-image: url('@/assets/img/a.jpg');
+  /* 更改为您自己的图片路径 */
+  background-size: cover;
+  /* 调整背景图片大小以填充整个容器 */
+  background-position: center;
+  /* 居中显示背景图片 */
+  opacity: 1;
+  /* 调整透明度（0.8表示80%的不透明度） */
+
+
 }
 </style>

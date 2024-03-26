@@ -17,7 +17,7 @@
         <router-link to="/forgot-password" class="forgot-password">忘记密码?</router-link>
         <div class="image-buttons">
           <button class="butt-1" type="submit">登录</button>
-          <router-link to="/register" class="butt-1">注册</router-link>
+          <router-link to="/choose-register" class="butt-1">注册</router-link>
           <router-link to="/buyer" class="butt-1">游客访问</router-link>
         </div>
       </form>
@@ -52,6 +52,7 @@ export default {
 
   created() {
     this.fetchUsrFromSession();
+    
   },
   computed: {
     isLoggedIn() {
@@ -60,7 +61,7 @@ export default {
     },
     isSeller() {
       // 根据当前用户数据判断用户是否是卖家
-      return this.currentUser && this.currentUser.power === 1;
+      return this.currentUser && this.currentUser.power=== 1;
     },
     // 判断用户是否是买家的方法
     isBuyer() {
@@ -76,19 +77,16 @@ export default {
   methods: {
     async fetchUsrFromSession() {
       try {
-        // 发起 GET 请求到后端接口
         const response = await axios.get('/now-usr');
-        // 解析响应数据
-        const usr = response.data;
-        // 更新组件的 currentUser 数据
-        this.currentUser = usr;
-
-        return true;
+        this.currentUser = response.data;
+        if (this.currentUser) {
+          this.isLoggedIn = true;
+        }
       } catch (error) {
         console.error('获取用户数据错误:', error);
-        return false;
-      }
-    },
+        this.isLoggedIn = false;
+      }}
+    ,
     async handleLogin() {
       try {
         const credentials = {
@@ -107,11 +105,9 @@ export default {
         const responseData = await response.json();
 
         if (responseData.page === 'error') {
-          // 重定向到错误页面，并将错误消息和重定向目标作为参数传递
-          this.$router.push({ path: '/error', query: { err: responseData.msg, to: responseData.data }})
-        } else if (responseData.page === 'success') {
-          // 重定向到成功界面，并将成功消息和重定向目标作为参数传递
-          this.$router.push({ path: '/success', query: { message: responseData.msg, to: responseData.data }})
+          // 如果返回的是原始页面，处理消息并执行相应操作
+          console.log(responseData.msg); // 输出消息
+          // 执行其他操作，例如显示消息给用户
         } else if (responseData.page === 'buyer') {// 处理其他情况，例如重定向等
             // 重定向到买家主界面
             this.$router.push({ name: 'BuyerMain' });
@@ -119,7 +115,7 @@ export default {
             // 重定向到卖家主界面
             this.$router.push({ name: 'SellerMain' });
           } else {
-          // 如果返回的是原始页面，处理消息并执行相应操作
+          // 其他情况，可以根据具体需求进行处理
           console.log("未知页面类型");
         }
       } catch (error) {

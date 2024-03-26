@@ -81,7 +81,6 @@ public class UsrRepository {
     public void register(Usr usr) throws SQLException {
         String sql = "INSERT INTO MLuser (username, pwd, power, question, answer) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, usr.getUsername(), usr.getPwd(), usr.getPower(), usr.getQuestion(), usr.getAnswer());
-
         if (usr.getPower() == 0) { // 买家
             Integer userId = jdbcTemplate.queryForObject("SELECT MAX(userid) FROM MLuser", Integer.class);
             if (userId != null) {

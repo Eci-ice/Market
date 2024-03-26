@@ -1,6 +1,7 @@
 package com.example.maoliang.Controller;
 
 
+import com.example.maoliang.Controller.utils.Result;
 import com.example.maoliang.Entity.Good;
 import com.example.maoliang.Entity.Usr;
 import com.example.maoliang.Service.GoodService;
@@ -17,8 +18,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.example.maoliang.Controller.utils.Page.SUCCESS_PAGE;
+import static com.example.maoliang.Controller.utils.Page.ERROR_PAGE;
+
 @RestController
-@RequestMapping( "/order/*")
+@RequestMapping("/order/*")
 public class OrderController {
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderController.class);
     @Autowired
@@ -26,5 +30,33 @@ public class OrderController {
     @Autowired
     public HttpSession session;
 
-    //order相关的servlet
+    @RequestMapping("/showorderinfo-control")
+    public Result showOrderInfoControl( ) {
+        return new Result(SUCCESS_PAGE, "查看意向订单成功", orderService.showOrderInformation());
+    }
+
+    @RequestMapping("/deleteorder-control")
+    public Result deleteorderControl(@RequestParam("orderid") int orderid, @RequestParam("orderstate") int orderstate) {
+        boolean f = orderService.deleteOrder(orderid, orderstate);
+        if (f) {
+            return new Result(SUCCESS_PAGE, "取消订单成功", orderService.deleteOrder(orderid, orderstate));
+        } else {
+            return new Result(ERROR_PAGE, "取消订单失败", orderService.deleteOrder(orderid, orderstate));
+        }
+
+    }
+
+    @RequestMapping("/confirmorder-control")
+    public Result confirmorderControl(@RequestParam("orderid") int orderid, @RequestParam("orderstate") int orderstate) {
+        boolean f = orderService.confirmOrder(orderid, orderstate);
+        if (f) {
+            return new Result(SUCCESS_PAGE, "确认订单成功", orderService.confirmOrder(orderid, orderstate));
+
+        } else {
+            return new Result(ERROR_PAGE, "确认订单失败", orderService.confirmOrder(orderid, orderstate));
+        }
+
+    }
+
+
 }
