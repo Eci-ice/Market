@@ -24,14 +24,14 @@ public class GoodRepository{
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         String insertHistorySql = "INSERT INTO MLhistorygood (goodid, goodname, description, price, picture, number, kind, subkind, createdate, owner) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+      //  System.out.println(good);
         try {
             jdbcTemplate.update(insertGoodSql, good.getGoodname(), good.getDescription(), good.getPrice(),
                     good.getPicture(), good.getState(), good.getNumber(), good.getKind(), good.getSubkind(),
                     good.getOwner());
 
-            // 查询刚插入的商品的id
-            Integer goodId = jdbcTemplate.queryForObject("SELECT last_insert_rowid()", Integer.class);
+            // 查询刚插入的商品的id 因为是自增，所以是最大
+            Integer goodId = jdbcTemplate.queryForObject("SELECT MAX(goodid) FROM MLgood", Integer.class);
 
             // 获取当前时间
             LocalDateTime currentTime = LocalDateTime.now();

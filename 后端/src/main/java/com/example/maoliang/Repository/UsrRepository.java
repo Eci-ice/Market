@@ -27,21 +27,12 @@ public class UsrRepository {
         List<Map<String, Object>> resultList = jdbcTemplate.queryForList(sql, username);
         return !resultList.isEmpty();
     }
-    public List<Usr> loadBuyer(){
-        String sql = "SELECT * FROM MLuser WHERE power=0";
-        try {
-//            BeanPropertyRowMapper.newInstance  查询结果映射到Usr的实例
-            return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Usr.class));
-        } catch (EmptyResultDataAccessException e) {
-            // 如果查询结果为空，返回 null
-            return null;
-        }
-    }
 
 
     public Usr search(String username) throws SQLException {
         String sql = "SELECT * FROM MLuser WHERE username=?";
         try {
+            //System.out.println("hhh");
             return jdbcTemplate.queryForObject(sql, new Object[]{username}, (rs, rowNum) -> {
                 Usr usr = new Usr();
 
@@ -51,7 +42,7 @@ public class UsrRepository {
                 usr.setPower(rs.getInt("power"));
                 usr.setQuestion(rs.getString("question"));
                 usr.setAnswer(rs.getString("answer"));
-                if (usr.getPower()==0) { // 买家
+                if (usr.getPower() == 0) { // 买家
                     String infoSql = "SELECT * FROM MLinfo WHERE userid=?";
                     jdbcTemplate.query(infoSql, new Object[]{usr.getUserid()}, infoRs -> {
                         usr.setPhone(infoRs.getString("phone"));
@@ -77,7 +68,7 @@ public class UsrRepository {
         String sql = "SELECT * FROM MLuser WHERE username = ?";
         try {
             jdbcTemplate.queryForObject(sql, new Object[]{name}, (rs, rowNum) -> {
-                System.out.println("yes");
+                // 如果找到结果，返回1
                 return 1;
             });
         } catch (EmptyResultDataAccessException e) {
@@ -91,7 +82,7 @@ public class UsrRepository {
         String sql = "INSERT INTO MLuser (username, pwd, power, question, answer) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, usr.getUsername(), usr.getPwd(), usr.getPower(), usr.getQuestion(), usr.getAnswer());
 
-        if (usr.getPower()==0) { // 买家
+        if (usr.getPower() == 0) { // 买家
             Integer userId = jdbcTemplate.queryForObject("SELECT MAX(userid) FROM MLuser", Integer.class);
             if (userId != null) {
                 sql = "INSERT INTO MLinfo (userid, phone, address) VALUES (?, ?, ?)";
@@ -99,4 +90,16 @@ public class UsrRepository {
             }
         }
     }
+
+    public List<Usr> loadBuyer(){
+        String sql = "SELECT * FROM MLuser WHERE power=0";
+        try {
+//            BeanPropertyRowMapper.newInstance  查询结果映射到Usr的实例
+            return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Usr.class));
+        } catch (EmptyResultDataAccessException e) {
+            // 如果查询结果为空，返回 null
+            return null;
+        }
+    }
+
 }

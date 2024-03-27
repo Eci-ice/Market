@@ -12,5 +12,15 @@ public class Page {
     public static final String SUCCESS_PAGE="success";
     public static final String RENAME_PAGE="rename";
     public static final String ANSWER_PAGE="answer";
+    public static final String UPDATEPWD_PAGE="update-password";
+    public static final String SELLER_ALL_GOODS_PAGE="ShowGoods";
+    public static final String SELLER_ALL_HISTROYGOODS_PAGE="show-historygoods";
+    public static final String SELLER_SEARCHLIST_PAGE="show-searchgoods";
+    public static final String SELLER_SEARCHHISTROYLIST_PAGE="show-searchhistorygoods";
+    public static final String SELLER_UPLOAD_GOOD_PAGE="upload-good";
+    public static final String SELLER_UPLOAD_MULTI_GOODS_PAGE="upload-multiplegoods";
+    public static final String BUYER_ALL_GOODS_PAGE="buyer";
+    public static final String BUYER_SEARCHLIST_PAGE="buyer-search";
+
 
 }

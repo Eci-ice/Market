@@ -9,14 +9,14 @@ public class Usr {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int userid;
-	private String username;
-	private String pwd;
-	private String phone;
-	private String address;
-	private String question;
-	private String answer;
-	private int power;
+    private int userid;
+    private String username;
+    private String pwd;
+    private String phone;
+    private String address;
+    private String question;
+    private String answer;
+    private int power;
 
 
 	@Override

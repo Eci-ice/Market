@@ -61,11 +61,9 @@ public class PasswordController {
         if (usr.getAnswer().equals(answer)){
             LOGGER.info("Right answer");
             session.removeAttribute("forgetUsr");
-            System.out.println("right answer!");
             return new Result("right","rightAnswer", "right answer");
         }else{
             LOGGER.error("Wrong Answer!");
-            System.out.println("Wrong answer!");
             return new Result(ERROR_PAGE,"badAnswer","Wrong Answer");
         }
     }

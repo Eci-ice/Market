@@ -9,6 +9,7 @@ import com.example.maoliang.Service.GoodService;
 import com.example.maoliang.Service.UsrService;
 import com.example.maoliang.dto.Errordata;
 import com.example.maoliang.dto.Logindata;
+import com.example.maoliang.dto.PowerData;
 import com.example.maoliang.dto.RegisterData;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -74,7 +75,20 @@ public class UsrController {
     public Result RegisterControl(@RequestBody RegisterData register) {
         String username = register.getUsername();
         try {
-            if (usrService.searchName(username) == false){
+            if ((register.getUsername()==null || register.getPassword()==null || register.getAnswer()==null ||register.getQuestion()==null)){
+                LOGGER.error("Empty error");
+                return new Result(RENAME_PAGE,"错误，请补充对应信息！","register");
+            } else if (register.getPower() == 1 && (register.getPhone()==null || register.getAddress()==null )) {
+                LOGGER.error("Empty error");
+                return new Result(RENAME_PAGE,"错误，请补充对应信息！","register");
+            }
+            if (register.getUsername().length() > 10 || register.getQuestion().length() > 50){
+                LOGGER.error("Too long error");
+                return new Result(RENAME_PAGE,"错误，用户名或密保问题过长！","register");
+            } else if (register.getPhone().length()!=11){
+                LOGGER.error("Wrong phone number");
+                return new Result(RENAME_PAGE,"错误，请输入正确电话号码！","register");
+            } else if(usrService.searchName(username) == false) {
                 Usr newUsr = new Usr();
                 newUsr.setUsername(username);
                 newUsr.setPwd(register.getPassword());
@@ -82,25 +96,37 @@ public class UsrController {
                 newUsr.setAnswer(register.getAnswer());
                 newUsr.setPower(register.getPower());
                 //买家与卖家不同设定
-                if(register.getPower()==0){
+                if (register.getPower() == 0) {
                     newUsr.setAddress(register.getAddress());
                     newUsr.setPhone(register.getPhone());
-                }else{
+                } else {
                     newUsr.setAddress(null);
                     newUsr.setPhone(null);
                 }
                 //注册
                 usrRepository.register(newUsr);
-                return new Result(LOGIN_PAGE,"success",username);
-            }else{
+                return new Result(LOGIN_PAGE, "success", username);
+            } else {
                 LOGGER.error("Error handling register");
-                return new Result(RENAME_PAGE,"rename","register");
+                return new Result(RENAME_PAGE,"错误，用户名重复！","register");
             }
         } catch (SQLException e) {
             LOGGER.error("Error handling register", e);
-            return new Result(ERROR_PAGE,"error","register");
+            return new Result(ERROR_PAGE,"系统错误","register");
         }
     }
+    @RequestMapping  ("/UserList-control")
+    public Result UserListController(@RequestParam("power") int power) throws SQLException {
+        // 方法体不变
+        System.out.println(power+1);
+        System.out.println(usrService.showAllUsers());
+        return new Result(SUCCESS_PAGE, "查询用户列表成功", usrService.showAllUsers());
 
-    //user相关的servlet
+    }
+    @RequestMapping("/UserOrderHistory-control")
+    public Result UserOrderHistoryController(@RequestParam ("power") int power,@RequestParam("userid") int userid){
+        System.out.println("对");
+        return new Result(SUCCESS_PAGE,"查询用户购买历史记录列表成功",usrService.showUserOrderHistory(power,userid));
+    }
+
 }

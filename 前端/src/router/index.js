@@ -1,4 +1,4 @@
-import {createRouter, createWebHashHistory} from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import LoginComponent from '@/components/LoginComponent.vue';
 import RegisterComponent from '@/components/RegisterComponent.vue';
 import ChooseRegister from '@/components/ChooseRegister.vue';
@@ -61,9 +61,10 @@ const routes = [
         component: ShowUserInfo
       },
       {
-        path: 'user-order-history',
+        path: ':userId/user-order-history',
         name: 'UserOrderHistory',
-        component: UserOrderHistory 
+        component: UserOrderHistory ,
+        props:true
       },
       {
         path: 'show-historygoods',
@@ -134,7 +135,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 });
 

@@ -33,14 +33,20 @@ public class GoodListRepository {
         StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ");
         if (ishistory == 1) {
             sqlBuilder.append("MLhistorygood");
+            if (power == 1) {
+                sqlBuilder.append(" WHERE owner = ?");
+            } else {
+                sqlBuilder.append(" WHERE kind = ?");
+            }
+
         } else {
             sqlBuilder.append("MLgood WHERE state = 0");
-        }
+            if (power == 1) {
+                sqlBuilder.append(" AND owner = ?");
+            } else {
+                sqlBuilder.append(" AND kind = ?");
+            }
 
-        if (power == 1) {
-            sqlBuilder.append(" AND owner = ?");
-        } else {
-            sqlBuilder.append(" AND kind = ?");
         }
 
         sqlBuilder.append(" AND goodname LIKE ?");
