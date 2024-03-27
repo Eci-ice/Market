@@ -32,6 +32,7 @@ public class GoodRepository{
 
             // 查询刚插入的商品的id 因为是自增，所以是最大
             Integer goodId = jdbcTemplate.queryForObject("SELECT MAX(goodid) FROM MLgood", Integer.class);
+         //   System.out.println(goodId+"aa");
 
             // 获取当前时间
             LocalDateTime currentTime = LocalDateTime.now();
@@ -112,16 +113,6 @@ public class GoodRepository{
         }
     }
 
-
-    public Good getGoodById(int goodId) {
-        String sql = "SELECT * FROM MLgood WHERE goodid = ?";
-        try{
-            return jdbcTemplate.queryForObject(sql, BeanPropertyRowMapper.newInstance(Good.class), goodId);
-        } catch (EmptyResultDataAccessException e) {
-            // 如果查询结果为空，返回 null
-            return null;
-        }
-    }
 
     public boolean updateGood(Good good) {
         String updateQuery = "UPDATE MLgood SET ";

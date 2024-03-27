@@ -1,11 +1,10 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import {createRouter, createWebHashHistory} from 'vue-router';
 import LoginComponent from '@/components/LoginComponent.vue';
 import RegisterComponent from '@/components/RegisterComponent.vue';
 import ChooseRegister from '@/components/ChooseRegister.vue';
 import BuyerMain from '@/components/BuyerMain.vue';
 import SellerMain from '@/components/SellerMain.vue';
 import UpdatePasswordComponent from '@/components/UpdatePasswordComponent.vue';
-import PublishGoodsComponent from '@/components/PublishGoodsComponent.vue';
 import ShowGoods from '@/components/ShowGoods'
 import ShowUserInfo from '@/components/ShowUserInfo.vue';
 import ShowHistoryGoods from '@/components/ShowHistoryGoods.vue';
@@ -22,9 +21,14 @@ import BuyerCart from '@/components/BuyerCart.vue';
 import BuyerFillInfo from '@/components/BuyerFillInfo.vue'
 import BuyerShop from '@/components/BuyerShop';
 import ErrorComponent from "@/components/ErrorComponent.vue";
+import ShowSearchGoods from "@/components/ShowSearchGoods.vue";
+import ShowSearchHistoryGoods from "@/components/ShowSearchHistoryGoods.vue";
+import BuyerSearch from "@/components/BuyerSearch.vue";
+import UploadOneGood from "@/components/UploadOneGood.vue";
 
 const routes = [
   { path: '/', component: LoginComponent },
+  { path: '/login', component: LoginComponent },
   { path: '/error', component: ErrorComponent },
   { path: '/register', component: RegisterComponent },
   { path: '/choose-register', component: ChooseRegister },
@@ -46,30 +50,39 @@ const routes = [
         component: ShowGoods
       },
       {
+        path: 'ShowSearchGoods',
+        name: 'ShowSearchGoods',
+        component: ShowSearchGoods
+      },
+      {
         path: 'update-password',
         name: 'UpdatePassword',
         component: UpdatePasswordComponent
       },
       {
-        path: 'publish-goods',
-        name: 'PublishGoods',
-        component: PublishGoodsComponent
+        path: 'upload-onegood',
+        name: 'UploadOneGood',
+        component: UploadOneGood
       },
       {
         path: 'show-userinfo',
         name: 'ShowUserInfo',
-        component: ShowUserInfo,
+        component: ShowUserInfo
       },
       {
-        path: ':userId/user-order-history',
+        path: 'user-order-history',
         name: 'UserOrderHistory',
-        component: UserOrderHistory ,
-        props:true
+        component: UserOrderHistory 
       },
       {
         path: 'show-historygoods',
         name: 'ShowHistoryGoods',
         component: ShowHistoryGoods
+      },
+      {
+        path: 'show-searchhistorygoods',
+        name: 'ShowSearchHistoryGoods',
+        component: ShowSearchHistoryGoods
       },
       {
         path: 'show-allusers',
@@ -112,6 +125,11 @@ const routes = [
     component: BuyerHistory
   },
   {
+    path: '/buyer-search',
+    name: 'buyerSearch',
+    component: BuyerSearch
+  },
+  {
     path: '/likes',
     name: 'BuyerLikes',
     component: BuyerLikes,
@@ -135,7 +153,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history:  createWebHashHistory(),
   routes,
 });
 

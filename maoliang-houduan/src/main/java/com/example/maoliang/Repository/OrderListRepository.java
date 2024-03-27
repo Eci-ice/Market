@@ -16,10 +16,9 @@ public class OrderListRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Order> searchOrderInformation() {
-        String sql = "SELECT * FROM MLorder";
+    public List<Order> showall(int userid) {
+        String sql = "SELECT * FROM MLorder WHERE owner = ?";
         try {
-
             return jdbcTemplate.query(sql, (rs, rowNum) -> {
                 Order or = new Order();
                 or.setOrderid(rs.getInt("orderid"));
@@ -30,15 +29,13 @@ public class OrderListRepository {
                 or.setNumber(rs.getInt("number"));
                 or.setOrderstate(rs.getInt("orderstate"));
                 or.setOwner(rs.getInt("owner"));
-                System.out.println(or);
                 return or;
-            });
+            }, userid);
         } catch (EmptyResultDataAccessException e) {
             // 查询无结果时返回null
             return null;
         }
     }
-
 
     public List<Order> showall2(String buyername) {
         String sql = "SELECT * FROM MLorder WHERE buyername = ?";
@@ -56,31 +53,11 @@ public class OrderListRepository {
                 return or;
             }, buyername);
         } catch (
-                EmptyResultDataAccessException e) {
+        EmptyResultDataAccessException e) {
             // 查询无结果时返回null
             return null;
         }
     }
 
 
-    public boolean deleteOrder(int orderid, int orderstate) {
-        System.out.println("加油1");
-        if (orderstate == -1) {
-            String sql = "UPDATE MLorder SET orderstate =? WHERE orderid =?";
-            int affectedRows = jdbcTemplate.update(sql, orderstate, orderid);
-            System.out.println("加油");
-            return affectedRows > 0; // 如果影响的行数大于0，则表示删除成功
-        } else {
-            return false;
-        }
-    }
-
-
-    public boolean confirmOrder(int orderid, int orderstate) {
-        String sql = "UPDATE MLorder SET orderstate =? WHERE orderid= ?";
-
-
-        int affectedRows = jdbcTemplate.update(sql, orderstate, orderid);
-        return affectedRows > 0; // 如果影响的行数大于0，则表示更新成功
-    }
 }

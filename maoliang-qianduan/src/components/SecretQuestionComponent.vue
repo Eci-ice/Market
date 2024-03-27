@@ -41,7 +41,7 @@ export default {
           answer: this.secretAnswer,
         };
         const response = await axios.post(
-          "/forget/answer-control",
+          "/usr/answer-control",
           answerData,
           {
             headers: {

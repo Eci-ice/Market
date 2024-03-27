@@ -4,13 +4,9 @@ package com.example.maoliang.Controller;
 import com.example.maoliang.Controller.utils.Result;
 import com.example.maoliang.Entity.Good;
 import com.example.maoliang.Entity.Usr;
-import com.example.maoliang.Repository.UsrRepository;
 import com.example.maoliang.Service.GoodService;
 import com.example.maoliang.Service.UsrService;
-import com.example.maoliang.dto.Errordata;
-import com.example.maoliang.dto.Logindata;
-import com.example.maoliang.dto.PowerData;
-import com.example.maoliang.dto.RegisterData;
+import com.example.maoliang.dto.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -33,18 +29,22 @@ public class UsrController {
     @Autowired
     private GoodService goodService;
     @Autowired
-    private UsrRepository usrRepository;
-    @Autowired
     public HttpSession session;//存储session数据
 
     @RequestMapping( "/login-control")
     public Result LoginControl(@RequestBody Logindata login//RequestBody用于传输数据
                                //Logindata自命,需要从前端传入的【所有】数据
-    ) {
+                               ) {
         String username=login.getUsername();
         String pwd=login.getPassword();
+//        System.out.println("hhh");
+//        System.out.println(username);
+//        System.out.println(pwd);
         try {
             Usr usr = usrService.search(username);
+ //             System.out.println(usr.getUsername());
+//            System.out.println(pwd+ pwd.length());
+//            System.out.println(usr.getPwd()+ usr.getPwd().length());
             if (usr != null && pwd.equals(usr.getPwd().trim())) {//数据库导出字符串有后置空格
                 System.out.println(usr.getPower());
                 session.setAttribute("admin", usr);
@@ -71,6 +71,7 @@ public class UsrController {
             return new Result(ERROR_PAGE,"登录出错，请稍后重试","login");
         }
     }
+
     @RequestMapping( "/register-control")
     public Result RegisterControl(@RequestBody RegisterData register) {
         String username = register.getUsername();
@@ -91,7 +92,7 @@ public class UsrController {
                     newUsr.setPhone(null);
                 }
                 //注册
-                usrRepository.register(newUsr);
+                usrService.register(newUsr);
                 return new Result(LOGIN_PAGE,"success",username);
             }else{
                 LOGGER.error("Error handling register");
@@ -102,18 +103,70 @@ public class UsrController {
             return new Result(ERROR_PAGE,"error","register");
         }
     }
-    @RequestMapping  ("/UserList-control")
-    public Result UserListController(@RequestParam("power") int power) throws SQLException {
-        // 方法体不变
-        System.out.println(power+1);
-        System.out.println(usrService.showAllUsers());
-        return new Result(SUCCESS_PAGE, "查询用户列表成功", usrService.showAllUsers());
+
+    @RequestMapping( "/changedpwd-control")
+    public Result changedpwd(@RequestBody Changedpwddata changedpwddata) throws SQLException {
+        Usr usr = (Usr) session.getAttribute("admin");
+        String userpwd=usr.getPwd().trim();
+        String oldpwd=changedpwddata.getOldpwd();
+        String newpwd=changedpwddata.getNewpwd();
+        String newpwd1=changedpwddata.getNewpwd1();
+        String username=((Usr)session.getAttribute("admin")).getUsername();
+        if (!userpwd.equals(oldpwd)) {
+            return new Result(ERROR_PAGE,"旧密码错误",UPDATEPWD_PAGE);
+        } else if (oldpwd.equals(newpwd)) {
+            return new Result(ERROR_PAGE,"新密码与旧密码一致",UPDATEPWD_PAGE);
+        } else if (!newpwd.equals(newpwd1)) {
+            return new Result(ERROR_PAGE,"新密码与确认密码不一致",UPDATEPWD_PAGE);
+        } else {
+            usrService.modifyPwd(username,newpwd);
+            return new Result(SELLER_PAGE,"密码修改成功！",null);
+        }
+
 
     }
-    @RequestMapping("/UserOrderHistory-control")
-    public Result UserOrderHistoryController(@RequestParam ("power") int power,@RequestParam("userid") int userid){
 
-        return new Result(SUCCESS_PAGE,"查询用户购买历史记录列表成功",usrService.showUserOrderHistory(power,userid));
+    @RequestMapping("/all-buyer")
+    public Result allBuyerControl() throws SQLException {
+        List<Usr> buyerList = usrService.loadBuyer();
+        if(buyerList==null){
+            return new Result("null","noBuyer",null);
+        }else{
+            return new Result(BUYER_PAGE,"success",buyerList);
+        }
+
+    }
+    @RequestMapping( "/forgetPwd-control")
+    public Result ForgetControl(@RequestBody ForgetPwdData name) {
+        String username = name.getUsername();
+        try {
+            //如果找到用户名
+            if (usrService.searchName(username)){
+                Usr usr = new Usr();
+                usr = usrService.search(username);
+                session.setAttribute("forgetUsr",usr);
+                return new Result(ANSWER_PAGE,"answer", usr);
+            }else{
+                LOGGER.error("Wrong Name!");
+                return new Result(ERROR_PAGE,"noName","Wrong Name");
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Error handling find Password", e);
+            return new Result(ERROR_PAGE,"error","findPwd");
+        }
+    }
+    @RequestMapping( "/answer-control")
+    public Result AnswerControl(@RequestBody AnswerData answerData) {
+        String answer = answerData.getAnswer();
+        Usr usr = (Usr)session.getAttribute("forgetUsr");
+        if (usr.getAnswer().equals(answer)){
+            LOGGER.info("Right answer");
+            session.removeAttribute("forgetUsr");
+            return new Result("right","right answer", "right answer");
+        }else{
+            LOGGER.error("Wrong Answer!");
+            return new Result(ERROR_PAGE,"BadAnswer","Wrong Answer");
+        }
     }
 
 }

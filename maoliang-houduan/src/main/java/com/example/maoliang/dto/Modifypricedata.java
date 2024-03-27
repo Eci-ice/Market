@@ -3,9 +3,7 @@ package com.example.maoliang.dto;
 import lombok.Data;
 
 @Data
-public class Likedata {
+public class Modifypricedata {
+    private double newPrice;
     private int goodId;
-    private String isCancel;
-    private int userId;
-
 }

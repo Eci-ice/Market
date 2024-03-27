@@ -25,6 +25,10 @@ public class GoodService {
         goodRepository.modifylike(goodId, userId, nowLike); // 根据 nowLike 参数执行相应操作
     }
 
+    public Good showGood(int goodid) {
+        return goodRepository.search(goodid);
+    }
+
     public List<Good> showNowGoods(){
         return goodListRepository.shownow();
     }
@@ -51,5 +55,13 @@ public class GoodService {
 
     public void add(Good g) {
         goodRepository.add(g);
+    }
+
+    public int remove(int goodid) {
+        return goodRepository.remove(goodid);
+    }
+
+    public boolean updateGood(Good g) {
+        return goodRepository.updateGood(g);
     }
 }

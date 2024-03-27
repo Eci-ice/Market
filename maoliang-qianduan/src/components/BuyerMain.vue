@@ -49,20 +49,22 @@
           <div id="search_list"></div>
         </div><br>
           <div class="goods">
-            <div class="show-1" v-for="item in paginatedItems" :key="item.id">
-              <div class="media-container">
-                  <div v-for="(media, index) in item.mediaFiles" :key="index" v-show="media.isActive">
-                  <img v-if="!media.isVideo" :src="media.url" alt="商品图片" v-show="media.isActive">
-                  <video v-if="media.isVideo" :src="media.url" controls v-show="media.isActive"></video>
-                  </div>
+            <div class="show-1" v-for="item in paginatedItems" :key="item.goodid">
+              <div @click="postToBuyerShop(item.goodid)">
+                <div class="media-container">
+                    <div v-for="(media, index) in item.mediaFiles" :key="index" v-show="media.isActive">
+                      <img v-if="!isVideo(media)" :src="media.url" alt="商品图片" v-show="media.isActive">
+                      <video v-else :src="media.url" controls v-show="media.isActive"></video>
+                    </div>
+                </div>
               </div>
-              <div class="media-navigation">
-                  <button @click="showPrevMedia(item)">＜</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <button @click="showNextMedia(item)">＞</button>
+                <div class="media-navigation">
+                    <button @click="showPrevMedia(item)">＜</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button @click="showNextMedia(item)">＞</button>
+                </div>
+              <div @click="postToBuyerShop(item.goodid)">
+                <p>商品名：{{ item.goodname }}<br>超值价：{{ item.price }}元</p>
               </div>
-              <a href="/buyer-shop">
-                <p>商品名：{{ item.name }}<br>超值价：{{ item.price }}元</p>
-              </a>
             </div>
           </div>
           <div class="pagination">
@@ -114,20 +116,22 @@
           <div id="search_list"></div>
         </div><br>
           <div class="goods">
-            <div class="show-1" v-for="item in paginatedItems" :key="item.id">
-              <div class="media-container">
-                  <div v-for="(media, index) in item.mediaFiles" :key="index" v-show="media.isActive">
-                  <img v-if="!media.isVideo" :src="media.url" alt="商品图片" v-show="media.isActive">
-                  <video v-if="media.isVideo" :src="media.url" controls v-show="media.isActive"></video>
-                  </div>
+            <div class="show-1" v-for="item in paginatedItems" :key="item.goodid">
+              <div @click="postToBuyerShop(item.goodid)">
+                <div class="media-container">
+                    <div v-for="(media, index) in item.mediaFiles" :key="index" v-show="media.isActive">
+                      <img v-if="!isVideo(media)" :src="media.url" alt="商品图片" v-show="media.isActive">
+                      <video v-else :src="media.url" controls v-show="media.isActive"></video>
+                    </div>
+                </div>
               </div>
-              <div class="media-navigation">
-                  <button @click="showPrevMedia(item)">＜</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <button @click="showNextMedia(item)">＞</button>
+                <div class="media-navigation">
+                    <button @click="showPrevMedia(item)">＜</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button @click="showNextMedia(item)">＞</button>
+                </div>
+              <div @click="postToBuyerShop(item.goodid)">
+                <p>商品名：{{ item.goodname }}<br>超值价：{{ item.price }}元</p>
               </div>
-              <a href="/buyer-shop">
-                <p>商品名：{{ item.name }}<br>超值价：{{ item.price }}元</p>
-              </a>
             </div>
           </div>
           <div class="pagination">
@@ -148,42 +152,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      items: [
-      {
-        id: 1,
-        name: "猫咪粮食",
-        price: "99",
-        description: "高营养猫粮",
-        kind: '猫咪主粮',
-        mediaFiles: [
-          { url: require('@/assets/img/buyer/food-1.jpg'), isActive: true, isVideo: false },
-          { url: require('@/assets/img/buyer/food-2.jpg'), isActive: false, isVideo: false },
-        ],
-      },
-      {
-        id: 2,
-        name: "猫咪玩具",
-        price: "49",
-        description: "好玩的猫咪玩具",
-        kind: '猫咪日用',
-        mediaFiles: [
-          { url: require('@/assets/img/buyer/food-2.jpg'), isActive: true, isVideo: false },
-          { url: require('@/assets/img/buyer/food-1.jpg'), isActive: false, isVideo: false },
-        ],
-      },
-      {
-        id: 3,
-        name: "猫咪窝",
-        price: "299",
-        description: "舒适的猫咪小窝",
-        kind: '猫咪主粮',
-        mediaFiles: [
-          { url: require('@/assets/img/buyer/food-1.jpg'), isActive: true, isVideo: false },
-          { url: require('@/assets/img/buyer/food-2.jpg'), isActive: false, isVideo: false },
-        ],
-      },
-      // ...更多商品
-     ],
+      items: [ ],
      searchQuery: '',
      selectedCategory: '猫咪主粮', // 设置初始值为“猫咪主粮”
      filteredItems: [], // 添加这个新数组
@@ -199,6 +168,12 @@ export default {
 
   created() {
     this.fetchUsrFromSession();
+    this.fetchgoodListSession();
+  },
+  async mounted() {
+    console.log('BuyerMain 组件已挂载');
+    await this.fetchgoodListSession(); // 等待 fetchgoodListSession 完成!!
+    this.filteredItems = this.items; // 初始时显示所有商品
   },
   computed: {
     isLoggedIn() {
@@ -244,6 +219,77 @@ export default {
       } catch (error) {
         console.error('获取用户数据错误:', error);
         return false;
+      }
+    },
+    async fetchgoodListSession() {
+      try {
+        // 发起 GET 请求获取商品列表
+        const goodsResponse = await axios.get('/good/buyer-all-good-list-control');
+        // 解析响应数据
+        // console.log('goodList:', goodsResponse);
+        const goodList = goodsResponse.data.data;//goodsResponse的数据的data属性
+        // 将商品列表添加到 products 中
+        // 解析picture属性并添加mediaFiles属性
+       //  console.log('goodList:', goodList);
+
+        this.items = goodList.map( good => {
+          //    console.log('Before trimming:', good.picture); // 添加调试语句
+          const trimmedPicture = good.picture.trim();
+          //     console.log('After trimming:', trimmedPicture); // 添加调试语句
+          const paths = trimmedPicture.split(',');
+          const mediaFiles = paths.map((path, i) => {
+            return {
+              url: path,
+              isActive: i === 0 // 默认第一个是true，其他是false
+            };
+          });
+          return {
+            ...good,
+            mediaFiles,
+            // 保留原始属性
+            goodid: good.goodid,
+            goodname: good.goodname.trim(),
+            description: good.description.trim(),
+            price: good.price,
+            number: good.number,
+            kind: good.kind,
+            subkind: good.subkind,
+            buyingid: good.buyingid,
+            numbermax: good.numbermax,
+            islike: good.islike
+          };
+        });
+        console.log('this.items:', this.items);
+        return true;
+      } catch (error) {
+        console.error('获取商品列表数据错误:', error);
+        return false;
+      }
+    },
+    isVideo(media) {
+      //判断是否是视频
+      return media.url.endsWith('.mp4') || media.url.endsWith('.avi');
+    },
+    async postToBuyerShop(goodid) {
+      const response = await fetch(`/good/buyer-show-good/${goodid}`, {
+        method: 'POST',
+      });
+
+      this.selectedFiles = []; // 清空照片列表
+
+      // 解析响应数据
+      const responseData = await response.json();
+
+      if (responseData.page === '/error') {
+        // 重定向到错误页面，并将错误消息和重定向目标作为参数传递
+        this.$router.push({ path: '/error', query: { err: responseData.msg, to: responseData.data }})
+      } else if (responseData.page === '/success') {
+        // 重定向到成功界面，并将成功消息和重定向目标作为参数传递
+        this.$router.push({ path: '/success', query: { message: responseData.msg, to: responseData.data }})
+      } else if (responseData.page === null) {
+        console.log("未知页面类型");
+      } else {
+        this.$router.push({ path: responseData.page });
       }
     },
     async handleLogout() {
@@ -331,11 +377,7 @@ export default {
         }
     }
   },
-  mounted() {
-    // 示例：假设从后端获取成功消息
-    // 在实际应用中，您可能需要在某个操作成功后调用 showSuccessModal
-    this.filteredItems = this.items; // 初始时显示所有商品
-  },
+
 };
 </script>
 

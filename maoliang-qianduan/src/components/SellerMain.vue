@@ -25,7 +25,7 @@
             <div class="nav-content">
               <!-- 导航链接 -->
               <h3 @click="navigateTo('UpdatePassword')" class="black-text" style="cursor: pointer;">修改密码</h3>
-              <h3 @click="navigateTo('PublishGoods')" class="black-text" style="cursor: pointer;">发布商品</h3>
+              <h3 @click="navigateTo('UploadOneGood')" class="black-text" style="cursor: pointer;">发布商品</h3>
               <h3 @click="navigateTo('ShowUserInfo')" class="black-text" style="cursor: pointer;">查看意向订单</h3>
               <h3 @click="navigateTo('UploadMultipleGoods')" class="black-text" style="cursor: pointer;">发布多个商品</h3>
               <h3 @click="navigateTo('ShowHistoryGoods')" class="black-text" style="cursor: pointer;">查看历史商品</h3>
@@ -123,9 +123,6 @@ export default {
         navigateTo(routeName) {
             this.$router.push({ name: routeName });
         },
-    },
-    beforeMount() {
-
     },
     mounted() {
       console.log('SellerMain 组件已挂载');

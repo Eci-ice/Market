@@ -31,7 +31,7 @@
         <label class="username">
         <div class="form-group">
           <label>购买数量：</label>
-          <input type="number" v-model.number="purchase.quantity" min="1" :max="selectedProduct.stock" required style="width:200px;height:66.4px;">
+          <input type="number" v-model.number="purchase.number" min="1" :max="selectedProduct.stock" required style="width:200px;height:66.4px;">
         </div>
 
         <div class="form-group">
@@ -56,25 +56,76 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
-      selectedProduct: {
-        // 示例数据，实际应从 API 或路由参数获取
-        name: "猫咪粮食",
-        description: "高营养猫粮",
-        price: 99,
-        stock: 20
-      },
+      selectedProduct: [],
       purchase: {
         quantity: 1,
         buyerName: 'buyer', // 设置默认姓名
         telephone: '12345678901', // 设置默认电话号码
-        address: 'jjw家' // 设置默认地址
+        address: '`123`' // 设置默认地址
       }
     };
   },
   methods: {
+    async fetchUsrFromSession() {
+      try {
+        // 发起 GET 请求到后端接口
+        const response = await axios.get('/now-usr');
+
+        // 解析响应数据
+        const usr = response.data;
+
+        // 更新组件的 currentUser 数据
+        this.currentUser = usr;
+        return true;
+      } catch (error) {
+        console.error('获取用户数据错误:', error);
+        return false;
+      }
+    },
+    async fetchGoodFromSession() {
+      try {
+        // 发起 GET 请求到后端接口
+        const response = await axios.get('/now-good');
+
+        // 解析响应数据
+        const good = response.data;
+
+        const trimmedPicture = good.picture.trim();
+        const paths = trimmedPicture.split(',');
+        const mediaFiles = paths.map((path, i) => {
+          return {
+            url: path,
+            isActive: i === 0 // 默认第一个是true，其他是false
+          };
+        });
+
+        this.selectedProduct = {
+          ...good,
+          mediaFiles,
+          // 保留原始属性
+          goodid: good.goodid,
+          goodname: good.goodname.trim(),
+          description: good.description.trim(),
+          price: good.price,
+          number: good.number,
+          kind: good.kind,
+          subkind: good.subkind,
+          buyingid: good.buyingid,
+          numbermax: good.numbermax,
+          islike: good.islike
+        };
+        console.log('this.selectedProduct:', this.selectedProduct);
+        return true;
+      } catch (error) {
+        console.error('获取用户数据错误:', error);
+        return false;
+      }
+    },
     cancelPurchase() {
       // 处理取消购买逻辑
       this.$router.push('/buyer');

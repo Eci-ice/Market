@@ -37,7 +37,7 @@
     </div>
 
   <div class="right" style="width:100%;">
-    <a href="/buyer">
+    <a href="/#/buyer">
       <img src="~@/assets/img/buyer/arrow.png" alt="" width="40" title="返回商品界面">
     </a>
     <div class="picture-k">
@@ -56,7 +56,7 @@
       <tr><td colspan="2" class="goodname">{{ selectedProduct.name }}</td></tr>
       <tr><td colspan="2" class="description">{{ selectedProduct.description }}</td></tr>
       <tr><td class="price">价格：</td><td class="price">{{ selectedProduct.price }}</td></tr>
-      <tr><td class="price">剩余库存量：</td><td class="price">{{ selectedProduct.stock }}</td></tr>
+      <tr><td class="price">剩余库存量：</td><td class="price">{{ selectedProduct.number }}</td></tr>
     </table>
     <div class="centered-container">
     <button @click="buyProduct(selectedProduct.id)" class="butt-1" style="cursor: pointer;">购买该商品</button>&nbsp;&nbsp;
@@ -104,15 +104,15 @@
       
     </div>
     <table class="good-2">
-      <tr><td colspan="2" class="goodname">{{ selectedProduct.name }}</td></tr>
+      <tr><td colspan="2" class="goodname">{{ selectedProduct.goodname }}</td></tr>
       <tr><td colspan="2" class="description">{{ selectedProduct.description }}</td></tr>
       <tr><td class="price">价格：</td><td class="price">{{ selectedProduct.price }}</td></tr>
-      <tr><td class="price">剩余库存量：</td><td class="price">{{ selectedProduct.stock }}</td></tr>
+      <tr><td class="price">剩余库存量：</td><td class="price">{{ selectedProduct.number }}</td></tr>
     </table>
     <div class="centered-container">
-    <button @click="buyProduct(selectedProduct.id)" class="butt-1" style="cursor: pointer;">购买该商品</button>&nbsp;&nbsp;
-    <button @click="addToCart(selectedProduct.id)" class="butt-1" style="cursor: pointer;">加入购物车</button>&nbsp;&nbsp;
-    <button @click="addToFavorites(selectedProduct.id)" class="butt-1" style="cursor: pointer;">收藏商品</button>
+    <button @click="buyProduct(selectedProduct.goodid)" class="butt-1" style="cursor: pointer;">购买该商品</button>&nbsp;&nbsp;
+    <button @click="addToCart(selectedProduct.goodid)" class="butt-1" style="cursor: pointer;">加入购物车</button>&nbsp;&nbsp;
+    <button @click="addToFavorites(selectedProduct.goodid)" class="butt-1" style="cursor: pointer;">收藏商品</button>
     </div>
   </div>
     </div>
@@ -121,38 +121,16 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
+import axios from "axios";
 
 export default {
   data() {
     return {
-      items: [
-      {
-        id: 1,
-        name: "猫咪粮食",
-        price: "99",
-        description: "高营养猫粮",
-        kind: '猫咪主粮',
-        mediaFiles: [
-          { url: require('@/assets/img/buyer/food-1.jpg'), isActive: true, isVideo: false },
-          { url: require('@/assets/img/buyer/food-2.jpg'), isActive: false, isVideo: false },
-        ],
-      },
-     ],
+      items: [],
      searchQuery: '',
-      selectedProduct: {
-        // 示例数据结构
-        name: '猫咪粮食',
-        description: '高营养猫粮',
-        price: '99',
-        kind: '猫咪主粮',
-        stock: '13',
-        mediaFiles: [
-          { url: require('@/assets/img/buyer/food-1.jpg'), isActive: true, isVideo: false },
-          { url: require('@/assets/img/buyer/food-2.jpg'), isActive: false, isVideo: false },
-          // ... 其他媒体文件
-        ]
-      },
+      selectedProduct: [],
+      currentUser:'',
      selectedCategory: '猫咪主粮', // 设置初始值为“猫咪主粮”
      filteredItems: [], // 添加这个新数组
       currentPage: 1,
@@ -163,11 +141,23 @@ export default {
       }
     };
   },
+  created() {
+    this.fetchUsrFromSession();
+    this.fetchGoodFromSession();
+  },
   computed: {
-    ...mapGetters(['isLoggedIn', 'isSeller', 'isBuyer']),
-    username() {
-      // 从 Vuex store 获取用户名
-      return this.$store.state.admin ? this.$store.state.admin.username : '未登录';
+    isLoggedIn() {
+      // 根据当前用户数据判断用户是否登录
+      return !!this.currentUser;
+    },
+    isSeller() {
+      // 根据当前用户数据判断用户是否是卖家
+      return this.currentUser && this.currentUser.power === 1;
+    },
+    // 判断用户是否是买家的方法
+    isBuyer() {
+      // 根据当前用户数据判断用户是否是买家
+      return this.currentUser && this.currentUser.power === 0;
     },
     paginatedItems() {
       // 计算当前页的商品
@@ -180,8 +170,64 @@ export default {
       return Math.ceil(this.filteredItems.length / this.itemsPerPage);
     }
   },
+
   methods: {
     ...mapActions(['logout']),
+    async fetchUsrFromSession() {
+      try {
+        // 发起 GET 请求到后端接口
+        const response = await axios.get('/now-usr');
+
+        // 解析响应数据
+        const usr = response.data;
+
+        // 更新组件的 currentUser 数据
+        this.currentUser = usr;
+        return true;
+      } catch (error) {
+        console.error('获取用户数据错误:', error);
+        return false;
+      }
+    },
+    async fetchGoodFromSession() {
+      try {
+        // 发起 GET 请求到后端接口
+        const response = await axios.get('/now-good');
+
+        // 解析响应数据
+        const good = response.data;
+
+        const trimmedPicture = good.picture.trim();
+        const paths = trimmedPicture.split(',');
+        const mediaFiles = paths.map((path, i) => {
+          return {
+            url: path,
+            isActive: i === 0 // 默认第一个是true，其他是false
+          };
+        });
+
+        this.selectedProduct = {
+          ...good,
+          mediaFiles,
+          // 保留原始属性
+          goodid: good.goodid,
+          goodname: good.goodname.trim(),
+          description: good.description.trim(),
+          price: good.price,
+          number: good.number,
+          kind: good.kind,
+          subkind: good.subkind,
+          buyingid: good.buyingid,
+          numbermax: good.numbermax,
+          islike: good.islike
+        };
+        console.log('this.selectedProduct:', this.selectedProduct);
+        return true;
+      } catch (error) {
+        console.error('获取用户数据错误:', error);
+        return false;
+      }
+    },
     handleLogout() {
       this.logout();
       this.$router.push('/');
@@ -193,15 +239,6 @@ export default {
       if (!this.isLoggedIn) {
         this.$router.push('/');
       }
-    },
-    fetchProductData() {
-      // 你需要在这里定义这个方法，从 API 获取产品数据
-      // 如果你使用的是路由参数，确保路由配置正确，并且这个方法能够获取到路由参数
-    },
-    getUsername() {
-      // 这是一个示例方法，你需要实现它来获取用户名
-      // 如果你使用 Vuex，请确保 Vuex 正确配置，并在这里返回用户名
-      return this.$store.state.username;
     },
     showPrevMedia(product) {
         const currentIndex = product.mediaFiles.findIndex(media => media.isActive);
@@ -242,11 +279,7 @@ export default {
       // 收藏商品逻辑
     }
   },
-  created() {
-    // 在这里调用 fetchProductData，确保这个方法在 methods 中定义
-    this.fetchProductData();
-    this.username = this.getUsername(); // 假设这是一个获取用户名的方法
-  },
+
   mounted() {
     // 示例：假设从后端获取成功消息
     // 在实际应用中，您可能需要在某个操作成功后调用 showSuccessModal

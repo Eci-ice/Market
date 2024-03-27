@@ -190,19 +190,16 @@ export default {
       // 解析响应数据
       const responseData = await response.json();
 
-      if (responseData.page === 'error') {
+      if (responseData.page === '/error') {
         // 重定向到错误页面，并将错误消息和重定向目标作为参数传递
         this.$router.push({ path: '/error', query: { err: responseData.msg, to: responseData.data }})
-      } else if (responseData.page === 'success') {
+      } else if (responseData.page === '/success') {
         // 重定向到成功界面，并将成功消息和重定向目标作为参数传递
         this.$router.push({ path: '/success', query: { message: responseData.msg, to: responseData.data }})
-      } else if (responseData.page === 'upload-multiplegoods') {// 处理其他情况，例如重定向等
-        this.$router.push({ name: 'UploadMultipleGoods' });
-      } else if (responseData.page === 'upload-good') {
-        this.$router.push({ name: 'UploadOneGood' });
-      } else {
-        // 如果返回的是原始页面，处理消息并执行相应操作
+      } else if (responseData.page === null) {
         console.log("未知页面类型");
+      } else {
+        this.$router.push({ path: responseData.page });
       }
     },
     isImage(file) {

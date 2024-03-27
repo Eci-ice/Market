@@ -33,12 +33,21 @@
             <td>{{ good.goodname }}</td>
             <td>{{ good.description }}</td>
             <td>{{ good.price }}</td>
-            <td> 
-                <img :src="good.image" alt="商品图片" style="width: 100px; height: auto;" />
+            <td>
+              <div class="media-container">
+                <div v-for="(media, index) in good.mediaFiles" :key="index" v-show="media.isActive">
+                  <img v-if="!isVideo(media)" :src="media.url" alt="商品图片" v-show="media.isActive">
+                  <video v-if="isVideo(media)" :src="media.url" controls v-show="media.isActive"></video>
+                </div>
+              </div>
+              <div>
+                <button @click="showPrevMedia(good)">＜</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button @click="showNextMedia(good)">＞</button>
+              </div>
             </td>
             <td>{{ good.kind }}</td>
             <td>{{ good.subkind }}</td>
-            <td>{{ good.creationDate }}</td>
+            <td>{{ good.createdate }}</td>
         </tr>
       </table>
 
@@ -57,53 +66,131 @@
 </template>
 
 <script>
-import foodImage1 from '@/assets/img/buyer/food-1.jpg';
-import foodImage2 from '@/assets/img/buyer/food-2.jpg';
+import axios from "axios";
 export default {
   data() {
     return {
-      isLoggedIn: true, // 这个状态应该基于实际的登录状态
       products: [],
       selectedGood: null, // 当前选中的商品对象
       selectedCategory: '猫咪主粮', // 初始化为空字符串或其他初始值
       currentPage: 1,
-      pageSize: 2, // 每页显示的商品数量
-      goods: [
-        {
-          "goodid": 1,
-          "goodname": "猫咪主粮 - 高级粮",
-          "description": "富含营养的猫咪主粮，适合各种年龄段的猫。",
-          "price": 150.0,
-          "image": foodImage1,
-          "kind": "猫咪主粮",
-          "subkind": "猫干粮",
-          "creationDate": "2023-01-15"
-        },
-        {
-          "goodid": 2,
-          "goodname": "猫咪零食 - 鱼肉条",
-          "description": "美味可口的鱼肉条，猫咪的最爱。",
-          "price": 50.0,
-          "image": foodImage2,
-          "kind": "猫咪零食",
-          "subkind": "饼干",
-          "creationDate": "2023-02-10"
-        },
-        {
-          "goodid": 3,
-          "goodname": "猫咪日用品 - 舒适窝",
-          "description": "柔软舒适的猫窝，给您的爱宠一个温馨的家。",
-          "price": 200.0,
-          "image": foodImage1,
-          "kind": "猫咪日用",
-          "subkind": "猫小窝",
-          "creationDate": "2023-03-05"
-        }
-      ], // 存储从服务器获取的所有商品
+      pageSize: 6, // 每页显示的商品数量
+      goods: [], // 存储从服务器获取的所有商品
       filteredGoods: [], // 存储过滤后的商品
+      currentUser:null,
+      isHistory: 1,
     };
   },
+  created() {
+    this.fetchUsrFromSession();
+    this.fetchgoodListSession();
+  },
+  computed: {
+    isLoggedIn() {
+      // 根据当前用户数据判断用户是否登录
+      return !!this.currentUser;
+    },
+    paginatedGoods() {
+      const start = (this.currentPage - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      return this.filteredGoods.slice(start, end);
+    },
+    // 计算总页数
+    totalPages() {
+      return Math.ceil(this.filteredGoods.length / this.pageSize);
+    }
+  },
+  async mounted() {
+    console.log('ShowHistoryGoods 组件已挂载');
+    await this.fetchgoodListSession(); // 等待 fetchgoodListSession 完成!!
+    // 示例：假设从后端获取成功消息
+    // 在实际应用中，您可能需要在某个操作成功后调用 showSuccessModal
+    this.filteredGoods = this.goods; // 初始时显示所有商品
+    console.log('this.filteredGoods:', this.filteredGoods);
+  },
   methods: {
+    async fetchUsrFromSession() {
+      try {
+        // 发起 GET 请求到后端接口
+        const response = await axios.get('/now-usr');
+        // 解析响应数据
+        const usr = response.data;
+        // 更新组件的 currentUser 数据
+        this.currentUser = usr;
+
+        return true;
+      } catch (error) {
+        console.error('获取用户数据错误:', error);
+        return false;
+      }
+    },
+    async fetchgoodListSession() {
+      try {
+        // 发起 GET 请求获取商品列表
+        const goodsResponse = await axios.get('/good/seller-all-historygood-list-control');
+        // 解析响应数据
+        // console.log('goodList:', goodsResponse);
+        const goodList = goodsResponse.data.data;//goodsResponse的数据的data属性
+        // 将商品列表添加到 products 中
+        // 解析picture属性并添加mediaFiles属性
+        //  console.log('goodList:', goodList);
+
+        this.goods = goodList.map( good => {
+          //    console.log('Before trimming:', good.picture); // 添加调试语句
+          const trimmedPicture = good.picture.trim();
+          //     console.log('After trimming:', trimmedPicture); // 添加调试语句
+          const paths = trimmedPicture.split(',');
+          const mediaFiles = paths.map((path, i) => {
+            return {
+              url: path,
+              isActive: i === 0 // 默认第一个是true，其他是false
+            };
+          });
+          return {
+            ...good,
+            mediaFiles,
+            // 保留原始属性
+            goodname: good.goodname.trim(),
+            description: good.description.trim(),
+            price: good.price,
+            number: good.number,
+            kind: good.kind,
+            subkind: good.subkind,
+            createdate: good.createdate
+          };
+        });
+        console.log('this.goods:', this.goods);
+        return true;
+      } catch (error) {
+        console.error('获取商品列表数据错误:', error);
+        return false;
+      }
+    },
+    showPrevMedia(good) {
+      const currentIndex = good.mediaFiles.findIndex(media => media.isActive);
+      console.log('Current active index:', currentIndex);
+
+      if (currentIndex >= 0) {
+        const prevIndex = (currentIndex - 1 + good.mediaFiles.length) % good.mediaFiles.length;
+        console.log('Previous index:', prevIndex);
+        this.setActiveMedia(good, prevIndex);
+      }
+    },
+    showNextMedia(good) {
+      const currentIndex = good.mediaFiles.findIndex(media => media.isActive);
+      console.log('Current active index:', currentIndex);
+
+      if (currentIndex >= 0) {
+        const nextIndex = (currentIndex + 1) % good.mediaFiles.length;
+        console.log('Next index:', nextIndex);
+        this.setActiveMedia(good, nextIndex);
+      }
+    },
+    isVideo(media) {
+      const isMediaVideo = media.url.endsWith('.mp4');
+      console.log(`Is media a video: ${isMediaVideo}`);
+      return isMediaVideo;
+    },
     searchGoods() {
         console.log('搜索已执行');
         this.filteredGoods = this.goods.filter((good) => {
@@ -134,18 +221,7 @@ export default {
       // 从后端获取产品列表
     }
   },
-  computed: {
-    // 计算当前页的商品
-    paginatedGoods() {
-        const start = (this.currentPage - 1) * this.pageSize;
-        const end = start + this.pageSize;
-        return this.filteredGoods.slice(start, end);
-    },
-    // 计算总页数
-    totalPages() {
-        return Math.ceil(this.filteredGoods.length / this.pageSize);
-    }
-  },
+
   watch: {
     // 监视搜索结果的变化
     filteredGoods(newValue, oldValue) {
@@ -154,12 +230,7 @@ export default {
         }
     }
   },
-  mounted() {
-    console.log('ShowHistoryGoods 组件已挂载');
-    // 示例：假设从后端获取成功消息
-    // 在实际应用中，您可能需要在某个操作成功后调用 showSuccessModal
-    this.filteredGoods = this.goods; // 初始时显示所有商品
-  }
+
 };
 </script>
 
@@ -321,32 +392,34 @@ a{
 	#search_list div {
       border-bottom: 1px solid black; 
 	}
-	
-    .media-container {
-        position: relative;
-        width: 100px;
-        height: 100px;
-        overflow: hidden;
-    }
-    .media-container img, .media-container video {
-        display: none;
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-    }
-    .media-container img.active, .media-container video.active {
-        display: block;
-    }
-    .media-container button {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(255, 255, 255, 0.7);
-    }
-    .media-container .prev-button {
-        left: 10px;
-    }
-    .media-container .next-button {
-        right: 10px;
-    }
+
+.media-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+}
+.media-container img, .media-container video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.media-container img.active, .media-container video.active {
+  display: block;
+}
+.media-container button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.7);
+}
+.media-container .prev-button {
+  left: 10px;
+}
+.media-container .next-button {
+  right: 10px;
+}
 </style>

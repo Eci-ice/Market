@@ -1,7 +1,6 @@
 package com.example.maoliang.Service;
 
 
-import com.example.maoliang.Entity.Order;
 import com.example.maoliang.Repository.OrderListRepository;
 import com.example.maoliang.Repository.OrderRepository;
 import org.slf4j.Logger;
@@ -21,16 +20,7 @@ public class OrderService {
     @Autowired
     OrderListRepository orderListRepository;
 
-
-    public List<Order> showOrderInformation() {
-        return orderListRepository.searchOrderInformation();
-    }
-
-    public boolean deleteOrder(int orderid, int orderstate) {
-        return orderListRepository.deleteOrder(orderid, orderstate);
-    }
-
-    public boolean confirmOrder(int orderid, int orderstate) {
-        return orderListRepository.confirmOrder(orderid, orderstate);
+    public void deletegood(int goodid) {
+        orderRepository.deletegood(goodid);
     }
 }

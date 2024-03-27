@@ -45,11 +45,13 @@ export default {
     data() {
         return {
             isLoggedIn: true, // 这应该是从Vuex store或父组件获取的
-            username: 'seller',
-            userpwd: '123',
-            oldpwd: '123',
-            newpwd: '',
-            newpwd1: '',
+            oldpwd: '',
+            newpwd:'',
+            newpwd1:'',
+            credentials: {
+            newpwd:'',
+            newpwd1:''
+      },
             message: null,
             error: null,
         };
@@ -60,48 +62,55 @@ export default {
                 alert("密码不能超过15个字符！");
                 return false;
             }
-            // 检查旧密码是否正确
-            if (this.oldpwd !== this.userpwd) {
-                this.error
-                = "旧密码错误";
-                return false;
-            }
-            // 检查新密码是否与旧密码相同
-            if (this.oldpwd === this.newpwd) {
-                this.error = "新密码与旧密码一致";
-                return false;
-            }
+            // // 检查旧密码是否正确
+            // if (this.oldpwd !== this.userpwd) {
+            //     this.error
+            //     = "旧密码错误";
+            //     return false;
+            // }
+            // // 检查新密码是否与旧密码相同
+            // if (this.oldpwd === this.newpwd) {
+            //     this.error = "新密码与旧密码一致";
+            //     return false;
+            // }
 
-            // 检查新密码是否与确认密码匹配
-            if (this.newpwd !== this.newpwd1) {
-                this.error = "新密码与确认密码不一致";
-                return false;
-            }
+            // // 检查新密码是否与确认密码匹配
+            // if (this.newpwd !== this.newpwd1) {
+            //     this.error = "新密码与确认密码不一致";
+            //     return false;
+            // }
 
             // 如果所有检查都通过，返回true
             this.error = null;
             return true;
-            // 其他验证逻辑...
-            // 提交表单逻辑...
+           
         },
         async submitForm() {
             // 先进行表单验证
             const isValid = this.validateForm();
             if (!isValid) return;
-
             // 如果验证通过，执行密码修改逻辑
             try {
-                // 模拟API调用
-                // 假设 updatePassword 函数发送请求到后端并处理响应
-                // await updatePassword(this.username, this.newpwd);
-
-                this.message = "密码修改成功！";
-                this.error = null;
-
-                // 可能还需要进行额外的操作，例如跳转或更新状态
-                // this.$router.push('/somewhere');
-            } catch (error) {
-                // 处理错误，例如显示错误消息
+                const credentials = {
+                  oldpwd: this.oldpwd,
+          newpwd: this.newpwd,
+          newpwd1: this.newpwd1
+        };
+        const response = await fetch('/usr/changedpwd-control', {
+          method: 'POST',
+          body: JSON.stringify(credentials),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        const responseData = await response.json();
+        if (responseData.page === '/update-password') {
+          console.log(responseData.msg); 
+        }  else if(responseData.page === '/seller'){
+          console.log(responseData.msg);
+        }
+    }catch (error) {
+                console.error("修改密码失败:", error);
                 this.error = "密码修改失败，请稍后再试。";
             }
         },
