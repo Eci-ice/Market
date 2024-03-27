@@ -40,15 +40,11 @@ export default {
         const answerData = {
           answer: this.secretAnswer,
         };
-        const response = await axios.post(
-          "/usr/answer-control",
-          answerData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await axios.post("/usr/answer-control", answerData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         const responseData = await response;
         if (responseData.data.msg === "rightAnswer") {
           alert(`答案正确！您的密码是：${this.storedUsr.pwd}`);

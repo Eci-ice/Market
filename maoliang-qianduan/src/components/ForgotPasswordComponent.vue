@@ -39,15 +39,9 @@ export default {
         const postData = {
           username: this.forgetName,
         };
-        const response = await axios.post(
-          "/usr/forgetPwd-control",
-          postData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await axios.post("/usr/forgetPwd-control", postData, {
+          headers: { "Content-Type": "application/json" },
+        });
         const responseData = await response;
         if (responseData.data.msg === "answer") {
           // 跳转到密保问题回答页面，并存储传回的用户对象

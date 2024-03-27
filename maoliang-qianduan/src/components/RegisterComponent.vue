@@ -102,11 +102,9 @@ export default {
         });
         const responseData = await response.json();
 
-        if (responseData.msg === 'error') {
-          console.log(responseData.msg); // 输出消息
-        }else if (responseData.msg === 'rename'){
+        if (responseData.msg !== 'success') {
           alert(responseData.msg);
-        } else if (responseData.msg === 'success') {
+        } else {
           console.log("success");
           console.log(responseData.msg);
           alert("Register Success!");
