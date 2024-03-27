@@ -6,14 +6,14 @@ import com.example.maoliang.Controller.utils.Result;
 import com.example.maoliang.Service.GoodService;
 import com.example.maoliang.Entity.Good;
 import com.example.maoliang.Entity.Usr;
-import com.example.maoliang.Service.OrderService;
-import com.example.maoliang.dto.*;
+import com.example.maoliang.dto.Likedata;
+import com.example.maoliang.dto.Searchlistdata;
+import com.example.maoliang.dto.Uploadgoodsdata;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -29,18 +29,12 @@ import static com.example.maoliang.Controller.utils.Page.*;
 
 @RestController
 @RequestMapping( "/good/*")
-@CrossOrigin
 public class GoodController {
     private static final Logger LOGGER = LoggerFactory.getLogger(GoodController.class);
     @Autowired
     private GoodService goodService;
     @Autowired
-    private OrderService orderService;
-    @Autowired
     public HttpSession session;
-
-    @Value("${upload.directory}")
-    private String uploadDirectory;
 
 
     @RequestMapping("/search-list-control")
@@ -53,21 +47,21 @@ public class GoodController {
         if (null == currentUsr) {
             List<Good> searchList = goodService.showSearchGoods(keyword,kind,0,0,ishistory);
             session.setAttribute("sL", searchList);
-            return new Result(BUYER_SEARCHLIST_PAGE,null, null);
+            return new Result(BUYER_SEARCHLIST_PAGE,null, searchList);
         } else {
             int power = currentUsr.getPower();
             int userid = currentUsr.getUserid();
             List<Good> searchList = goodService.showSearchGoods(keyword,kind,power,userid,ishistory);
             session.setAttribute("sL", searchList);
             if(1==ishistory) {
-                return new Result(SELLER_SEARCHHISTROYLIST_PAGE,null, null);
+                return new Result(SELLER_SEARCHHISTROYLIST_PAGE,null, searchList);
             }
             else {
                 if(1==power) {
-                    return new Result(SELLER_SEARCHLIST_PAGE,null, null);
+                    return new Result(SELLER_SEARCHLIST_PAGE,null, searchList);
                 }
                 else if(0==power){
-                    return new Result(BUYER_SEARCHLIST_PAGE,null, null);
+                    return new Result(BUYER_SEARCHLIST_PAGE,null, searchList);
                 }
             }
         }
@@ -147,6 +141,7 @@ public class GoodController {
     @RequestMapping(value = "/upload-good")
     public Result uploadGood(@RequestParam("mediaFiles") MultipartFile[] fileParts,@ModelAttribute Uploadgoodsdata uploadgoodsdata) {
         Usr currentUsr = (Usr) session.getAttribute("admin");
+        String path = "/src/main/resources/static/img/";
         //System.out.println( uploadgoodsdata.getGoodname());
         String  goodname = uploadgoodsdata.getGoodname();
         String  description = uploadgoodsdata.getDescription();
@@ -169,13 +164,12 @@ public class GoodController {
                 String randomFileName = extraOperations.randomString(20) + extension; // 生成随机文件名
 
                 // 设置上传路径
-                String uploadPath =  uploadDirectory + randomFileName;
+                String uploadPath = System.getProperty("user.dir") + path + randomFileName;
                 File fileUploadDirectory = new File(uploadPath);
 
                 try {
                     filePart.transferTo(fileUploadDirectory); // 保存文件
-                    fileNames.add("file://" + uploadPath); // 本地测试！将文件路径添加到列表
-                    //TODO:服务器模式的地址调用
+                    fileNames.add("/img/" + randomFileName); // 将文件路径添加到列表
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -208,126 +202,81 @@ public class GoodController {
 
 
     @RequestMapping("/upload-multiple-goods")
-    public Result uploadMultipleGoods(@RequestBody UploadMultiplegoodsdata uploadMultiplegoodsdata) {
-//        Usr currentUsr = (Usr) session.getAttribute("admin");
-//        String path = "/src/main/resources/static/img/";
-//        List<Good> uploadedGoods = new ArrayList<>();
-        String[] goodnames=uploadMultiplegoodsdata.getGoodnames();
+    public Result uploadMultipleGoods(MultipartFile[] mediaFiles, @ModelAttribute Uploadgoodsdata[] uploadGoodsDataArray, HttpSession session) {
+        Usr currentUsr = (Usr) session.getAttribute("admin");
+        String path = "/src/main/resources/static/img/";
+        List<Good> uploadedGoods = new ArrayList<>();
         Set<String> goodNameSet = new HashSet<>();
 
-        System.out.println(goodnames);
         // 检查是否有重复的商品名称
-        for (String goodname : goodnames) {
-            if (!goodNameSet.add(goodname) || goodService.isUnique(goodname) != 0) {
+        for (Uploadgoodsdata uploadGoodsData : uploadGoodsDataArray) {
+            String goodname = uploadGoodsData.getGoodname();
+            if (!goodNameSet.add(goodname) || goodService.isUnique(goodname) != 0) { // 上传商品list有重复 或 与数据库中商品名重复
                 return new Result(ERROR_PAGE, "请勿上传重名商品：" + goodname + "！", SELLER_UPLOAD_MULTI_GOODS_PAGE);
             }
         }
-        return new Result(SUCCESS_PAGE, null, null);
-//        for (Uploadgoodsdata product : products) {
-//            String goodname = product.getGoodname();
-//            String description = product.getDescription();
-//            int state = 0;
-//            double price = product.getPrice();
-//            int number = product.getNumber();
-//            String kind = product.getKind();
-//            String subkind = product.getSubkind();
-//
-//            int owner = currentUsr.getUserid();
-//
-//                // 过滤当前索引的文件数组
-//                List<MultipartFile> files = new ArrayList<>();
-//
-//                for (MultipartFile mediaFile : fileParts) {
-//                    String fileIndex = mediaFile.getName().substring(mediaFile.getName().indexOf('[') + 1, mediaFile.getName().indexOf(']'));
-//                    if (fileIndex == goodname) {
-//                        files.add(mediaFile);
-//                    }
-//                }
-//
-//                List<String> fileNames = new ArrayList<>();
-//                for (MultipartFile filePart : files) {
-//                    if (!filePart.isEmpty()) {
-//                        String fileName = filePart.getOriginalFilename();
-//                        String extension = fileName.substring(fileName.lastIndexOf("."));
-//                        String randomFileName = extraOperations.randomString(20) + extension;
-//
-//                        String uploadPath = System.getProperty("user.dir") + path + randomFileName;
-//                        File fileUploadDirectory = new File(uploadPath);
-//
-//                        try {
-//                            filePart.transferTo(fileUploadDirectory);
-//                            fileNames.add("/img/" + randomFileName);
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }
-//
-//                String picture = String.join(",", fileNames);
-//                if(picture == null || "".equals(picture)) {
-//                    picture="./img/food-1.png";
-//                }
-//
-//                if (subkind == null || "".equals(subkind)) {
-//                    subkind = "默认子类";
-//                }
-//
-//                Good newGood  = new Good();
-//                newGood.setGoodname(goodname);
-//                newGood.setDescription(description);
-//                newGood.setPrice(price);
-//                newGood.setPicture(picture);
-//                newGood.setState(state);
-//                newGood.setNumber(number);
-//                newGood.setKind(kind);
-//                newGood.setSubkind(subkind);
-//                newGood.setOwner(owner);
-//                goodService.add(newGood);
-//                uploadedGoods.add(newGood);
-//            }
-//        return new Result(SUCCESS_PAGE, "上传成功！", SELLER_ALL_GOODS_PAGE);
 
-    }
+        // 导入商品
+        for (int i = 0; i < uploadGoodsDataArray.length; i++) {
+            Uploadgoodsdata uploadGoodsData = uploadGoodsDataArray[i]; // 获取当前文件对应的商品信息
 
-    @RequestMapping("/delete-good/{goodid}")
-    public Result deleteGood(@PathVariable int goodid) {
-        if ( goodService.remove(goodid) > 0) {
-            orderService.deletegood(goodid);//删除对应订单
-            return new Result(SUCCESS_PAGE, "商品删除成功！", SELLER_ALL_GOODS_PAGE);
-        } else {
-            // 商品不存在或删除失败
-            return new Result(ERROR_PAGE, "商品不存在或删除失败！", SELLER_ALL_GOODS_PAGE);
-        }
-    }
+            String goodname = uploadGoodsData.getGoodname();
+            String description = uploadGoodsData.getDescription();
+            Double price = uploadGoodsData.getPrice();
+            int state = 0;
+            int number = uploadGoodsData.getNumber();
+            String kind = uploadGoodsData.getKind();
+            String subkind = uploadGoodsData.getSubkind();
+            int owner = currentUsr.getUserid();
 
-    @RequestMapping("/buyer-show-good/{goodid}")
-    public Result buyerShowGood(@PathVariable int goodid) {
-        Good g = goodService.showGood(goodid);
-        session.setAttribute("now-good", g);
-        return new Result(BUYER_SHOP_PAGE, null, null);
-    }
+            MultipartFile[] files = Arrays.stream(mediaFiles)
+                    .filter(file -> file.getName().startsWith(goodname))  // 根据商品名称过滤文件数组
+                    .toArray(MultipartFile[]::new);
 
-    @RequestMapping("/modify-price")
-    public Result modifyPriceforGood(@RequestBody Modifypricedata modifypricedata) {
-        Usr currentUsr = (Usr) session.getAttribute("admin");
-        double newPrice=modifypricedata.getNewPrice();
-        int goodId=modifypricedata.getGoodId();
+            List<String> fileNames = new ArrayList<>();
+            for (MultipartFile filePart : files) {
+                if (!filePart.isEmpty()) {
+                    String fileName = filePart.getOriginalFilename();
+                    String extension = fileName.substring(fileName.lastIndexOf("."));
+                    String randomFileName = extraOperations.randomString(20) + extension;
 
-        Good g = goodService.showGood(goodId);
+                    String uploadPath = System.getProperty("user.dir") + path + randomFileName;
+                    File fileUploadDirectory = new File(uploadPath);
 
-        if (null != currentUsr) {
-            g.setPrice(newPrice);
-            boolean result=goodService.updateGood(g);
-            if(result){
-                return new Result(SUCCESS_PAGE, "价格修改成功！", SELLER_ALL_GOODS_PAGE);
+                    try {
+                        filePart.transferTo(fileUploadDirectory);
+                        fileNames.add("/img/" + randomFileName);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-            else{
-                return new Result(ERROR_PAGE, "价格修改失败！", SELLER_ALL_GOODS_PAGE);
+
+            String picture = String.join(",", fileNames);
+            if(picture == null || "".equals(picture)) {
+                picture="./img/food-1.png";
             }
-        } else {
-            return new Result(ERROR_PAGE, "请先登录！", LOGIN_PAGE);
+
+            if (subkind == null || "".equals(subkind)) {
+                subkind = "默认子类";
+            }
+
+            Good newGood  = new Good();
+            newGood.setGoodname(goodname);
+            newGood.setDescription(description);
+            newGood.setPrice(price);
+            newGood.setPicture(picture);
+            newGood.setState(state);
+            newGood.setNumber(number);
+            newGood.setKind(kind);
+            newGood.setSubkind(subkind);
+            newGood.setOwner(owner);
+            goodService.add(newGood);
+            uploadedGoods.add(newGood);
         }
+        return new Result(SUCCESS_PAGE, "上传成功！", SELLER_ALL_GOODS_PAGE);
     }
+
 
 
 }

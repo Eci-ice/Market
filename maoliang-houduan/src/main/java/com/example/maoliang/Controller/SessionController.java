@@ -49,19 +49,4 @@ public class SessionController {
             return null;
         }
     }
-
-    @RequestMapping("/now-good")
-    @ResponseBody
-    public Good getGoodFromSession() {//向前端返回admin
-        // 从 session 中获取用户名
-        Good good = (Good) session.getAttribute("now-good");
-
-        if (good != null) {
-            return good;
-        } else {
-            return null;
-        }
-    }
-
-
 }

@@ -7,5 +7,4 @@ public class Likedata {
     private int goodId;
     private String isCancel;
     private int userId;
-
 }
