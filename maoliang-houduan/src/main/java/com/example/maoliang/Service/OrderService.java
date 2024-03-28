@@ -38,11 +38,9 @@ public class OrderService {
         return orderListRepository.buyerhistoryconfirmOrder(orderid, orderstate);
     }
 
-    public List<Order> showbuyerorderinfo(int userid) {
-        return  orderListRepository.showall(userid);
+    public List<Order> showbuyerorderinfo(String name) {
+        return  orderListRepository.showall(name);
     }
 
-    public boolean buyerhistorycancelOrder(int orderid) {
-        return orderListRepository.cancelOrder(orderid);
-    }
+
 }

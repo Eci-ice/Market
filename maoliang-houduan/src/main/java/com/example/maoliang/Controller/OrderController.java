@@ -2,21 +2,12 @@ package com.example.maoliang.Controller;
 
 
 import com.example.maoliang.Controller.utils.Result;
-import com.example.maoliang.Entity.Good;
-import com.example.maoliang.Entity.Usr;
-import com.example.maoliang.Service.GoodService;
 import com.example.maoliang.Service.OrderService;
-import com.example.maoliang.dto.Likedata;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static com.example.maoliang.Controller.utils.Page.SUCCESS_PAGE;
 import static com.example.maoliang.Controller.utils.Page.ERROR_PAGE;
@@ -65,18 +56,9 @@ public class OrderController {
 
 
     @RequestMapping("/showbuyerorderinfo-control")
-    public Result showbuyerorderinfoControl(@RequestParam("userid") int userid) {
-        return new Result(SUCCESS_PAGE, "获得订单成功", orderService.showbuyerorderinfo(userid));
+    public Result showbuyerorderinfoControl(@RequestParam("name") String name) {
+        return new Result(SUCCESS_PAGE, "获得订单成功", orderService.showbuyerorderinfo(name));
     }
-    @RequestMapping("/buyerhistorycancelrder-control")
-    public Result buyerhistorycancelOrderControl(@RequestParam("orderid") int orderid) {
-        boolean f=orderService.buyerhistorycancelOrder(orderid);
-        if(f){
-            return new Result(SUCCESS_PAGE, "取消订单成功", orderService.buyerhistorycancelOrder(orderid));
-        }else{
-            return new Result(ERROR_PAGE, "取消订单失败", orderService.buyerhistorycancelOrder(orderid));
-        }
 
-    }
 
 }

@@ -88,9 +88,10 @@ public class OrderListRepository {
         return affectedRows > 0; // 如果影响的行数大于0，则表示更新成功
     }
 
-    public  List<Order>  showall(int userid) {
+    public  List<Order>  showall(String name) {
+        name=name.trim();
 
-        String sql = "SELECT * FROM MLorder WHERE owner = ?";
+        String sql = "SELECT * FROM MLorder WHERE buyername = ?";
         try{
             return  jdbcTemplate.query(sql, (rs, rowNum) -> {
                 Order or = new Order();
@@ -103,18 +104,11 @@ public class OrderListRepository {
                 or.setOrderstate(rs.getInt("orderstate"));
                 or.setOwner(rs.getInt("owner"));
                 return or;
-            }, userid);
+            }, name);
         }catch (EmptyResultDataAccessException e){
             return null;
         }
     }
 
-    public boolean cancelOrder(int orderid) {
-        String sql = "UPDATE MLorder SET orderstate =? WHERE orderid= ?";
 
-
-        int affectedRows = jdbcTemplate.update(sql, -1,orderid);
-        return affectedRows > 0; // 如果影响的行数大于0，则表示更新成功
-
-    }
 }

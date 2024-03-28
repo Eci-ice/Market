@@ -124,7 +124,7 @@ export default {
       }
     },
     goBack() {
-      this.$router.push({ name: 'BuyerMain' }); // 假设 ShowUserInfo 是用户信息列表组件的路由名称
+      this.$router.push({ name: 'BuyerMain' }); 
     },
     getOrderStatus(statusCode) {
       const statusMap = {
@@ -183,7 +183,7 @@ export default {
       const order = this.orders.find(o => o.orderid === orderId);
       if (order) {
         // 发送异步请求到服务器以更新订单状态
-        axios.post('/order/deleteorder-control', { orderid: orderId, orderstate: -1 })
+        axios.post('/order/deleteorder-control', { orderid: orderId,orderstate:-1})
           .then(response => {
             if (response.data && response.data.msg === '取消订单成功') {
               // 如果成功，更新本地订单状态
@@ -228,18 +228,14 @@ export default {
       await this.fetchUsrFromSession();
       axios.get('/order/showbuyerorderinfo-control', {
         params: {
-          userid:this.currentUser.userid
+          name:this.currentUser.username
         }
       })
         .then(response => {
-          console.log(3)
-      
-          console.log(response)
-          console.log(response.data)
-          console.log(response.data.data); // 确保这里是你想要的数据结构
+
           if (response.data && response.data.data) {
             this.orders = response.data.data; // 假设这是包含所有订单的数组
-            console.log(this.orders)
+       
             console.log("获取意向订单数据列表成功");
           } else {
             console.error("获取意向订单数据列表失败");
