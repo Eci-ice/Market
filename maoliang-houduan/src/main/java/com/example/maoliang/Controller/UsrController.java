@@ -76,20 +76,25 @@ public class UsrController {
     public Result RegisterControl(@RequestBody RegisterData register) {
         String username = register.getUsername();
         try {
-            if ((register.getUsername()==null || register.getPassword()==null || register.getAnswer()==null ||register.getQuestion()==null)){
+            System.out.println("mum:"+register.getPhone());
+            // 检查空值
+            if (StringUtils.isEmpty(register.getUsername()) || StringUtils.isEmpty(register.getPassword()) || StringUtils.isEmpty(register.getAnswer()) || StringUtils.isEmpty(register.getQuestion())){
                 LOGGER.error("Empty error");
-                return new Result(RENAME_PAGE,"错误，请补充对应信息！","register");
-            } else if (register.getPower() == 1 && (register.getPhone()==null || register.getAddress()==null )) {
+                return new Result("Empty","错误，请补充对应信息！","register");
+            } else if (register.getPower() == 1 && (StringUtils.isEmpty(register.getPhone()) || StringUtils.isEmpty(register.getAddress())) ) {
                 LOGGER.error("Empty error");
-                return new Result(RENAME_PAGE,"错误，请补充对应信息！","register");
+                return new Result("BuyerEmpty","错误，买家需要补充对应信息！","register");
             }
+            // 检查格式
             if (register.getUsername().length() > 10 || register.getQuestion().length() > 50){
                 LOGGER.error("Too long error");
-                return new Result(RENAME_PAGE,"错误，用户名或密保问题过长！","register");
-            } else if (register.getPhone().length()!=11){
+                return new Result("LongNameQues","错误，用户名或密保问题过长！","register");
+            } else if (register.getPhone().length()!=11 || !register.getPhone().matches("\\d+")){
                 LOGGER.error("Wrong phone number");
-                return new Result(RENAME_PAGE,"错误，请输入正确电话号码！","register");
-            } else if(usrService.searchName(username) == false) {
+                return new Result("LongPhone","错误，请输入正确电话号码！","register");
+            }
+            // 检查重名
+            if(usrService.searchName(username) == false) {
                 Usr newUsr = new Usr();
                 newUsr.setUsername(username);
                 newUsr.setPwd(register.getPassword());
@@ -105,7 +110,7 @@ public class UsrController {
                     newUsr.setPhone(null);
                 }
                 //注册
-                usrService.register(newUsr);
+                usrRepository.register(newUsr);
                 return new Result(LOGIN_PAGE, "success", username);
             } else {
                 LOGGER.error("Error handling register");
