@@ -36,6 +36,9 @@
         <div class="centered-container">
           <h2>欢迎来到猫咪美食坊！</h2>
         </div>
+        <div>
+          <button @click="showNextMedia(item)">＞</button>
+        </div>
         <div class="centered-container">
           <form @submit.prevent="handleSearch">
             <input type="text" v-model="searchQuery" class="custom-input" placeholder="搜索商品">&nbsp;&nbsp;&nbsp;
@@ -49,22 +52,20 @@
           <div id="search_list"></div>
         </div><br>
           <div class="goods">
-            <div class="show-1" v-for="item in paginatedItems" :key="item.goodid">
-              <div @click="postToBuyerShop(item.goodid)">
-                <div class="media-container">
-                    <div v-for="(media, index) in item.mediaFiles" :key="index" v-show="media.isActive">
-                      <img v-if="!isVideo(media)" :src="media.url" alt="商品图片" v-show="media.isActive">
-                      <video v-else :src="media.url" controls v-show="media.isActive"></video>
-                    </div>
-                </div>
+            <div class="show-1" v-for="item in paginatedItems" :key="item.id">
+              <div class="media-container">
+                  <div v-for="(media, index) in item.mediaFiles" :key="index" v-show="media.isActive">
+                    <img v-if="!isVideo(media)" :src="media.url" alt="商品图片" v-show="media.isActive">
+                    <video v-else :src="media.url" controls v-show="media.isActive"></video>
+                  </div>
               </div>
-                <div class="media-navigation">
-                    <button @click="showPrevMedia(item)">＜</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button @click="showNextMedia(item)">＞</button>
-                </div>
-              <div @click="postToBuyerShop(item.goodid)">
-                <p>商品名：{{ item.goodname }}<br>超值价：{{ item.price }}元</p>
+              <div class="media-navigation">
+                  <button @click="showPrevMedia(item)">＜</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <button @click="showNextMedia(item)">＞</button>
               </div>
+              <a href="/buyer-shop">
+                <p>商品名：{{ item.name }}<br>超值价：{{ item.price }}元</p>
+              </a>
             </div>
           </div>
           <div class="pagination">
@@ -116,22 +117,20 @@
           <div id="search_list"></div>
         </div><br>
           <div class="goods">
-            <div class="show-1" v-for="item in paginatedItems" :key="item.goodid">
-              <div @click="postToBuyerShop(item.goodid)">
-                <div class="media-container">
-                    <div v-for="(media, index) in item.mediaFiles" :key="index" v-show="media.isActive">
-                      <img v-if="!isVideo(media)" :src="media.url" alt="商品图片" v-show="media.isActive">
-                      <video v-else :src="media.url" controls v-show="media.isActive"></video>
-                    </div>
-                </div>
+            <div class="show-1" v-for="item in paginatedItems" :key="item.id">
+              <div class="media-container">
+                  <div v-for="(media, index) in item.mediaFiles" :key="index" v-show="media.isActive">
+                    <img v-if="!isVideo(media)" :src="media.url" alt="商品图片" v-show="media.isActive">
+                    <video v-else :src="media.url" controls v-show="media.isActive"></video>
+                  </div>
               </div>
-                <div class="media-navigation">
-                    <button @click="showPrevMedia(item)">＜</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button @click="showNextMedia(item)">＞</button>
-                </div>
-              <div @click="postToBuyerShop(item.goodid)">
-                <p>商品名：{{ item.goodname }}<br>超值价：{{ item.price }}元</p>
+              <div class="media-navigation">
+                  <button @click="showPrevMedia(item)">＜</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <button @click="showNextMedia(item)">＞</button>
               </div>
+              <a href="/buyer-shop">
+                <p>商品名：{{ item.name }}<br>超值价：{{ item.price }}元</p>
+              </a>
             </div>
           </div>
           <div class="pagination">
@@ -162,19 +161,11 @@ export default {
         keyword: '',
         kind: '猫咪主粮'
       },
-      currentUser :null
+      currentUser :{}
     };
   },
 
-  created() {
-    this.fetchUsrFromSession();
-    this.fetchgoodListSession();
-  },
-  async mounted() {
-    console.log('BuyerMain 组件已挂载');
-    await this.fetchgoodListSession(); // 等待 fetchgoodListSession 完成!!
-    this.filteredItems = this.items; // 初始时显示所有商品
-  },
+
   computed: {
     isLoggedIn() {
       // 根据当前用户数据判断用户是否登录
@@ -204,6 +195,9 @@ export default {
       return Math.ceil(this.filteredItems.length / this.itemsPerPage);
     }
   },
+  created() {
+    this.fetchUsrFromSession();
+  },
   methods: {
     async fetchUsrFromSession() {
       try {
@@ -215,24 +209,37 @@ export default {
 
         // 更新组件的 currentUser 数据
         this.currentUser = usr;
+        console.log(this.currentUser.userid)
         return true;
       } catch (error) {
         console.error('获取用户数据错误:', error);
         return false;
       }
     },
+    //添加购物车api，前端商品展示没有，按钮调用这个接口就行
+    addproduct(goodid) {
+      // 调用接口，获取详细信息
+      axios.post('/good/create-cart', { goodid: goodid,userid:this.currentUser.userid }).then(res => {
+        // 处理返回的详细信息
+        console.log(res.data);
+        alert("商品已添加购物车");
+      }).catch(error => {
+        // 处理请求错误
+        console.error(error);
+      });
+    },
     async fetchgoodListSession() {
       try {
         // 发起 GET 请求获取商品列表
-        const goodsResponse = await axios.get('/good/buyer-all-good-list-control');
+        const goodsResponse = await axios.get('/good/buyer-all-good-list-controll');
         // 解析响应数据
         // console.log('goodList:', goodsResponse);
         const goodList = goodsResponse.data.data;//goodsResponse的数据的data属性
         // 将商品列表添加到 products 中
         // 解析picture属性并添加mediaFiles属性
-       //  console.log('goodList:', goodList);
+        //  console.log('goodList:', goodList);
 
-        this.items = goodList.map( good => {
+        this.goods = goodList.map( good => {
           //    console.log('Before trimming:', good.picture); // 添加调试语句
           const trimmedPicture = good.picture.trim();
           //     console.log('After trimming:', trimmedPicture); // 添加调试语句
@@ -247,19 +254,15 @@ export default {
             ...good,
             mediaFiles,
             // 保留原始属性
-            goodid: good.goodid,
             goodname: good.goodname.trim(),
             description: good.description.trim(),
             price: good.price,
             number: good.number,
             kind: good.kind,
-            subkind: good.subkind,
-            buyingid: good.buyingid,
-            numbermax: good.numbermax,
-            islike: good.islike
+            subkind: good.subkind
           };
         });
-        console.log('this.items:', this.items);
+        console.log('this.goods:', this.goods);
         return true;
       } catch (error) {
         console.error('获取商品列表数据错误:', error);
@@ -269,28 +272,6 @@ export default {
     isVideo(media) {
       //判断是否是视频
       return media.url.endsWith('.mp4') || media.url.endsWith('.avi');
-    },
-    async postToBuyerShop(goodid) {
-      const response = await fetch(`/good/buyer-show-good/${goodid}`, {
-        method: 'POST',
-      });
-
-      this.selectedFiles = []; // 清空照片列表
-
-      // 解析响应数据
-      const responseData = await response.json();
-
-      if (responseData.page === '/error') {
-        // 重定向到错误页面，并将错误消息和重定向目标作为参数传递
-        this.$router.push({ path: '/error', query: { err: responseData.msg, to: responseData.data }})
-      } else if (responseData.page === '/success') {
-        // 重定向到成功界面，并将成功消息和重定向目标作为参数传递
-        this.$router.push({ path: '/success', query: { message: responseData.msg, to: responseData.data }})
-      } else if (responseData.page === null) {
-        console.log("未知页面类型");
-      } else {
-        this.$router.push({ path: responseData.page });
-      }
     },
     async handleLogout() {
       try {
@@ -311,35 +292,17 @@ export default {
         this.$router.push('/');
       }
     },
-    async handleSearch() {
-      console.log('搜索已执行');
-      const credentials = {
-        keyword: this.searchQuery,
-        kind: this.selectedCategory,
-        ishistory: 0
-      };
+    handleSearch() {
+      this.filteredItems = this.items.filter(item => {
+          const matchesKeyword = this.searchQuery ? item.name.toLowerCase().includes(this.searchQuery.toLowerCase()) : true;
+          const matchesCategory = this.selectedCategory ? item.kind === this.selectedCategory : true;
 
-      const response = await fetch('/good/search-list-control', {
-        method: 'POST',
-        body: JSON.stringify(credentials),
-        headers: {
-          'Content-Type': 'application/json'
-        }
+          console.log(`Item: ${item.name}, Keyword Match: ${matchesKeyword}, Category Match: ${matchesCategory}`);
+
+          return matchesKeyword && matchesCategory;
       });
-
-      const responseData = await response.json();
-
-      if (responseData.page === '/error') {
-        // 重定向到错误页面，并将错误消息和重定向目标作为参数传递
-        this.$router.push({ path: '/error', query: { err: responseData.msg, to: responseData.data }})
-      } else if (responseData.page === '/success') {
-        // 重定向到成功界面，并将成功消息和重定向目标作为参数传递
-        this.$router.push({ path: '/success', query: { message: responseData.msg, to: responseData.data }})
-      } else if (responseData.page === null) {
-        console.log("未知页面类型");
-      } else {
-        this.$router.push({ path: responseData.page });
-      }
+      console.log("Filtered items count:", this.filteredItems.length);
+      // 其他逻辑
     },
     showPrevMedia(item) {
         const currentIndex = item.mediaFiles.findIndex(media => media.isActive);
@@ -395,7 +358,11 @@ export default {
         }
     }
   },
-
+  mounted() {
+    // 示例：假设从后端获取成功消息
+    // 在实际应用中，您可能需要在某个操作成功后调用 showSuccessModal
+    this.filteredItems = this.items; // 初始时显示所有商品
+  },
 };
 </script>
 
