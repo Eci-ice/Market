@@ -31,6 +31,7 @@ public class GoodListRepository {
 
     public List<Good> searchls(String keyword, String kind, int power, int userid, int ishistory) {
         StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ");
+
         if (ishistory == 1) {
             sqlBuilder.append("MLhistorygood");
             if (power == 1) {

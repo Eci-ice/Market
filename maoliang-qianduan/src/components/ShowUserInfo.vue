@@ -64,7 +64,6 @@ export default {
       currentPage: 1,
       itemsPerPage: 5,
       // 假设 totalItems 由后端提供或计算得出
-      totalItems: 6,
       currentUser: {},
     };
   },
@@ -190,12 +189,13 @@ export default {
   },
   computed: {
     paginatedUsers() {
-      const start = (this.currentPage - 1) * this.pageSize;
-      const end = start + this.pageSize;
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
       return this.filteredUsers.slice(start, end);
     },
+    // 计算总页数
     totalPages() {
-      return Math.ceil(this.totalItems / this.itemsPerPage);
+      return Math.ceil(this.orders.length / this.itemsPerPage);
     },
     isPrevDisabled() {
       return this.currentPage <= 1;

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class GoodService {
@@ -23,6 +24,10 @@ public class GoodService {
     public void modifyLike(int goodId, int userId, int nowLike) {
         // 数据库操作
         goodRepository.modifylike(goodId, userId, nowLike); // 根据 nowLike 参数执行相应操作
+    }
+
+    public Good showGood(int goodid) {
+        return goodRepository.search(goodid);
     }
 
     public List<Good> showNowGoods(){
@@ -52,4 +57,59 @@ public class GoodService {
     public void add(Good g) {
         goodRepository.add(g);
     }
+
+    public int remove(int goodid) {
+        return goodRepository.remove(goodid);
+    }
+
+    public boolean updateGood(Good g) {
+        return goodRepository.updateGood(g);
+    }
+
+    public int findCart(int goodId, int buyer) {
+        return goodRepository.findcart(goodId, buyer);
+    }
+    public void addToCart(int goodId, int buyer) {
+        goodRepository.addtocart(goodId, buyer);
+    }
+
+
+    public void modifyBuyNumber(int buyingId, int number) {
+        goodRepository.modifybuynumber(buyingId, number);
+    }
+
+    public void addToLike(int goodId, int buyer) {
+        goodRepository.addtolike(goodId, buyer);
+    }
+
+    public List<Map<String, Object>> showBuyerCart(int userId) {
+        List<Map<String, Object>> maps = goodRepository.showBuyerCart(userId);
+        for (Map<String, Object> map : maps) {
+            map.put("quantity",0);
+        }
+        return maps;
+    }
+//    public List<GoodList> showLike(int userId) {
+//        return goodRepository.showLike(userId);
+//    }
+//    public List<Good> showLike(int userId) {
+//        return goodRepository.showLike(userId);
+//    }
+
+    public List<Map<String, Object>> showLike(int userId, int islike) {
+        List<Map<String, Object>> list = goodRepository.showLike(userId, islike);
+        return list;
+    }
+
+
+
+
+    public void cancelLike(int goodId,int userid) {
+        goodRepository.cancellike(goodId,userid);
+    }
+    public void removeBuyingItem(int buyingId,int userid) {
+        goodRepository.removebuyingitem(buyingId,userid);
+    }
+
+
 }

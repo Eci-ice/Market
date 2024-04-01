@@ -1,94 +1,94 @@
 <template>
 
   <body style="margin: 0px;">
-    <div v-if="isLoggedIn">
-      <div class="left">
-        <!-- 页面头部 -->
-        <table class="daohang">
-          <img class="head1" src="~@/assets/img/buyer/head.png" alt="">
+  <div v-if="isLoggedIn">
+    <div class="left">
+      <!-- 页面头部 -->
+      <table class="daohang">
+        <img class="head1" src="~@/assets/img/buyer/head.png" alt="">
+        <tr>
+          <td class="head2">{{ username }}</td>
+        </tr>
+        <tr>
+          <td class="head4">
+            <h3 @click="navigateTo('BuyerCart')" class="head4-1" style="cursor: pointer;">我的购物车</h3>
+          </td>
+        </tr>
+        <tr>
+          <td class="head4">
+            <h3 @click="navigateTo('BuyerLikes')" class="head4-1" style="cursor: pointer;">我的收藏</h3>
+          </td>
+        </tr>
+        <tr>
+          <td class="head4">
+            <h3 @click="navigateTo('buyerHistory')" class="head4-1" style="cursor: pointer;">历史购买记录</h3>
+          </td>
+        </tr>
+        <tr>
+          <td class="head4">
+            <h3 @click="navigateTo('BuyerMain')" class="head4-1" style="cursor: pointer;">返回主页</h3>
+          </td>
+        </tr>
+        <tr>
+          <td class="head5">
+            <button @click="handleLogout" class="head5-1" style="cursor: pointer;">退出登录</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- 右侧内容区域 -->
+    <div class="right" style="width: 75%;">
+      <div class="container">
+        <router-link :to="{ name: 'BuyerMain' }">
+          返回
+        </router-link>
+        <div class="centered-container">
+          <h2>历史下单记录</h2>
+        </div>
+        <table style="border-collapse: collapse; width: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" border="1"
+               align="center" cellpadding="10">
           <tr>
-            <td class="head2">{{ username }}</td>
+            <th>ID</th>
+            <th>地址</th>
+            <th>电话</th>
+            <th>购买人姓名</th>
+            <th>商品ID</th>
+            <th>操作</th>
+            <th>订单状态</th>
           </tr>
-          <tr>
-            <td class="head4">
-              <h3 @click="navigateTo('BuyerCart')" class="head4-1" style="cursor: pointer;">我的购物车</h3>
+          <tr v-for="order in paginatedOrders" :key="order.orderid">
+            <td>{{ order.orderid }}</td>
+            <td>{{ order.address }}</td>
+            <td>{{ order.telephone }}</td>
+            <td>{{ order.buyername }}</td>
+            <td>{{ order.goodid }}</td>
+            <td>
+              <button v-if="order.orderstate === 4" class="green-btn"
+                      @click="handleOrderAction(order.orderid, 'confirmCompletion')"
+                      style="background-color: transparent; color: #f44336; border: 2px solid #f44336; padding: 5px 10px; border-radius: 4px; cursor: pointer;">确认交易完成</button>
+              <button v-if="order.orderstate >= 0 && order.orderstate < 4" class="red-btn"
+                      @click="handleOrderAction(order.orderid, 'cancel')"
+                      style="background-color: transparent; color: #f44336; border: 2px solid #f44336; padding: 5px 10px; border-radius: 4px; cursor: pointer;">取消订单</button>
+              <span v-if="order.orderstate > 4 || order.orderstate === -1">无法操作订单</span>
             </td>
-          </tr>
-          <tr>
-            <td class="head4">
-              <h3 @click="navigateTo('BuyerLikes')" class="head4-1" style="cursor: pointer;">我的收藏</h3>
-            </td>
-          </tr>
-          <tr>
-            <td class="head4">
-              <h3 @click="navigateTo('buyerHistory')" class="head4-1" style="cursor: pointer;">历史购买记录</h3>
-            </td>
-          </tr>
-          <tr>
-            <td class="head4">
-              <h3 @click="navigateTo('BuyerMain')" class="head4-1" style="cursor: pointer;">返回主页</h3>
-            </td>
-          </tr>
-          <tr>
-            <td class="head5">
-              <button @click="handleLogout" class="head5-1" style="cursor: pointer;">退出登录</button>
-            </td>
+            <td>{{ getOrderStatus(order.orderstate) }}</td>
           </tr>
         </table>
-      </div>
-
-      <!-- 右侧内容区域 -->
-      <div class="right" style="width: 75%;">
-        <div class="container">
-          <router-link :to="{ name: 'BuyerMain' }">
-            返回
-          </router-link>
-          <div class="centered-container">
-            <h2>历史下单记录</h2>
-          </div>
-          <table style="border-collapse: collapse; width: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" border="1"
-            align="center" cellpadding="10">
-            <tr>
-              <th>ID</th>
-              <th>地址</th>
-              <th>电话</th>
-              <th>购买人姓名</th>
-              <th>商品ID</th>
-              <th>操作</th>
-              <th>订单状态</th>
-            </tr>
-            <tr v-for="order in paginatedOrders" :key="order.orderid">
-              <td>{{ order.orderid }}</td>
-              <td>{{ order.address }}</td>
-              <td>{{ order.telephone }}</td>
-              <td>{{ order.buyername }}</td>
-              <td>{{ order.goodid }}</td>
-              <td>
-                <button v-if="order.orderstate === 4" class="green-btn"
-                  @click="handleOrderAction(order.orderid, 'confirmCompletion')"
-                  style="background-color: transparent; color: #f44336; border: 2px solid #f44336; padding: 5px 10px; border-radius: 4px; cursor: pointer;">确认交易完成</button>
-                <button v-if="order.orderstate >= 0 && order.orderstate < 4" class="red-btn"
-                  @click="handleOrderAction(order.orderid, 'cancel')"
-                  style="background-color: transparent; color: #f44336; border: 2px solid #f44336; padding: 5px 10px; border-radius: 4px; cursor: pointer;">取消订单</button>
-                <span v-if="order.orderstate > 4 || order.orderstate === -1">无法操作订单</span>
-              </td>
-              <td>{{ getOrderStatus(order.orderstate) }}</td>
-            </tr>
-          </table>
-          <div class="pagination">
-            <button @click="goToPrevPage" :disabled="isPrevDisabled" class="prev">上一页</button>
-            <span>{{ currentPage }} / {{ totalPages }}</span>
-            <button @click="goToNextPage" :disabled="isNextDisabled" class="next">下一页</button>
-          </div>
+        <div class="pagination">
+          <button @click="goToPrevPage" :disabled="isPrevDisabled" class="prev">上一页</button>
+          <span>{{ currentPage }} / {{ totalPages }}</span>
+          <button @click="goToNextPage" :disabled="isNextDisabled" class="next">下一页</button>
         </div>
       </div>
     </div>
-    <div v-else>
-      <!-- 用户未登录时显示的内容 -->
-      <div class="else">
-        您还未登录，请先<a href="/">登录</a>
-      </div>
+  </div>
+  <div v-else>
+    <!-- 用户未登录时显示的内容 -->
+    <div class="else">
+      您还未登录，请先<a href="/">登录</a>
     </div>
+  </div>
   </body>
 </template>
 
@@ -124,7 +124,7 @@ export default {
       }
     },
     goBack() {
-      this.$router.push({ name: 'BuyerMain' }); 
+      this.$router.push({ name: 'BuyerMain' });
     },
     getOrderStatus(statusCode) {
       const statusMap = {
@@ -148,7 +148,7 @@ export default {
         case 'cancel':
           this.cancelOrder(orderId);
           break;
-        // 可以根据需要添加其他操作
+          // 可以根据需要添加其他操作
         default:
           console.log('无效的操作');
       }
@@ -160,19 +160,19 @@ export default {
         let updatedOrderState = order.orderstate + 1;
         // 发送异步请求到服务器以更新订单状态
         axios.post('/order/buyerhistoryconfirmorder-control', { orderid: orderId, orderstate: updatedOrderState })
-          .then(response => {
-            if (response.data && response.data.msg === '确认订单成功') {
-              // 如果成功，更新本地订单状态
-              order.orderstate = updatedOrderState;
-              alert("该订单阶段确认成功！");
-              // 可能还需要重新获取订单列表
-            } else {
-              alert("该订单阶段确认失败！");
-            }
-          })
-          .catch(error => {
-            console.error('确认订单出错:', error);
-          });
+            .then(response => {
+              if (response.data && response.data.msg === '确认订单成功') {
+                // 如果成功，更新本地订单状态
+                order.orderstate = updatedOrderState;
+                alert("该订单阶段确认成功！");
+                // 可能还需要重新获取订单列表
+              } else {
+                alert("该订单阶段确认失败！");
+              }
+            })
+            .catch(error => {
+              console.error('确认订单出错:', error);
+            });
       }
 
 
@@ -184,19 +184,19 @@ export default {
       if (order) {
         // 发送异步请求到服务器以更新订单状态
         axios.post('/order/deleteorder-control', { orderid: orderId,orderstate:-1})
-          .then(response => {
-            if (response.data && response.data.msg === '取消订单成功') {
-              // 如果成功，更新本地订单状态
-              order.orderstate = -1;
-              alert("该订单取消成功！");
-              // 可能还需要重新获取订单列表
-            } else {
-              alert("该订单取消失败！");
-            }
-          })
-          .catch(error => {
-            console.error('取消订单出错:', error);
-          });
+            .then(response => {
+              if (response.data && response.data.msg === '取消订单成功') {
+                // 如果成功，更新本地订单状态
+                order.orderstate = -1;
+                alert("该订单取消成功！");
+                // 可能还需要重新获取订单列表
+              } else {
+                alert("该订单取消失败！");
+              }
+            })
+            .catch(error => {
+              console.error('取消订单出错:', error);
+            });
       }
     },
     goToPrevPage() {
@@ -223,7 +223,7 @@ export default {
         this.isLoggedIn = false;
       }
     },
-     async fetchOrders() {
+    async fetchOrders() {
       console.log(1)
       await this.fetchUsrFromSession();
       axios.get('/order/showbuyerorderinfo-control', {
@@ -231,20 +231,20 @@ export default {
           name:this.currentUser.username
         }
       })
-        .then(response => {
+          .then(response => {
 
-          if (response.data && response.data.data) {
-            this.orders = response.data.data; // 假设这是包含所有订单的数组
-       
-            console.log("获取意向订单数据列表成功");
-          } else {
-            console.error("获取意向订单数据列表失败");
-          }
-        })
-        .catch(error => {
-          console.error('获取意向订单数据列表错误', error);
-        });
-        console.log(2)
+            if (response.data && response.data.data) {
+              this.orders = response.data.data; // 假设这是包含所有订单的数组
+
+              console.log("获取意向订单数据列表成功");
+            } else {
+              console.error("获取意向订单数据列表失败");
+            }
+          })
+          .catch(error => {
+            console.error('获取意向订单数据列表错误', error);
+          });
+      console.log(2)
     }
   },
   computed: {
@@ -381,7 +381,7 @@ body {
 
 /* 商品 */
 .right {
-  /* 商品显示 
+  /* 商品显示
     width: 1340px;*/
   height: 100vh;
   /* background-color: aquamarine; */

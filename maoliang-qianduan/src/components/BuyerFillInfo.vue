@@ -8,7 +8,7 @@
     
       <table class="good-2">
         <tr>
-            <td colspan="2" class="goodname">{{ selectedProduct.name }}</td>
+            <td colspan="2" class="goodname">{{ selectedProduct.goodname }}</td>
         </tr>
         <tr>
             <td colspan="2" class="description"><br/>{{ selectedProduct.description }}</td>
@@ -19,7 +19,7 @@
         </tr>
         <tr>
             <td class="price">剩余库存量：</td>
-            <td class="price">{{ selectedProduct.stock }}</td>
+            <td class="price">{{ selectedProduct.number }}</td>
         </tr>
       </table>
 
@@ -31,7 +31,7 @@
         <label class="username">
         <div class="form-group">
           <label>购买数量：</label>
-          <input type="number" v-model.number="purchase.number" min="1" :max="selectedProduct.stock" required style="width:200px;height:66.4px;">
+          <input type="number" v-model.number="purchase.number" min="1" :max="selectedProduct.number" required style="width:200px;height:66.4px;">
         </div>
 
         <div class="form-group">
@@ -61,7 +61,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      selectedProduct: [],
+      selectedProduct: {},
       purchase: {
         quantity: 1,
         buyerName: 'buyer', // 设置默认姓名
@@ -69,6 +69,10 @@ export default {
         address: '`123`' // 设置默认地址
       }
     };
+  },
+  created() {
+    this.fetchGoodFromSession();
+    this.fetchUsrFromSession();
   },
   methods: {
     async fetchUsrFromSession() {
@@ -120,6 +124,7 @@ export default {
           islike: good.islike
         };
         console.log('this.selectedProduct:', this.selectedProduct);
+        console.log('this.selectedProduct.goodname:', this.selectedProduct.goodname);
         return true;
       } catch (error) {
         console.error('获取用户数据错误:', error);

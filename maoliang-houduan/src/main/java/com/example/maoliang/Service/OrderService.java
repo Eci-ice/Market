@@ -26,6 +26,11 @@ public class OrderService {
         return orderListRepository.searchOrderInformation();
     }
 
+
+    public void deletegood(int goodid) {
+        orderRepository.deletegood(goodid);
+    }
+
     public boolean deleteOrder(int orderid, int orderstate) {
         return orderListRepository.deleteOrder(orderid, orderstate);
     }

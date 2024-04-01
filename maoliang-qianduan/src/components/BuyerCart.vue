@@ -1,118 +1,118 @@
 <template>
 
   <body style="margin: 0px;">
-    <div v-if="isLoggedIn">
-      <div class="left">
-        <!-- 页面头部 -->
-        <table class="daohang">
-          <img class="head1" src="~@/assets/img/buyer/head.png" alt="">
+  <div v-if="isLoggedIn">
+    <div class="left">
+      <!-- 页面头部 -->
+      <table class="daohang">
+        <img class="head1" src="~@/assets/img/buyer/head.png" alt="">
+        <tr>
+          <td class="head2">{{ username }}</td>
+        </tr>
+        <tr>
+          <td class="head4">
+            <h3 @click="navigateTo('BuyerCart')" class="head4-1" style="cursor: pointer;">我的购物车</h3>
+          </td>
+        </tr>
+        <tr>
+          <td class="head4">
+            <h3 @click="navigateTo('BuyerLikes')" class="head4-1" style="cursor: pointer;">我的收藏</h3>
+          </td>
+        </tr>
+        <tr>
+          <td class="head4">
+            <h3 @click="navigateTo('buyerHistory')" class="head4-1" style="cursor: pointer;">历史购买记录</h3>
+          </td>
+        </tr>
+        <tr>
+          <td class="head4">
+            <h3 @click="navigateTo('BuyerMain')" class="head4-1" style="cursor: pointer;">返回主页</h3>
+          </td>
+        </tr>
+        <tr>
+          <td class="head5">
+            <button @click="handleLogout" class="head5-1" style="cursor: pointer;">退出登录</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="right" style="width: 60%; margin: 0px;">
+      <div class="container">
+        <div class="centered-container">
+          <h2>我的购物车</h2>
+        </div>
+        <button id="editall-button" @click="toggleEdit">{{ editButtonText }}</button>
+
+        <table border="1px" align=center cellspacing="0" style="width:100%;">
           <tr>
-            <td class="head2">{{ username }}</td>
+            <th class="table-column">展示内容</th>
+            <th class="table-column">名称</th>
+            <th class="table-column">购买数量</th>
+            <th class="table-column">小计</th>
+            <th class="table-column">操作</th>
+            <th class="table-column">选择</th>
           </tr>
-          <tr>
-            <td class="head4">
-              <h3 @click="navigateTo('BuyerCart')" class="head4-1" style="cursor: pointer;">我的购物车</h3>
+          <tr v-for="item in visibleItems" :key="item.id">
+
+            <td class="table-column">
+              <div style="display: flex; justify-content: center; align-items: center;">
+                <div style="text-align: center;">
+                  <div class="media-container" :class="{ 'sold-out': item.state !== 0 }">
+                    <div v-show="item.MEDIAFILES !== ''">
+                      <img :src="item.MEDIAFILES" alt="商品图片">
+                    </div>
+                  </div>
+                  <!-- <div class="media-navigation">
+                    <button @click="showPrevMedia(item)">＜</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button @click="showNextMedia(item)">＞</button>
+                  </div> -->
+                  <div v-if="item.state !== 0" class="overlay">商品不可购买</div>
+                </div>
+              </div>
             </td>
-          </tr>
-          <tr>
-            <td class="head4">
-              <h3 @click="navigateTo('BuyerLikes')" class="head4-1" style="cursor: pointer;">我的收藏</h3>
+            <td class="table-column">
+              <div class="centered-container">{{ item.NAME }}</div>
             </td>
-          </tr>
-          <tr>
-            <td class="head4">
-              <h3 @click="navigateTo('buyerHistory')" class="head4-1" style="cursor: pointer;">历史购买记录</h3>
+            <td class="table-column">
+              <div class="centered-container">
+                <button v-if="isEditing" @click="decrementQuantity(item)">-</button>
+                <input type="number" v-model.number="item.quantity" :disabled="!isEditing" style="width:64.6px;">
+                <button v-if="isEditing" @click="incrementQuantity(item)">+</button>
+              </div>
             </td>
-          </tr>
-          <tr>
-            <td class="head4">
-              <h3 @click="navigateTo('BuyerMain')" class="head4-1" style="cursor: pointer;">返回主页</h3>
+            <td class="table-column">
+              <div class="centered-container">{{ item.PRICE * item.quantity }}</div>
             </td>
-          </tr>
-          <tr>
-            <td class="head5">
-              <button @click="handleLogout" class="head5-1" style="cursor: pointer;">退出登录</button>
+            <td class="table-column">
+              <div class="centered-container">
+                <button @click="addToFavorites(item.ID, 0)">收藏</button>
+                <button v-if="isEditing" @click="removeFromCart(item.ID)">删除</button>
+              </div>
+            </td>
+            <td class="table-column">
+              <div class="centered-container">
+                <input type="checkbox" v-model="selectedItems[item.id]">
+              </div>
             </td>
           </tr>
         </table>
-      </div>
-
-      <div class="right" style="width: 60%; margin: 0px;">
-        <div class="container">
-          <div class="centered-container">
-            <h2>我的购物车</h2>
-          </div>
-          <button id="editall-button" @click="toggleEdit">{{ editButtonText }}</button>
-
-          <table border="1px" align=center cellspacing="0" style="width:100%;">
-            <tr>
-              <th class="table-column">展示内容</th>
-              <th class="table-column">名称</th>
-              <th class="table-column">购买数量</th>
-              <th class="table-column">小计</th>
-              <th class="table-column">操作</th>
-              <th class="table-column">选择</th>
-            </tr>
-            <tr v-for="item in visibleItems" :key="item.id">
-
-              <td class="table-column">
-                <div style="display: flex; justify-content: center; align-items: center;">
-                  <div style="text-align: center;">
-                    <div class="media-container" :class="{ 'sold-out': item.state !== 0 }">
-                      <div v-show="item.MEDIAFILES !== ''">
-                        <img :src="item.MEDIAFILES" alt="商品图片">
-                      </div>
-                    </div>
-                    <!-- <div class="media-navigation">
-                      <button @click="showPrevMedia(item)">＜</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <button @click="showNextMedia(item)">＞</button>
-                    </div> -->
-                    <div v-if="item.state !== 0" class="overlay">商品不可购买</div>
-                  </div>
-                </div>
-              </td>
-              <td class="table-column">
-                <div class="centered-container">{{ item.NAME }}</div>
-              </td>
-              <td class="table-column">
-                <div class="centered-container">
-                  <button v-if="isEditing" @click="decrementQuantity(item)">-</button>
-                  <input type="number" v-model.number="item.quantity" :disabled="!isEditing" style="width:64.6px;">
-                  <button v-if="isEditing" @click="incrementQuantity(item)">+</button>
-                </div>
-              </td>
-              <td class="table-column">
-                <div class="centered-container">{{ item.PRICE * item.quantity }}</div>
-              </td>
-              <td class="table-column">
-                <div class="centered-container">
-                  <button @click="addToFavorites(item.ID, 0)">收藏</button>
-                  <button v-if="isEditing" @click="removeFromCart(item.ID)">删除</button>
-                </div>
-              </td>
-              <td class="table-column">
-                <div class="centered-container">
-                  <input type="checkbox" v-model="selectedItems[item.id]">
-                </div>
-              </td>
-            </tr>
-          </table>
-          <div>
-            <h3>总计: {{ selectedTotalPrice }}</h3>
-            <button @click="submitSelectedOrders">提交选中的订单</button>
-            <button @click="addToFavoritesSelectedItems">一键收藏选中商品</button>
-          </div>
-          <div class="pagination">
-            <button @click="goToPrevPage" :disabled="isPrevDisabled" class="prev">上一页</button>
-            <span>{{ currentPage }} / {{ totalPages }}</span>
-            <button @click="goToNextPage" :disabled="isNextDisabled" class="next">下一页</button>
-          </div>
+        <div>
+          <h3>总计: {{ selectedTotalPrice }}</h3>
+          <button @click="submitSelectedOrders">提交选中的订单</button>
+          <button @click="addToFavoritesSelectedItems">一键收藏选中商品</button>
+        </div>
+        <div class="pagination">
+          <button @click="goToPrevPage" :disabled="isPrevDisabled" class="prev">上一页</button>
+          <span>{{ currentPage }} / {{ totalPages }}</span>
+          <button @click="goToNextPage" :disabled="isNextDisabled" class="next">下一页</button>
         </div>
       </div>
     </div>
-    <div v-else class="else">
-      您还未登录，请先<a href="login">登录</a>
-    </div>
+  </div>
+  <div v-else class="else">
+    您还未登录，请先<a href="login">登录</a>
+  </div>
   </body>
 </template>
 
@@ -252,16 +252,16 @@ export default {
     removeFromCart(itemId) {
       // 调用接口，获取详细信息
       axios.post('/good/delete-cart-item', { buyingid: itemId, userid: this.currentUser.userid })
-        .then(res => {
-          // 处理返回的详细信息
-          this.items = res.data;
-          this.getLIst(this.currentUser.userid)
-          alert("选中的订单已删除！");
-        })
-        .catch(error => {
-          // 处理请求错误
-          console.error(error);
-        });
+          .then(res => {
+            // 处理返回的详细信息
+            this.items = res.data;
+            this.getLIst(this.currentUser.userid)
+            alert("选中的订单已删除！");
+          })
+          .catch(error => {
+            // 处理请求错误
+            console.error(error);
+          });
     },
     addToFavorites(itemId, iscancel) {
       // 调用接口，获取详细信息
@@ -458,7 +458,7 @@ body {
 
 /* 商品 */
 .right {
-  /* 商品显示 
+  /* 商品显示
     width: 1340px;*/
   height: 100vh;
   /* background-color: aquamarine; */

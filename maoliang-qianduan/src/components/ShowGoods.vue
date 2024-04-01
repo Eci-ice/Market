@@ -274,7 +274,7 @@ export default {
       try {
         // 发送DELETE请求到后端API
         const response = await fetch(`/good/delete-good/${goodId}`, {
-          method: 'DELETE'
+          method: 'POST'
         });
 
         // 解析响应数据

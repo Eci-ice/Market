@@ -31,7 +31,7 @@ public class OrderRepository {
     }
 
     public void deletegood(int goodid) {
-        String sql = "UPDATE MLorder SET orderstate = -1 WHERE orderid = ?";
+        String sql = "DELETE FROM MLorder WHERE goodid = ?";
         jdbcTemplate.update(sql, goodid);
     }
 
