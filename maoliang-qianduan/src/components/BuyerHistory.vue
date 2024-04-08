@@ -100,9 +100,6 @@ export default {
     return {
       isLoggedIn: true, // 根据实际登录状态设置
       orders: [
-        { orderid: 1, address: "地址1", telephone: "1234567890", buyername: "user1", goodid: 101, orderstate: 4 },
-
-
       ],
       currentPage: 1,
       pageSize: 5,

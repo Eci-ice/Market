@@ -32,44 +32,39 @@ public class UsrController {
     @Autowired
     public HttpSession session;//存储session数据
 
-    @RequestMapping( "/login-control")
+    @RequestMapping("/login-control")
     public Result LoginControl(@RequestBody Logindata login//RequestBody用于传输数据
                                //Logindata自命,需要从前端传入的【所有】数据
-                               ) {
-        String username=login.getUsername();
-        String pwd=login.getPassword();
-//        System.out.println("hhh");
-//        System.out.println(username);
-//        System.out.println(pwd);
+    ) {
+        String username = login.getUsername();
+        String pwd = login.getPassword();
         try {
             Usr usr = usrService.search(username);
- //             System.out.println(usr.getUsername());
-//            System.out.println(pwd+ pwd.length());
-//            System.out.println(usr.getPwd()+ usr.getPwd().length());
             if (usr != null && pwd.equals(usr.getPwd().trim())) {//数据库导出字符串有后置空格
                 System.out.println(usr.getPower());
                 session.setAttribute("admin", usr);
+
                 //System.out.println(session.getAttribute("admin"));
                 if (usr.getPower() == 0) {
                     // 买家权限，进入商品首页
                     List<Good> gList = goodService.showNowGoods();
-                    System.out.println("hhh");
-                    return new Result(BUYER_PAGE,"success", gList);
+
+                    return new Result(BUYER_PAGE, "success", gList);
                 } else if (usr.getPower() == 1) {
                     // 卖家权限，进入后台管理all商品页面
                     List<Good> gList = goodService.showAllGoods(usr.getUserid());
-                    return new Result(SELLER_PAGE,"success", gList);
+                    return new Result(SELLER_PAGE, "success", gList);
                 } else {
-                    Errordata ed=new Errordata();
+                    Errordata ed = new Errordata();
                     // 处理其他权限或错误情况
-                    return new Result(ERROR_PAGE,"未知权限","login");
+                    return new Result(ERROR_PAGE, "未知权限", "login");
                 }
             } else {
-                return new Result(ERROR_PAGE,"用户名错误或密码错误","login");
+                return new Result(ERROR_PAGE, "用户名错误或密码错误", "login");
             }
         } catch (SQLException e) {
             LOGGER.error("Error handling login", e);
-            return new Result(ERROR_PAGE,"登录出错，请稍后重试","login");
+            return new Result(ERROR_PAGE, "登录出错，请稍后重试", "login");
         }
     }
 
@@ -77,25 +72,20 @@ public class UsrController {
     public Result RegisterControl(@RequestBody RegisterData register) {
         String username = register.getUsername();
         try {
-            System.out.println("mum:"+register.getPhone());
-            // 检查空值
-            if (StringUtils.isEmpty(register.getUsername()) || StringUtils.isEmpty(register.getPassword()) || StringUtils.isEmpty(register.getAnswer()) || StringUtils.isEmpty(register.getQuestion())){
+            if ((register.getUsername()==null || register.getPassword()==null || register.getAnswer()==null ||register.getQuestion()==null)){
                 LOGGER.error("Empty error");
-                return new Result("Empty","错误，请补充对应信息！","register");
-            } else if (register.getPower() == 1 && (StringUtils.isEmpty(register.getPhone()) || StringUtils.isEmpty(register.getAddress())) ) {
+                return new Result(RENAME_PAGE,"错误，请补充对应信息！","register");
+            } else if (register.getPower() == 1 && (register.getPhone()==null || register.getAddress()==null )) {
                 LOGGER.error("Empty error");
-                return new Result("BuyerEmpty","错误，买家需要补充对应信息！","register");
+                return new Result(RENAME_PAGE,"错误，请补充对应信息！","register");
             }
-            // 检查格式
             if (register.getUsername().length() > 10 || register.getQuestion().length() > 50){
                 LOGGER.error("Too long error");
-                return new Result("LongNameQues","错误，用户名或密保问题过长！","register");
-            } else if (register.getPhone().length()!=11 || !register.getPhone().matches("\\d+")){
+                return new Result(RENAME_PAGE,"错误，用户名或密保问题过长！","register");
+            } else if (register.getPhone().length()!=11){
                 LOGGER.error("Wrong phone number");
-                return new Result("LongPhone","错误，请输入正确电话号码！","register");
-            }
-            // 检查重名
-            if(usrService.searchName(username) == false) {
+                return new Result(RENAME_PAGE,"错误，请输入正确电话号码！","register");
+            } else if(usrService.searchName(username) == false) {
                 Usr newUsr = new Usr();
                 newUsr.setUsername(username);
                 newUsr.setPwd(register.getPassword());

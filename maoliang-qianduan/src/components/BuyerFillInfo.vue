@@ -2,7 +2,7 @@
   <body style="background-color: #FFF9F1; ">
     <hr class="cline" color=#BBBBBB width=1 size=900>
     <div class="left">
-      <a href="/buyer-shop">
+      <a href="/#/buyer">
         <img src="~@/assets/img/buyer/arrow.png" alt="" width="40" title="返回商品界面">
       </a>
     

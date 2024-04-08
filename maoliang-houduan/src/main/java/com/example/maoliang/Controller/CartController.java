@@ -63,7 +63,7 @@ public class CartController {
         }
     }
 
-    @PostMapping("/create-cart")//createcartservlet.java改写
+    @RequestMapping("/create-cart")//createcartservlet.java改写
     //通过 商品id与用户id去查询，有的话数量+1，没有的话，默认数量为1
     public Result createCart(@RequestParam("goodid") int goodId, @RequestParam("userid") int userid) throws SQLException {
 //        try{这五个接口

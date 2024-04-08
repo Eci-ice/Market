@@ -272,7 +272,7 @@ export default {
     },
     addToCart(goodid) {
       // 调用接口，获取详细信息
-      axios.post('/good/create-cart', { goodid: goodid,userid:this.currentUser.userid }).then(res => {
+      axios.post('/cart/create-cart', { goodid: goodid,userid:this.currentUser.userid }).then(res => {
         // 处理返回的详细信息
         console.log(res.data);
         alert("商品已添加购物车");
@@ -283,7 +283,7 @@ export default {
     },
     addToFavorites(itemId, iscancel) {
       // 调用接口，获取详细信息
-      axios.post('/good/addLike', { goodid: itemId, iscancel: iscancel, userid: this.currentUser.userid }).then(res => {
+      axios.post('/cart/addLike', { goodid: itemId, iscancel: iscancel, userid: this.currentUser.userid }).then(res => {
         alert("商品已添加到收藏夹！");
         console.log(res)
         this.getLIst(this.currentUser.userid)

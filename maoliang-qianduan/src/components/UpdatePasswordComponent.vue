@@ -104,12 +104,18 @@ export default {
           }
         });
         const responseData = await response.json();
-        if (responseData.page === '/update-password') {
-          console.log(responseData.msg); 
-        }  else if(responseData.page === '/seller'){
-          console.log(responseData.msg);
-        }
-    }catch (error) {
+              if (responseData.page === '/error') {
+                // 重定向到错误页面，并将错误消息和重定向目标作为参数传递
+                this.$router.push({ path: '/error', query: { err: responseData.msg, to: responseData.data }})
+              } else if (responseData.page === '/success') {
+                // 重定向到成功界面，并将成功消息和重定向目标作为参数传递
+                this.$router.push({ path: '/success', query: { message: responseData.msg, to: responseData.data }})
+              } else if (responseData.page === null) {
+                console.log("未知页面类型");
+              } else {
+                this.$router.push({ path: responseData.page });
+              }
+    }catch (error) {2
                 console.error("修改密码失败:", error);
                 this.error = "密码修改失败，请稍后再试。";
             }

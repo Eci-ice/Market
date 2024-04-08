@@ -182,7 +182,7 @@ export default {
     },
     getLiskLIst(userid) {
       // 调用接口，获取详细信息
-      axios.post('/good/showLike', { userId: userid }).then(res => {
+      axios.post('/cart/showLike', { userId: userid }).then(res => {
         // 处理返回的详细信息
         this.items = res.data;
         this.items.forEach(item => {
