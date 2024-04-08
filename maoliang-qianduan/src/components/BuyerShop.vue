@@ -111,8 +111,8 @@
     </table>
     <div class="centered-container">
     <button @click="buyProduct(selectedProduct.goodid)" class="butt-1" style="cursor: pointer;">购买该商品</button>&nbsp;&nbsp;
-    <button @click="addToCart(selectedProduct.goodid)" class="butt-1" style="cursor: pointer;">加入购物车</button>&nbsp;&nbsp;
-    <button @click="addToFavorites(selectedProduct.goodid)" class="butt-1" style="cursor: pointer;">收藏商品</button>
+    <button @click="addToCart()" class="butt-1" style="cursor: pointer;">加入购物车</button>&nbsp;&nbsp;
+    <button @click="addToFavorites()" class="butt-1" style="cursor: pointer;">收藏商品</button>
     </div>
   </div>
     </div>
@@ -270,9 +270,10 @@ export default {
       // 处理购买逻辑
       this.$router.push({ name: 'BuyerFillInfo', params: { productId } });
     },
-    addToCart(goodid) {
+    addToCart() {
       // 调用接口，获取详细信息
-      axios.post('/cart/create-cart', { goodid: goodid,userid:this.currentUser.userid }).then(res => {
+      console.log("goodid:"+this.selectedProduct.goodid);
+      axios.post('/cart/create-cart', { goodid: this.selectedProduct.goodid,userid:this.currentUser.userid }).then(res => {
         // 处理返回的详细信息
         console.log(res.data);
         alert("商品已添加购物车");
@@ -281,9 +282,9 @@ export default {
         console.error(error);
       });
     },
-    addToFavorites(itemId, iscancel) {
+    addToFavorites() {
       // 调用接口，获取详细信息
-      axios.post('/cart/addLike', { goodid: itemId, iscancel: iscancel, userid: this.currentUser.userid }).then(res => {
+      axios.post('/cart/addLike', { goodid: this.selectedProduct.goodid, iscancel: 0, userid: this.currentUser.userid }).then(res => {
         alert("商品已添加到收藏夹！");
         console.log(res)
         this.getLIst(this.currentUser.userid)

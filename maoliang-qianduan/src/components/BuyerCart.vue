@@ -208,7 +208,7 @@ export default {
     },
     getLIst(userid) {
       // 调用接口，获取详细信息
-      axios.get('/good/allCart?userId=' + userid).then(res => {
+      axios.get('/cart/allCart?userId=' + userid).then(res => {
         // 处理返回的详细信息
         this.items = res.data;
         // this.isEditing = res.data.MAXQUANTITY > 0 ? true : false;
