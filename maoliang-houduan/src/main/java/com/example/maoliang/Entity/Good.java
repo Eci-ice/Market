@@ -22,11 +22,17 @@ public class Good {
     private String subkind;
     private LocalDateTime createdate;
     private int owner;
+    private double calorie;
+    private String catkind;
+    private String catweight;
+    private String catage;
+
     private int buyingid;
     private int numbermax;
     private int islike;
 
     // Getters and Setters
+
 
     public int getGoodid() {
         return goodid;
@@ -116,6 +122,38 @@ public class Good {
         this.owner = owner;
     }
 
+    public double getCalorie() {
+        return calorie;
+    }
+
+    public void setCalorie(double calorie) {
+        this.calorie = calorie;
+    }
+
+    public String getCatkind() {
+        return catkind;
+    }
+
+    public void setCatkind(String catkind) {
+        this.catkind = catkind;
+    }
+
+    public String getCatweight() {
+        return catweight;
+    }
+
+    public void setCatweight(String catweight) {
+        this.catweight = catweight;
+    }
+
+    public String getCatage() {
+        return catage;
+    }
+
+    public void setCatage(String catage) {
+        this.catage = catage;
+    }
+
     public int getBuyingid() {
         return buyingid;
     }
@@ -139,6 +177,4 @@ public class Good {
     public void setIslike(int islike) {
         this.islike = islike;
     }
-
-
 }

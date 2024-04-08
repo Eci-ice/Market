@@ -25,6 +25,9 @@ import ShowSearchGoods from "@/components/ShowSearchGoods.vue";
 import ShowSearchHistoryGoods from "@/components/ShowSearchHistoryGoods.vue";
 import BuyerSearch from "@/components/BuyerSearch.vue";
 import UploadOneGood from "@/components/UploadOneGood.vue";
+import BuyerShowCat from "@/components/BuyerShowCat.vue";
+import BuyerUploadCat from "@/components/BuyerUploadCat.vue";
+import BuyerShowRecommend from "@/components/BuyerShowRecommend.vue";
 
 const routes = [
   { path: '/', component: LoginComponent },
@@ -148,6 +151,24 @@ const routes = [
     path: '/buyer-shop',
     name: 'BuyerShop',
     component: BuyerShop
+  },
+  {
+    path: '/buyer-show-cat',
+    name: 'BuyerShowCat',
+    component: BuyerShowCat,
+
+  },
+  {
+    path: '/buyer-upload-cat',
+    name: 'BuyerUploadCat',
+    component: BuyerUploadCat,
+
+  },
+  {
+    path: '/buyer-show-recommend',
+    name: 'BuyerShowRecommend',
+    component: BuyerShowRecommend,
+
   },
   // ... 其他路由
 ];

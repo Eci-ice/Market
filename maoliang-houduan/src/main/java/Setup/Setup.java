@@ -40,6 +40,10 @@ public class Setup {
 					"  kind varchar(20) NOT NULL," +
 					"  subkind varchar(20) NOT NULL," +
 					"  owner INTEGER NOT NULL," +
+					"  calorie double NOT NULL," +
+					"  catkind varchar(100) NOT NULL," +
+					"  catage varchar(20)  NOT NULL," +
+					"  catweight varchar(20)  NOT NULL," +
 					"  FOREIGN KEY (owner) REFERENCES MLuser (userid))");
 
 			statement.executeUpdate("DROP TABLE IF EXISTS MLhistorygood");
@@ -54,6 +58,10 @@ public class Setup {
 					"  subkind varchar(20) NOT NULL," +
 					"  createdate DATETIME NOT NULL," +
 					"  owner INTEGER NOT NULL," +
+					"  calorie double NOT NULL," +
+					"  catkind varchar(100) NOT NULL," +
+					"  catage varchar(20) NOT NULL," +
+					"  catweight varchar(20) NOT NULL," +
 					"  FOREIGN KEY (owner) REFERENCES MLuser (userid))");
 
 			statement.executeUpdate("DROP TABLE IF EXISTS MLorder");
@@ -93,6 +101,21 @@ public class Setup {
 					"  islike int NOT NULL," +
 					"  buyer INTEGER NOT NULL," +
 					"  FOREIGN KEY (buyer) REFERENCES MLuser (userid))");
+
+
+			statement.executeUpdate("DROP TABLE IF EXISTS MLcat");
+			statement.executeUpdate("CREATE TABLE MLcat  (" +
+					"  catid INTEGER PRIMARY KEY AUTO_INCREMENT," +
+					"  catname char(20) NOT NULL," +
+					"  description varchar(100) NOT NULL," +
+					"  catweight double NOT NULL," +
+					"  catstate int NOT NULL," +
+					"  catage int NOT NULL," +
+					"  catkind varchar(20) NOT NULL," +
+					"  owner INTEGER NOT NULL," +
+					"  FOREIGN KEY (owner) REFERENCES MLuser (userid))");
+
+
 
 			statement.executeUpdate("INSERT INTO MLuser VALUES (1, '123', '123', 1,'who are you?','Xiaoming')");
 			statement.executeUpdate("INSERT INTO MLuser VALUES (2, '111', '111', 0,'who are you?','Xiaoming')");
