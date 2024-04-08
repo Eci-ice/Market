@@ -270,14 +270,29 @@ export default {
       // 处理购买逻辑
       this.$router.push({ name: 'BuyerFillInfo', params: { productId } });
     },
-    addToCart() {
-      alert("该商品加入购物车成功！");
-      // 加入购物车逻辑
+    addToCart(goodid) {
+      // 调用接口，获取详细信息
+      axios.post('/good/create-cart', { goodid: goodid,userid:this.currentUser.userid }).then(res => {
+        // 处理返回的详细信息
+        console.log(res.data);
+        alert("商品已添加购物车");
+      }).catch(error => {
+        // 处理请求错误
+        console.error(error);
+      });
     },
-    addToFavorites() {
-      alert("该商品收藏成功！");
-      // 收藏商品逻辑
-    }
+    addToFavorites(itemId, iscancel) {
+      // 调用接口，获取详细信息
+      axios.post('/good/addLike', { goodid: itemId, iscancel: iscancel, userid: this.currentUser.userid }).then(res => {
+        alert("商品已添加到收藏夹！");
+        console.log(res)
+        this.getLIst(this.currentUser.userid)
+        // 处理返回的详细信息
+      }).catch(error => {
+        // 处理请求错误
+        console.error(error);
+      });
+    },
   },
 
   mounted() {

@@ -1,10 +1,11 @@
 <template>
+
   <body style="margin: 0px;">
   <div v-if="isLoggedIn">
-    <div class="left" >
+    <div class="left">
       <!-- 页面头部 -->
       <table class="daohang">
-        <img class="head1" src="~@/assets/img/buyer/head.png" alt="" >
+        <img class="head1" src="~@/assets/img/buyer/head.png" alt="">
         <tr>
           <td class="head2">{{ username }}</td>
         </tr>
@@ -48,29 +49,32 @@
             <th>操作</th>
           </tr>
 
-          <tr v-for="item in paginatedItems" :key="item.id">
-            <td>
+          <tr v-for="item in paginatedItems" :key="item.GOODID">
+            <td class="table-column">
               <div style="display: flex; justify-content: center; align-items: center;">
                 <div style="text-align: center;">
                   <div class="media-container" :class="{ 'sold-out': item.state !== 0 }">
-                    <div v-for="(media, index) in item.mediaFiles" :key="index" v-show="media.isActive">
-                      <img v-if="!media.isVideo" :src="media.url" alt="商品图片" v-show="media.isActive">
-                      <video v-if="media.isVideo" :src="media.url" controls v-show="media.isActive"></video>
+                    <div v-show="item.PICTURE !== ''">
+                      <img :src="item.PICTURE" alt="商品图片">
                     </div>
                   </div>
-                  <div class="media-navigation">
-                    <button @click="showPrevMedia(item)">＜</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button @click="showNextMedia(item)">＞</button>
-                  </div>
+                  <!-- <div class="media-navigation"> -->
+                  <!-- <button @click="showPrevMedia(item)">＜</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button @click="showNextMedia(item)">＞</button> -->
+                  <!-- </div> -->
                   <div v-if="item.state !== 0" class="overlay">商品不可购买</div>
                 </div>
               </div>
             </td>
-            <td><div class="centered-container">{{ item.name }}</div></td>
-            <td><div class="centered-container">{{ item.description }}</div></td>
+            <td class="table-column">
+              <div class="centered-container">{{ item.GOODNAME }}</div>
+            </td>
+            <td class="table-column">
+              <div class="centered-container">{{ item.DESCRIPTION }}</div>
+            </td>
             <td>
               <div class="centered-container">
-                <button class="delete-button" @click="dislike(item.id)">取消收藏</button>
+                <button class="delete-button" @click="dislike(item.GOODID, 1)">取消收藏</button>
               </div>
             </td>
           </tr>
@@ -90,45 +94,14 @@
 </template>
 
 <script>
+import axios from 'axios';
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
   data() {
     return {
       items: [
-        {
-          id: 1,
-          name: "猫咪粮食",
-          price: "99",
-          description: "高营养猫粮",
-          kind: '猫咪主粮',
-          mediaFiles: [
-            { url: require('@/assets/img/buyer/food-1.jpg'), isActive: true, isVideo: false },
-            { url: require('@/assets/img/buyer/food-2.jpg'), isActive: false, isVideo: false },
-          ],
-        },
-        {
-          id: 2,
-          name: "猫咪玩具",
-          price: "49",
-          description: "好玩的猫咪玩具",
-          kind: '猫咪日用',
-          mediaFiles: [
-            { url: require('@/assets/img/buyer/food-2.jpg'), isActive: true, isVideo: false },
-            { url: require('@/assets/img/buyer/food-1.jpg'), isActive: false, isVideo: false },
-          ],
-        },
-        {
-          id: 3,
-          name: "猫咪窝",
-          price: "299",
-          description: "舒适的猫咪小窝",
-          kind: '猫咪主粮',
-          mediaFiles: [
-            { url: require('@/assets/img/buyer/food-1.jpg'), isActive: true, isVideo: false },
-            { url: require('@/assets/img/buyer/food-2.jpg'), isActive: false, isVideo: false },
-          ],
-        },
         // ...更多商品
       ],
       searchQuery: '',
@@ -139,7 +112,9 @@ export default {
       search: {
         keyword: '',
         kind: '猫咪主粮'
-      }
+      },
+      isLoggedIn: true,
+      currentUser: {},
     };
   },
   computed: {
@@ -152,21 +127,29 @@ export default {
       // 计算当前页的商品
       const start = (this.currentPage - 1) * this.itemsPerPage;
       const end = this.currentPage * this.itemsPerPage;
-      return this.filteredItems.slice(start, end);
+      return this.items.slice(start, end);
     },
     // 计算总页数
     totalPages() {
-      return Math.ceil(this.filteredItems.length / this.itemsPerPage);
+      return Math.ceil(this.items.length / this.itemsPerPage);
     }
+  },
+  created() {
+    this.fetchUsrFromSession();
   },
   methods: {
     ...mapActions(['logout']),
-    dislike(itemId) {
-      // 过滤掉被取消收藏的项目
-      this.filteredItems = this.filteredItems.filter(item => item.id !== itemId);
-
-      // TODO: 如果有后端API，这里可以发送请求来更新服务器上的数据
-      console.log('已取消收藏的商品ID:', itemId);
+    dislike(itemId, iscancel) {
+      // 调用接口，获取详细信息
+      axios.post('/good/addLike', { goodid: itemId, iscancel: iscancel, userid: this.currentUser.userid }).then(res => {
+        console.log(res);
+        alert("商品已取消收藏！");
+        this.getLiskLIst(this.currentUser.userid);
+        // 处理返回的详细信息
+      }).catch(error => {
+        // 处理请求错误
+        console.error(error);
+      });
     },
     handleLogout() {
       this.logout();
@@ -180,8 +163,38 @@ export default {
         this.$router.push('/');
       }
     },
+    async fetchUsrFromSession() {
+      try {
+        // 发起 GET 请求到后端接口
+        const response = await axios.get('/now-usr');
+
+        // 解析响应数据
+        const usr = response.data;
+
+        // 更新组件的 currentUser 数据
+        this.currentUser = usr;
+        this.getLiskLIst(this.currentUser.userid);
+        return true;
+      } catch (error) {
+        console.error('获取用户数据错误:', error);
+        return false;
+      }
+    },
+    getLiskLIst(userid) {
+      // 调用接口，获取详细信息
+      axios.post('/good/showLike', { userId: userid }).then(res => {
+        // 处理返回的详细信息
+        this.items = res.data;
+        this.items.forEach(item => {
+          console.log(item);
+        });
+      }).catch(error => {
+        // 处理请求错误
+        console.error(error);
+      });
+    },
     handleSearch() {
-      this.filteredItems = this.items.filter(item => {
+      this.items = this.items.filter(item => {
         const matchesKeyword = this.searchQuery ? item.name.toLowerCase().includes(this.searchQuery.toLowerCase()) : true;
         const matchesCategory = this.selectedCategory ? item.kind === this.selectedCategory : true;
 
@@ -189,7 +202,7 @@ export default {
 
         return matchesKeyword && matchesCategory;
       });
-      console.log("Filtered items count:", this.filteredItems.length);
+      console.log("Filtered items count:", this.items.length);
       // 其他逻辑
     },
     showPrevMedia(item) {
@@ -239,7 +252,7 @@ export default {
   },
   watch: {
     // 监视搜索结果的变化
-    filteredItems(newValue, oldValue) {
+    items(newValue, oldValue) {
       if (newValue !== oldValue) {
         this.resetPage();
       }
@@ -254,93 +267,111 @@ export default {
 </script>
 
 <style scoped>
-
 .centered-container {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .logout-button {
-  color: #f0f0f0; /* 可选：改变文字颜色 */
-  cursor: pointer; /* 将鼠标指针改为手形，表示可点击 */
-  transition: background-color 0.3s; /* 添加背景颜色过渡效果 */
+  color: #f0f0f0;
+  /* 可选：改变文字颜色 */
+  cursor: pointer;
+  /* 将鼠标指针改为手形，表示可点击 */
+  transition: background-color 0.3s;
+  /* 添加背景颜色过渡效果 */
 }
-*{
+
+* {
   background-color: #FFF9F1;
 
 }
+
 body {
   display: block;
   background-color: #FFF9F1 !important;
   background-image: none;
 }
-.left{
+
+.left {
   /* 买家导航 */
   width: 287px;
-  height:100vh;
+  height: 100vh;
   background-color: rgba(61, 61, 61, 0.33);
   position: relative;
   float: left;
   align-content: center;
 }
-.head1{
+
+.head1 {
   background-color: rgba(61, 61, 61, 0);
   position: relative;
   top: 30px;
   left: 38px;
   z-index: 1;
 }
-.daohang{
+
+.daohang {
   background-color: rgba(0, 0, 0, 0);
-  width: 200px;/*格子宽度*/
+  width: 200px;
+  /*格子宽度*/
   position: relative;
   left: 30px;
 }
-.head2{
+
+.head2 {
   background-color: rgba(61, 61, 61, 0.33);
   text-align: center;
   vertical-align: top;
-  font-size:36px;
+  font-size: 36px;
   color: white;
-  height: 100px;/*格子高度*/
+  height: 100px;
+  /*格子高度*/
   position: relative;
   z-index: 2;
 }
-.head4{
+
+.head4 {
   background-color: rgba(61, 61, 61, 0.33);
   text-align: center;
-  height: 100px;/*格子高度*/
+  height: 100px;
+  /*格子高度*/
 }
-.head4-1{
+
+.head4-1 {
   background-color: rgba(61, 61, 61, 0);
   text-decoration: none;
   color: #ffffff;
-  font-size:28px;
+  font-size: 28px;
   font-weight: bold;
 }
-.head5{
+
+.head5 {
   background-color: rgba(61, 61, 61, 0.33);
   text-align: center;
-  height: 100px;/*格子高度*/
+  height: 100px;
+  /*格子高度*/
   bottom: 0;
 
 }
-.head5-1{
+
+.head5-1 {
   background-color: rgba(61, 61, 61, 0);
   text-decoration: none;
   color: #585655;
-  font-size:28px;
+  font-size: 28px;
   font-weight: bold;
   border: none;
 }
 
 /* 商品 */
-.right{
+.right {
   /* 商品显示
-  width: 1340px;*/
+    width: 1340px;*/
   height: 100vh;
   /* background-color: aquamarine; */
-  position: absolute;/*绝对定位*/
+  position: absolute;
+  /*绝对定位*/
   left: 350px;
 
   float: right;
@@ -348,49 +379,66 @@ body {
 
 
 .goods {
-  display: flex; /*使用flex布局*/
-  flex-wrap: wrap; /*允许元素换行*/
-  justify-content: space-between; /*元素之间留有空隙*/
-  border: 1px solid #000; /*添加边框*/
+  display: flex;
+  /*使用flex布局*/
+  flex-wrap: wrap;
+  /*允许元素换行*/
+  justify-content: space-between;
+  /*元素之间留有空隙*/
+  border: 1px solid #000;
+  /*添加边框*/
 }
 
 .show-1 {
-  flex: 0 0 30%; /*每个元素占用30%的宽度，这样每行就可以放3个元素*/
-  border: 1px solid #000; /*添加边框*/
-  margin-bottom: 10px; /*添加底部边距*/
+  flex: 0 0 30%;
+  /*每个元素占用30%的宽度，这样每行就可以放3个元素*/
+  border: 1px solid #000;
+  /*添加边框*/
+  margin-bottom: 10px;
+  /*添加底部边距*/
 }
 
 .picture {
-  text-align: center; /*图片居中*/
+  text-align: center;
+  /*图片居中*/
 }
 
 .price {
   font-size: 20px;
   height: 20px;
 }
+
 .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
 }
-.prev, .next {
+
+.prev,
+.next {
   background-color: rgb(237, 196, 110);
 }
+
 form {
-  display: flex; /* 让表单内的元素在同一行显示 */
-  width:600px;
-  height:45px;
+  display: flex;
+  /* 让表单内的元素在同一行显示 */
+  width: 600px;
+  height: 45px;
 }
+
 input[type="text"] {
-  flex-grow: 1; /* 让搜索框占据剩余的空间 */
+  flex-grow: 1;
+  /* 让搜索框占据剩余的空间 */
 }
+
 input[name="keyword"] {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
 #search_list {
   position: fixed;
   top: 110px;
@@ -403,13 +451,16 @@ input[name="keyword"] {
 #search_list div {
   border-bottom: 1px solid black;
 }
+
 .media-container {
   position: relative;
   width: 100px;
   height: 100px;
   overflow: hidden;
 }
-.media-container img, .media-container video {
+
+.media-container img,
+.media-container video {
   position: absolute;
   top: 0;
   left: 0;
@@ -417,18 +468,23 @@ input[name="keyword"] {
   height: 100%;
   object-fit: contain;
 }
-.media-container img.active, .media-container video.active {
+
+.media-container img.active,
+.media-container video.active {
   display: block;
 }
+
 .media-container button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   background: rgba(255, 255, 255, 0.7);
 }
+
 .media-container .prev-button {
   left: 10px;
 }
+
 .media-container .next-button {
   right: 10px;
 }
