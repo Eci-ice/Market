@@ -1,70 +1,170 @@
-import { createStore } from 'vuex';
-// import axios from 'axios';
+import {createRouter, createWebHashHistory} from 'vue-router';
+import LoginComponent from '@/components/LoginComponent.vue';
+import RegisterComponent from '@/components/RegisterComponent.vue';
+import ChooseRegister from '@/components/ChooseRegister.vue';
+import BuyerMain from '@/components/BuyerMain.vue';
+import SellerMain from '@/components/SellerMain.vue';
+import UpdatePasswordComponent from '@/components/UpdatePasswordComponent.vue';
+import ShowGoods from '@/components/ShowGoods'
+import ShowUserInfo from '@/components/ShowUserInfo.vue';
+import ShowHistoryGoods from '@/components/ShowHistoryGoods.vue';
+import ShowAllUsers from '@/components/ShowAllUsers.vue';
+import UploadMultipleGoods from '@/components/UploadMultipleGoods.vue';
+import ForgotPasswordComponent from '@/components/ForgotPasswordComponent.vue';
+import GuestComponent from '@/components/GuestComponent.vue'; 
+import UserOrderHistory from '@/components/UserOrderHistory.vue';
+import SuccessComponent from '@/components/SuccessComponent.vue';
+import SecretQuestionComponent from '@/components/SecretQuestionComponent.vue';
+import BuyerHistory from '@/components/BuyerHistory.vue';
+import BuyerLikes from '@/components/BuyerLikes.vue';
+import BuyerCart from '@/components/BuyerCart.vue';
+import BuyerFillInfo from '@/components/BuyerFillInfo.vue'
+import BuyerShop from '@/components/BuyerShop';
+import ErrorComponent from "@/components/ErrorComponent.vue";
+import ShowSearchGoods from "@/components/ShowSearchGoods.vue";
+import ShowSearchHistoryGoods from "@/components/ShowSearchHistoryGoods.vue";
+import BuyerSearch from "@/components/BuyerSearch.vue";
+import UploadOneGood from "@/components/UploadOneGood.vue";
+import MyCatInformationAdd from "@/components/MyCatInformationAdd.vue";
 
-export default createStore({
-  state: {
-    admin: null,
-  },
-  getters: {
-    isLoggedIn: state => !!state.admin,
-    isSeller: state => state.admin && state.admin.power === 1,
-    isBuyer: state => state.admin && state.admin.power === 0,
-  },
-  mutations: {
-    setAdmin(state, admin) {
-      state.admin = admin;
-      // 通常还会设置一个表示已登录的状态，例如：
-      state.isLoggedIn = true;
-      localStorage.setItem('admin', JSON.stringify(admin));
-    },
-    clearAdmin(state) {
-      state.admin = null;
-      localStorage.removeItem('admin');
-    }
-  },
-  actions: {
-    login({ commit }, credentials) {
-      console.log("Login action triggered", credentials);
-      // 定义有效的用户名和密码
-      const validSellerUsername = 'seller';
-      const validBuyerUsername = 'buyer';
-      const validPassword = '123';
 
-      // 检查输入的用户名和密码是否匹配卖家
-      if (credentials.username === validSellerUsername && credentials.password === validPassword) {
-        // 如果匹配，提交 mutation 更新状态为卖家
-        commit('setAdmin', { username: validSellerUsername, power: 1 });
-        console.log("Admin set to seller");
-      } else if (credentials.username === validBuyerUsername && credentials.password === validPassword) {
-        // 检查输入的用户名和密码是否匹配买家
-        // 如果匹配，提交 mutation 更新状态为买家
-        commit('setAdmin', { username: validBuyerUsername, power: 0 }); // power: 0 代表买家
-        console.log("Admin set to buyer");
-      } else {
-        // 如果不匹配，设置错误或不设置admin
-        console.log("Invalid credentials");
-        // 可以设置一个错误状态或者不做任何事情
-      }
-    },
-    logout({ commit }) {
-      commit('clearAdmin');
-    }
+const routes = [
+  { path: '/', component: LoginComponent },
+  { path: '/login', component: LoginComponent },
+  { path: '/error', component: ErrorComponent },
+  { path: '/register', component: RegisterComponent },
+  { path: '/choose-register', component: ChooseRegister },
+  {
+    path: '/buyer',
+    name: 'BuyerMain',
+    component: BuyerMain,
+    children: [
 
-    // async login({ commit }, credentials) {
-    //   try {
-    //     // 实际的 API 调用
-    //     const response = await axios.post('/api/login', credentials);
-    //     commit('setAdmin', response.data);
-    //     return response.data;
-    //   } catch (error) {
-    //     throw new Error('登录失败');
-    //   }
-    // },
-    // logout({ commit }) {
-    //   return new Promise((resolve) => {
-    //     commit('clearAdmin');
-    //     resolve();
-    //   });
-    // }
-  }
+    ]
+  },
+  {
+    path: 'MyCatInformationAdd',
+    name: 'MyCatInformationAdd',
+    component: MyCatInformationAdd
+  },
+
+  {
+    path: '/seller',
+    name: 'SellerMain',
+    component: SellerMain,
+    redirect: { name: 'ShowGoods' },
+    children: [
+      {
+        path: 'ShowGoods',
+        name: 'ShowGoods',
+        component: ShowGoods
+      },
+      {
+        path: 'ShowSearchGoods',
+        name: 'ShowSearchGoods',
+        component: ShowSearchGoods
+      },
+      {
+        path: 'update-password',
+        name: 'UpdatePassword',
+        component: UpdatePasswordComponent
+      },
+      {
+        path: 'upload-onegood',
+        name: 'UploadOneGood',
+        component: UploadOneGood
+      },
+      {
+        path: 'show-userinfo',
+        name: 'ShowUserInfo',
+        component: ShowUserInfo
+      },
+      {
+        path: 'user-order-history',
+        name: 'UserOrderHistory',
+        component: UserOrderHistory 
+      },
+      {
+        path: 'show-historygoods',
+        name: 'ShowHistoryGoods',
+        component: ShowHistoryGoods
+      },
+      {
+        path: 'show-searchhistorygoods',
+        name: 'ShowSearchHistoryGoods',
+        component: ShowSearchHistoryGoods
+      },
+      {
+        path: 'show-allusers',
+        name: 'ShowAllUsers',
+        component: ShowAllUsers
+      },
+      {
+        path: 'upload-multiplegoods',
+        name: 'UploadMultipleGoods',
+        component: UploadMultipleGoods
+      },
+      // ... 其他子路由
+    ]
+    // 可以添加其他路由配置，如 meta 数据等
+  },
+  {
+    path: '/forgot-password',
+    name: 'ForgotPasswordComponent',
+    component: ForgotPasswordComponent // 替换为您的实际组件
+  },
+  {
+    path: '/guest',
+    name: 'GuestComponent',
+    component: GuestComponent // 替换为您的实际组件
+  },
+  {
+    path: '/success',
+    name: 'Success',
+    component: SuccessComponent,
+    props: true // 启用 props 将路由参数传递到组件
+  },
+  {
+    path: '/secret-question',
+    name: 'SecretQuestion',
+    component: SecretQuestionComponent
+  },
+  {
+    path: '/buyer-history',
+    name: 'buyerHistory',
+    component: BuyerHistory
+  },
+  {
+    path: '/buyer-search',
+    name: 'buyerSearch',
+    component: BuyerSearch
+  },
+  {
+    path: '/likes',
+    name: 'BuyerLikes',
+    component: BuyerLikes,
+  },
+  {
+    path: '/cart',
+    name: 'BuyerCart',
+    component: BuyerCart,
+  },
+  {
+    path: '/buyer-fill-info',
+    name: 'BuyerFillInfo',
+    component: BuyerFillInfo
+  },
+  {
+    path: '/buyer-shop',
+    name: 'BuyerShop',
+    component: BuyerShop
+  },
+  // ... 其他路由
+];
+
+const router = createRouter({
+  history:  createWebHashHistory(),
+  routes,
 });
+
+export default router;
