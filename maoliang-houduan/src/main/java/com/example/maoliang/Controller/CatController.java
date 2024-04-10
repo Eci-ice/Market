@@ -36,9 +36,10 @@ public class CatController {
         return new Result(null, null, null);
     }
 
-    @RequestMapping("/show-recommend")
-    public Result Showrecommend(@RequestBody int id) {
-        return new Result(null, null, null);
+    @RequestMapping("/show-recommend/{id}")
+    public Result Showrecommend(@PathVariable int id) {
+
+        return new Result(null, null, catService.showRecommend(id));
     }
 
     @RequestMapping("/upload-cat")
