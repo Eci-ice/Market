@@ -51,7 +51,7 @@ export default {
       pageSize: 5,
       currentUser: {}, // 将 currentUser 初始化为一个空对象
     };
-  },
+  },  
   computed: {
     ...mapGetters(['isSeller', 'isBuyer']), // 确保这些 getter 在 Vuex store 中定义
     totalPages() {

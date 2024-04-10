@@ -1,0 +1,1066 @@
+[33mcommit 69681739d0043f8647c6ab3f2a3f3ef67757de15[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Mon Apr 8 21:25:10 2024 +0800
+
+    fix fronterror
+
+[33mcommit 6defa85db3bfad1e39fc6081451a71be4befcb40[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Mon Apr 8 18:45:36 2024 +0800
+
+    fix bug
+
+[33mcommit 7e06155ccecbdc67e81aa305196acdc5a9a3f48c[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Mon Apr 8 17:45:15 2024 +0800
+
+    fix fronterror
+
+[33mcommit 8e935771551b088cd8c572ff05b37493bac4855d[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Mon Apr 8 17:02:45 2024 +0800
+
+    fix database
+
+[33mcommit 65281d68a7ef4dc3a4b2bc1026a77e55fe061ee0[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Mon Apr 8 16:55:36 2024 +0800
+
+    add special-request:cat
+
+[33mcommit 7c0f8c9fe30b9003be4ba8dd669fba13776a6e4f[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Mon Apr 1 16:00:38 2024 +0800
+
+    add API
+
+[33mcommit 6735592bfb6eb50e1db7d7fe79e4ecc23607db19[m
+Author: 刘腾为 <2813501578@qq.com>
+Date:   Thu Mar 28 10:44:27 2024 +0800
+
+    update
+
+[33mcommit e594df42b1b998d2fc8b778809eaf2236e44c775[m
+Merge: 173dc7a ef57870
+Author: 刘腾为 <2813501578@qq.com>
+Date:   Thu Mar 28 09:32:37 2024 +0800
+
+    update
+
+[33mcommit ef5787056496156ebc0894a549410d4785f04601[m
+Author: FengqiHu <127000193+FengqiHu@users.noreply.github.com>
+Date:   Thu Mar 28 08:59:22 2024 +0800
+
+    Update register
+
+[33mcommit d3cfb5539c0d1e7ac9e7216392de7a45d39cba01[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Thu Mar 28 08:57:32 2024 +0800
+
+    Add files via upload
+
+[33mcommit 93ae657d56f9872487a00fd50f9471d07f17a8fb[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Thu Mar 28 08:52:52 2024 +0800
+
+    Add files via upload
+
+[33mcommit 22ef9eb57c12762d87eb3ed659ad5934282c4a95[m
+Author: Lanlusheng-ice <105491868+Lanlusheng-ice@users.noreply.github.com>
+Date:   Thu Mar 28 08:52:34 2024 +0800
+
+    Add files via upload
+
+[33mcommit 09c72f1075a3a3b4c20e9561a4dd0544ad5c57b9[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Thu Mar 28 08:50:57 2024 +0800
+
+    Add files via upload
+
+[33mcommit 80c261018dd1f0d13d54771660e1a270744f3923[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Thu Mar 28 08:39:50 2024 +0800
+
+    Add files via upload
+
+[33mcommit 173dc7acfef8226da4ef054aebdec5916d27a5e9[m
+Author: 刘腾为 <2813501578@qq.com>
+Date:   Thu Mar 28 08:31:35 2024 +0800
+
+    完善
+
+[33mcommit d2f24d1e399b747f23c80c2e0fad5e66dd4ef79a[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Thu Mar 28 08:31:20 2024 +0800
+
+    Add files via upload
+
+[33mcommit b78ee211a6642a561c99a37e5b162fc0fe309503[m
+Author: zhuyaojie-fighting <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Thu Mar 28 08:15:14 2024 +0800
+
+    zyj前后端架构部分
+
+[33mcommit e77e7527c6c9e115771b375bf1ecdbd5d55e1b46[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Thu Mar 28 04:32:39 2024 +0800
+
+    整合现有文件，同步修改被提出的bug,完成搜索功能
+
+[33mcommit a46b02c1c565fc13efa4ddb67b0c3bfbb786fb7d[m
+Author: zhuyaojie-fighting <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Wed Mar 27 23:09:48 2024 +0800
+
+    zyj前后端架构部分
+
+[33mcommit 1df695d466437a4ca04a42716be7e81f29e0839b[m
+Author: 刘腾为 <2813501578@qq.com>
+Date:   Wed Mar 27 22:47:11 2024 +0800
+
+    update bug
+
+[33mcommit 318eea0788153920944c6f1a23a3313357bfb38f[m
+Author: FengqiHu <127000193+FengqiHu@users.noreply.github.com>
+Date:   Wed Mar 27 22:17:25 2024 +0800
+
+    updated register function and fixed bugs
+
+[33mcommit ff48b3a360f52c6daf5d253a512fd527cf0ad3ad[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Wed Mar 27 20:19:54 2024 +0800
+
+    Update upload-multiplegoods,show-onegood and modify-password
+
+[33mcommit bd2507ba873529c07601856e553b470ce0b98d9a[m
+Author: 刘腾为 <2813501578@qq.com>
+Date:   Tue Mar 26 22:49:07 2024 +0800
+
+    新增查看订单记录
+
+[33mcommit a7a06f5cec9c54b8f0f3c011114b081c2c9a1290[m
+Author: Lanlusheng-ice <105491868+Lanlusheng-ice@users.noreply.github.com>
+Date:   Thu Mar 14 09:38:26 2024 +0800
+
+    Add files via upload
+
+[33mcommit f750b3ab235c2d52da81e048842ffd1dd53a01fb[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Thu Mar 14 09:21:33 2024 +0800
+
+    Add files via upload
+
+[33mcommit ea2c25c7be980a10ad47a3a5b3dfed2cb8380fd7[m
+Author: FengqiHu <127000193+FengqiHu@users.noreply.github.com>
+Date:   Thu Mar 14 09:13:05 2024 +0800
+
+    Update ShowAllUsers.vue
+    
+    fixing bugs
+
+[33mcommit 95e1e3b7e41b81cb11aaaa74d6a4f24babf0ee90[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Thu Mar 14 09:06:16 2024 +0800
+
+    Add files via upload
+
+[33mcommit 3f4c5a33a7923e73ff7e9584fd3cea90fffcb7c8[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Thu Mar 14 09:05:03 2024 +0800
+
+    Delete 第二学期相关文档
+
+[33mcommit 9f6dad6de3186d1de308c985eea2ebf46cecb2f8[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Thu Mar 14 09:03:17 2024 +0800
+
+    Create 第二学期相关文档
+
+[33mcommit 7117f2f502795f48e77e2da5118361beac57d477[m
+Author: FengqiHu <127000193+FengqiHu@users.noreply.github.com>
+Date:   Thu Mar 14 08:26:29 2024 +0800
+
+    Update ShowAllUsers.vue
+
+[33mcommit 3e4a0b930d022f287da6c0a7a66b74c3c9b372fe[m
+Author: 刘腾为 <2813501578@qq.com>
+Date:   Thu Mar 14 00:51:37 2024 +0800
+
+    提交项目
+
+[33mcommit 0ffb933a20f1bb65121718a23174dec5d00ed3ce[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Wed Mar 13 16:12:50 2024 +0800
+
+    Upload uplaodgood, showgood-historygood-allgood and integrate previous modify
+
+[33mcommit bdbe77c3418aa7314c94421e94c7028f99763adc[m
+Author: FengqiHu <127000193+FengqiHu@users.noreply.github.com>
+Date:   Mon Mar 11 14:04:18 2024 +0800
+
+    完成密保前端，密保功能完成
+
+[33mcommit a7f2d25c92373a009bb661b5f129d62f482e95a5[m
+Author: FengqiHu <127000193+FengqiHu@users.noreply.github.com>
+Date:   Sun Mar 10 14:44:59 2024 +0800
+
+    完成密保和全部买家后端
+
+[33mcommit 8601ae4bd44f48d423d3084a309dd61b2dc12d70[m
+Author: FengqiHu <127000193+FengqiHu@users.noreply.github.com>
+Date:   Sat Mar 9 15:18:44 2024 +0800
+
+    完成注册功能
+
+[33mcommit 9963f1626617b4ba1816dadcb69f93e1f6a037de[m
+Author: FengqiHu <127000193+FengqiHu@users.noreply.github.com>
+Date:   Wed Mar 6 22:26:15 2024 +0800
+
+    refresh frontEnd
+
+[33mcommit e2b73f8cae949e363d2e26376fe2dd6715f4afff[m
+Author: FengqiHu <127000193+FengqiHu@users.noreply.github.com>
+Date:   Wed Mar 6 22:21:10 2024 +0800
+
+    delete frontEnd
+
+[33mcommit a13348c329987efc4dac977e8b6845841ae557a8[m
+Author: FengqiHu <127000193+FengqiHu@users.noreply.github.com>
+Date:   Wed Mar 6 22:07:02 2024 +0800
+
+    modify register backend
+
+[33mcommit 2474dfac1bf5589ef49cca4158254707f2fd90df[m
+Merge: 3210f83 e348b18
+Author: FengqiHu <127000193+FengqiHu@users.noreply.github.com>
+Date:   Wed Mar 6 18:37:47 2024 +0800
+
+    Merge branch 'master' of https://github.com/Eci-ice/Market
+
+[33mcommit e348b18e835bd7520061557b497a0040d4d00bdf[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Wed Mar 6 05:41:38 2024 +0800
+
+    Update new modole
+
+[33mcommit 461bc6d4dbb79f4d8ab61d3a5b0b384aaf378b33[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Thu Jan 18 17:06:50 2024 +0800
+
+    Upload AB
+
+[33mcommit 9afca70729b163ecc11a13a673ece595003eb649[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Thu Jan 18 17:04:07 2024 +0800
+
+    Upload AB
+
+[33mcommit 3210f83c79520ba5f9356ddab0328799ab34d756[m
+Author: HuFengqi <louishurris@gmail.com>
+Date:   Thu Jan 18 11:13:23 2024 +0800
+
+    增加升级AB完整包
+
+[33mcommit 0ee10dc21d28e9157d0331c153fcab97bae203ae[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Thu Jan 18 04:39:57 2024 +0800
+
+    修复部分界面前端显示bug
+
+[33mcommit c5f5d4dcd30dded21a9339daf867652a28fc1511[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Thu Jan 18 04:38:48 2024 +0800
+
+    修复部分界面前端显示bug
+
+[33mcommit 0d96b0bb9fe798f9c9e1fc4fedc2b4e928c09533[m
+Author: FengqiHu <127000193+FengqiHu@users.noreply.github.com>
+Date:   Wed Jan 17 21:07:48 2024 +0800
+
+    Delete BuyerMain.jsp
+
+[33mcommit 094f77913497a4303e5ac0668ad73066b8b7cdc0[m
+Author: FengqiHu <127000193+FengqiHu@users.noreply.github.com>
+Date:   Wed Jan 17 21:06:59 2024 +0800
+
+    Delete 小组汇报.pdf
+
+[33mcommit d553e1d6243d359a6e1b5fe57ee5f4b3f3090ec5[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Wed Jan 17 10:59:34 2024 +0800
+
+    修复多个商品图片上传bug
+
+[33mcommit 84b2016b3b20a6694718e235e02b83535422f550[m
+Author: FengqiHu <127000193+FengqiHu@users.noreply.github.com>
+Date:   Mon Jan 15 17:48:09 2024 +0800
+
+    Delete image/补充
+
+[33mcommit b1377bd07ca77003389335f1aabb113dcb50f95c[m
+Author: FengqiHu <127000193+FengqiHu@users.noreply.github.com>
+Date:   Mon Jan 15 17:47:43 2024 +0800
+
+    Create 补充
+
+[33mcommit efeb6ec35fd42c04e1c1791979dfb3fe56025a28[m
+Author: HuFengqi <louishurris@gmail.com>
+Date:   Sun Jan 14 21:36:39 2024 +0800
+
+    fix bug
+
+[33mcommit 4df9bc83559f6a6b51d4600586148b47f0e6a1ad[m
+Author: HuFengqi <louishurris@gmail.com>
+Date:   Sun Jan 14 18:06:03 2024 +0800
+
+    修改商品状态等重大bug
+
+[33mcommit 11a765fdc185cf46ee214cbe0fbb4a76f16961bd[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Wed Jan 10 17:50:02 2024 +0800
+
+    Add files via upload
+
+[33mcommit eb9561b90ea70698ff970024f4b0af60edef9614[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Wed Jan 3 16:48:56 2024 +0800
+
+    Delete 功能录制演示/创建新文件夹占位文件
+
+[33mcommit 45aac0d144df28b05591c21b384cb1b619e89c4b[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Wed Jan 3 16:48:05 2024 +0800
+
+    Add files via upload
+
+[33mcommit 51626d96690186ed95c74796167d13b79a72288b[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Wed Jan 3 16:46:54 2024 +0800
+
+    Create 1
+
+[33mcommit 535020bce20050abd2019d530c4be69ab61f9c94[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Wed Jan 3 16:44:16 2024 +0800
+
+    Delete 功能演示录制
+
+[33mcommit faac65d8a21c69c7a19dada895c5f22b62cebd3e[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Wed Jan 3 16:43:28 2024 +0800
+
+    Create 功能演示录制
+
+[33mcommit 6231a3d807dde0d235cd7d2f619ac40115760c65[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Wed Jan 3 16:42:46 2024 +0800
+
+    小组期末汇报
+
+[33mcommit 18e2fb4efcd4fa27cfbcbbdf903aea6cf28332e9[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Wed Jan 3 16:42:17 2024 +0800
+
+    Delete 小组期末汇报.pdf
+
+[33mcommit cd4913e33681c993fdc189fb9f989a1d65643379[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Wed Jan 3 16:22:39 2024 +0800
+
+    Add files via upload
+
+[33mcommit 56c96612668f8d12ef72959388fd3b8d58107851[m
+Author: Yeyuqing-Banyan <121228848+Yeyuqing-Banyan@users.noreply.github.com>
+Date:   Wed Jan 3 13:55:13 2024 +0800
+
+    Add files via upload
+
+[33mcommit bad7f7f4b68f599d0947f30fb4c88006f8868b33[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Wed Jan 3 00:44:26 2024 +0800
+
+    Add files via upload
+
+[33mcommit 61c6e92c4ef3fe95ba3d93f70b9a411cabc9f411[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Wed Jan 3 00:43:57 2024 +0800
+
+    Delete 小组汇报_20240103003649.pdf
+
+[33mcommit 80db27ced6239d7a4c03477800da279a40002a8d[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Wed Jan 3 00:38:32 2024 +0800
+
+    小组汇报ppt
+
+[33mcommit 4a29ce1c68b19ee7ae8eac9231afcd2d12e7391e[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Wed Jan 3 00:30:10 2024 +0800
+
+    Delete jjw.pptx
+
+[33mcommit e2826460a573350fce52460345cb87b2118bcc94[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Wed Jan 3 00:22:59 2024 +0800
+
+    Delete 初稿小组汇报.pptx
+
+[33mcommit a3ae5d70be0657550dedc9a3c5266f587c09293c[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Tue Jan 2 19:53:56 2024 +0800
+
+    修改买家
+
+[33mcommit 5c7d97bf3cea3ec1921e79a427b8f965604942d1[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Tue Jan 2 19:51:30 2024 +0800
+
+    Delete BuyerHistory.jsp
+
+[33mcommit 51c2b1ba481c82c7f204babc222a746d24f9b7fd[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Tue Jan 2 19:51:03 2024 +0800
+
+    买家历史
+
+[33mcommit faa3ce5c660668d177de10219c8bf5dd6b181fe6[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Tue Jan 2 19:36:07 2024 +0800
+
+    期末汇报初稿
+
+[33mcommit 15f486ed20f0e1121f052cdf392716f9b31b2604[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Tue Jan 2 19:33:36 2024 +0800
+
+    Delete jjw.pptx
+
+[33mcommit 4d0be999c61101918abfac12249f3b4cae404d71[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Tue Jan 2 19:22:53 2024 +0800
+
+    Delete jjw_20240102145609.pdf
+
+[33mcommit 494bbd491625d0e39031266b27399f4d15c7cad6[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Tue Jan 2 19:01:47 2024 +0800
+
+    Add files via upload
+
+[33mcommit cb31f5b21ef8e72d2aeb1133edc59515721546cd[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Tue Jan 2 19:00:12 2024 +0800
+
+    Add files via upload
+
+[33mcommit 692104f35f11378d8a3d71742861416a8e123d33[m
+Author: Yeyuqing-Banyan <121228848+Yeyuqing-Banyan@users.noreply.github.com>
+Date:   Tue Jan 2 10:44:37 2024 +0800
+
+    Add files via upload
+
+[33mcommit 8261367765d2531836532944648a0e1dcfbf0bfb[m
+Author: Yeyuqing-Banyan <121228848+Yeyuqing-Banyan@users.noreply.github.com>
+Date:   Mon Jan 1 20:04:43 2024 +0800
+
+    Add files via upload
+
+[33mcommit 4232a52d9638ed45d97806e03f1d0832c9410691[m
+Author: Yeyuqing-Banyan <121228848+Yeyuqing-Banyan@users.noreply.github.com>
+Date:   Mon Jan 1 20:02:34 2024 +0800
+
+    Delete image/yyq-A
+
+[33mcommit 74c593b794ae501116462d7e0c9cbc8d06312008[m
+Author: Yeyuqing-Banyan <121228848+Yeyuqing-Banyan@users.noreply.github.com>
+Date:   Mon Jan 1 20:01:18 2024 +0800
+
+    Create yyq-A
+
+[33mcommit 7149c84a530cf6ea8a3719c8c6d6c475e36d672e[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Mon Jan 1 15:25:49 2024 +0800
+
+    Add files via upload
+
+[33mcommit 65a28d42fc0b08228be69ca3c789398a4db4fe8b[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Sat Dec 30 16:52:57 2023 +0800
+
+    新增购物车一键购买、价格计算，发现订单缺少数量管理重大缺陷
+
+[33mcommit 378172f3d1ec1a529ac7a6661c57fc6f21c7aaa3[m
+Author: jiang <2374131516@qq.com>
+Date:   Thu Dec 21 09:37:40 2023 +0800
+
+    test
+
+[33mcommit 5f684f5f5909e6d841ad23394118ff96bd63de14[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Thu Dec 21 09:04:04 2023 +0800
+
+    Add files via upload
+
+[33mcommit f85bccfb10d5f121f2ac6bfb6e97fae30d9411e9[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Thu Dec 21 08:51:57 2023 +0800
+
+    Add files via upload
+
+[33mcommit bb5ddb42dc6a601bc33916cf83ac019291074c7b[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Thu Dec 21 08:46:15 2023 +0800
+
+    Add files via upload
+
+[33mcommit 3944bb21d44a62b281b180b00932734f9c5883a5[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Thu Dec 21 08:44:59 2023 +0800
+
+    Add files via upload
+
+[33mcommit 885e717e498f2dadb4ec071a34d9aee7e46d6037[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Thu Dec 21 08:42:34 2023 +0800
+
+    Add files via upload
+
+[33mcommit 760d39895f5715556313c8e5ee3428606068189c[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Thu Dec 21 08:26:18 2023 +0800
+
+    Add files via upload
+
+[33mcommit 5e4b67fb62dad5cf584f871110585a0020e11e6e[m
+Author: jiang <2374131516@qq.com>
+Date:   Thu Dec 21 03:39:20 2023 +0800
+
+    修补订单任务
+
+[33mcommit 91c29d1b53779384845f971a87e41d8e99a042b9[m
+Author: Lanlusheng-ice <105491868+Lanlusheng-ice@users.noreply.github.com>
+Date:   Thu Dec 21 01:34:33 2023 +0800
+
+    Add files via upload
+
+[33mcommit 17d42a600181d12dcdf651577abe539c33de8196[m
+Author: HuFengqi <louishurris@gmail.com>
+Date:   Wed Dec 20 23:47:59 2023 +0800
+
+    增加商品收藏功能
+
+[33mcommit f8b673910528c8e9f49f52bdae4cdaed2da0b227[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Wed Dec 20 20:50:12 2023 +0800
+
+    修改一个小bug
+
+[33mcommit 9bf41fa157a39130a0077a299a8180030e0f1218[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Wed Dec 20 19:20:23 2023 +0800
+
+    增加购物车系统
+
+[33mcommit 408aa4d8fd5955e7dac279eec26df6cc5740f071[m[33m ([m[1;33mtag: [m[1;33mv1.1.0_update_a[m[33m)[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Mon Dec 18 01:25:16 2023 +0800
+
+    修改bug,打包为升级包A
+
+[33mcommit cf206c94ad72ea5ab6a81a3ad98b177964dd0630[m
+Author: HuFengqi <louishurris@gmail.com>
+Date:   Thu Dec 14 09:41:54 2023 +0800
+
+    买家卖家查看订单，删除unittest和Bshop外的css，下次上传不要传上去
+
+[33mcommit d1567cc38d06997ecccfb312d5f1a8f71c7cea8c[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Thu Dec 14 09:13:50 2023 +0800
+
+    rollback
+
+[33mcommit 44dd3c63dae36f77b9794e507ebfd65ba5f59ff2[m
+Author: HuFengqi <louishurris@gmail.com>
+Date:   Wed Dec 13 15:14:36 2023 +0800
+
+    查看买家订单，卖家查看用户信息
+
+[33mcommit 67dd454f9ba0ce5265485d2e08d9e11a1e803858[m
+Author: jiang <2374131516@qq.com>
+Date:   Tue Dec 12 12:49:51 2023 +0800
+
+    提交任务
+
+[33mcommit 06ca681c518bf101cd6abc9a2489848fbd19317c[m
+Author: Lanlusheng-ice <105491868+Lanlusheng-ice@users.noreply.github.com>
+Date:   Thu Dec 7 09:03:03 2023 +0800
+
+    Add files via upload
+
+[33mcommit 37e7f12c0a13b4129e1f16d19cc23200b9d70745[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Wed Dec 6 22:03:06 2023 +0800
+
+    支持视频上传，多张图片上传及其展示，合并目前工作
+
+[33mcommit 78d54531094a020f5de054e071d4348dc16a7fb7[m
+Author: jiang <2374131516@qq.com>
+Date:   Wed Dec 6 16:42:50 2023 +0800
+
+    客户登录后可以查看历史下单记录与商家可以查看所有注册的客户信息，以及他们的购买历史
+
+[33mcommit e271566201a1c113c105b5a40777516261953fad[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Wed Dec 6 10:53:52 2023 +0800
+
+    rollback
+
+[33mcommit 0477680dffc1d37c4289416579f423100ee7a542[m[33m ([m[1;33mtag: [m[1;33mv1.0.0_basic[m[33m)[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Wed Dec 6 10:45:56 2023 +0800
+
+    rollback
+
+[33mcommit 79116c58ee0d3ba4e12a2190b0ab79849e2af64b[m[33m ([m[1;33mtag: [m[1;33m基线提交[m[33m)[m
+Author: zhuyaojie-fighting <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Tue Dec 5 18:56:38 2023 +0800
+
+    添加修改价格功能
+
+[33mcommit 4916b0bb4d34b0f0268dfb816aef38fc6ace98b2[m
+Author: HuFengqi <louishurris@gmail.com>
+Date:   Thu Nov 30 13:48:20 2023 +0800
+
+    实现了商品二级管理的检索，并修改了商品名重复检测以及库存一直为1的问题
+
+[33mcommit ce0ec02fee4427d66331b70c144a086d5a0d2427[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Thu Nov 30 10:38:40 2023 +0800
+
+    Add files via upload
+
+[33mcommit 168b2ce1813b629ac4c17109a2656e60200acaa1[m
+Author: HuFengqi <louishurris@gmail.com>
+Date:   Tue Nov 28 21:16:13 2023 +0800
+
+    历史商品增加创建时间 本次提交需要Setup
+
+[33mcommit 6096c4217e70656d2d50461e0e9aefc9c14f4340[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Thu Nov 23 12:47:49 2023 +0800
+
+    整合
+
+[33mcommit 0131402bc56336066c42b21326f328b8a99a9e87[m
+Merge: b16405f 1517c30
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Thu Nov 23 12:37:59 2023 +0800
+
+    Merge branch 'master' of https://github.com/Eci-ice/Market
+
+[33mcommit 1517c30a282b5f06c1ef277d42e03152d433a1c3[m
+Author: FengqiHu <127000193+FengqiHu@users.noreply.github.com>
+Date:   Thu Nov 23 11:33:05 2023 +0800
+
+    Update 配置文档 .md
+
+[33mcommit 1ff187ea98542c9ccb79dfb89fdf16a0856ea4f6[m
+Author: FengqiHu <127000193+FengqiHu@users.noreply.github.com>
+Date:   Thu Nov 23 11:32:38 2023 +0800
+
+    Update 配置文档 .md
+
+[33mcommit c896d36a4ed90ac6999481ae6512e0eea33dcabc[m
+Author: Lanlusheng-ice <105491868+Lanlusheng-ice@users.noreply.github.com>
+Date:   Thu Nov 23 09:32:23 2023 +0800
+
+    Add files via upload
+
+[33mcommit eefc334c291383eb71b879f800665be4a54c7ab3[m
+Author: zhuyaojie-fighting <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Thu Nov 23 09:28:58 2023 +0800
+
+    添加限制
+
+[33mcommit f5e6e77c9ed37c62a353b92b77148edf37017f7d[m
+Author: zhuyaojie-fighting <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Thu Nov 23 09:27:09 2023 +0800
+
+    rollback
+
+[33mcommit b16405f6d8b18192869865d4c0a940395e68ba88[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Thu Nov 23 09:00:25 2023 +0800
+
+    rollback
+
+[33mcommit 8aea0126fdb683da1b146e9cd7d048bfdb0b453b[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Thu Nov 23 08:59:32 2023 +0800
+
+    rollback
+
+[33mcommit c25c6a8b40e062fc109caa8ce193a053b8345e6e[m
+Author: FengqiHu <127000193+FengqiHu@users.noreply.github.com>
+Date:   Thu Nov 23 08:54:47 2023 +0800
+
+    Add files via upload
+    
+    增加配置文档
+
+[33mcommit f22b7e11cb8e2a43f944e40fa903af94be8465d3[m
+Author: zhuyaojie-fighting <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Thu Nov 23 08:42:39 2023 +0800
+
+    更新发布商品的限制处理
+
+[33mcommit f58f287603dfac7c12afd4062e1e6541a9760d42[m
+Author: Lanlusheng-ice <105491868+Lanlusheng-ice@users.noreply.github.com>
+Date:   Thu Nov 23 08:34:45 2023 +0800
+
+    Add files via upload
+
+[33mcommit 77e433ea8e7e60c3440f9ab14a9c52f657e0be9e[m
+Author: Lanlusheng-ice <105491868+Lanlusheng-ice@users.noreply.github.com>
+Date:   Thu Nov 23 08:21:35 2023 +0800
+
+    Add files via upload
+
+[33mcommit dd2b7ed3713d151882c676a7761cefa1db429426[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Thu Nov 23 07:50:58 2023 +0800
+
+    整合
+
+[33mcommit abb748a7f58a1f44a8105ac0d122e766951fe234[m
+Author: jiangjinwen <2374131516@qq.com>
+Date:   Thu Nov 23 03:32:05 2023 +0800
+
+    单商品上传图片显示与商品属性问题
+
+[33mcommit be6c7bc11f81aa16a5075d155061e3c1dec285a6[m
+Author: HuFengqi <louishurris@gmail.com>
+Date:   Wed Nov 22 23:50:10 2023 +0800
+
+    增加了商品二级管理，但是show_goods里还没有按照类别筛选，！！注意，本次提交需要重新进行Setup
+
+[33mcommit 78624e4d0fc98fb05a1275d2abd370de3e0afba6[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Wed Nov 22 22:53:48 2023 +0800
+
+    添加owner属性，继续修复了取消基线限制
+
+[33mcommit 101c4fe04ad7c47072e8159ab87effcca7cb431b[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Wed Nov 22 20:57:39 2023 +0800
+
+    Add files via upload
+
+[33mcommit 0dc52f47b1c68eb3d2494de6af3abf38df2ad901[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Wed Nov 22 20:46:07 2023 +0800
+
+    Add files via upload
+
+[33mcommit 7ef2ee45de7c7d2d14cad9c2bc1aa8ab49b032cf[m
+Author: zhuyaojie-fighting <132866222+zhuyaojie-fighting@users.noreply.github.com>
+Date:   Wed Nov 22 20:35:26 2023 +0800
+
+    Add files via upload
+
+[33mcommit 1b2f3f44e129c09ea265b3e7ca45c3584e27fcf0[m
+Author: Jiangween <2374131516@qq.com>
+Date:   Wed Nov 22 12:15:36 2023 +0800
+
+    test
+
+[33mcommit 09cc2afedc55d6e321c714b48b80434db0a544ee[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Sat Nov 18 22:47:55 2023 +0800
+
+    取消基线限制
+
+[33mcommit b58c0e88f8072dbbb888a700166c0cbc69ee683d[m
+Author: Lanlusheng-ice <105491868+Lanlusheng-ice@users.noreply.github.com>
+Date:   Sat Nov 18 16:39:31 2023 +0800
+
+    rollback
+
+[33mcommit 5291c8cac1938c2008b5d289008acf0fe0ef3308[m
+Author: Yeyuqing-Banyan <747357454@qq.com>
+Date:   Fri Nov 17 20:54:41 2023 +0800
+
+    src/sqlitesetup/Setup.java
+
+[33mcommit bfd54dea32a2a9385da2b94e4bbca9358042a267[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Fri Nov 17 15:48:56 2023 +0800
+
+    隐藏非基线需求，上传war包
+
+[33mcommit 8c3f5ae0c9c6c3f9785e010011b328bf983a06d4[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Fri Nov 17 10:28:58 2023 +0800
+
+    hugefile
+
+[33mcommit 0558ace777e41cf16b3226a9a7daab8d1217b3c9[m
+Author: Lanlusheng-ice <ice.boiling.water@gmail.com>
+Date:   Fri Nov 17 10:18:15 2023 +0800
+
+    增加了输入限制，重新整理git仓库
+
+[33mcommit 095d480913a57f6142305646550c60974edd8bfc[m
+Author: HuFengqi <louishurris@gmail.com>
+Date:   Thu Nov 16 19:37:36 2023 +0800
+
+    修改了Setup以及买家前端
+
+[33mcommit 1a6c9dc4fecb0397b1d8595a2d48eba2d51c2f92[m
+Author: zhuyaojie-fighting <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Thu Nov 16 10:21:36 2023 +0800
+
+    添加了新的测试用例
+
+[33mcommit 70e363fba705aae717d3fba9b440ad4913009492[m
+Author: zhuyaojie-fighting <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Thu Nov 16 09:41:30 2023 +0800
+
+    diyicitijiao
+
+[33mcommit 42f01f7c89533e4d9bcc6cb74fd932e45982f40a[m
+Author: Eciice <ice.boiling.water@gmail.com>
+Date:   Thu Nov 16 09:17:30 2023 +0800
+
+    repair
+
+[33mcommit 888a96ec643c124b71f9c5ae719af3b9de4a7bf4[m
+Author: Eciice <ice.boiling.water@gmail.com>
+Date:   Thu Nov 16 08:46:40 2023 +0800
+
+    Revert Market/src/unittesting to version 1b34077
+
+[33mcommit 9e6445b557f1a986e02e614239ef452ef1cdaad6[m
+Author: fxxxxkuuuu <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Thu Nov 9 09:42:00 2023 +0800
+
+    Add files via upload
+
+[33mcommit a0b45b258d8559c133d44ec422c8e0ddfa09a8f1[m
+Author: LouisHurris <127000193+LouisHurris@users.noreply.github.com>
+Date:   Thu Nov 9 09:39:46 2023 +0800
+
+    Add files via upload
+
+[33mcommit 5ccf01c62ae9e4a3423de69497bad43385d64df4[m
+Author: LouisHurris <127000193+LouisHurris@users.noreply.github.com>
+Date:   Thu Nov 9 09:39:35 2023 +0800
+
+    Delete multi-goods.png
+
+[33mcommit fa59504902878ecec9299fb1b387209b9cffd61a[m
+Author: LouisHurris <127000193+LouisHurris@users.noreply.github.com>
+Date:   Thu Nov 9 09:37:20 2023 +0800
+
+    Add files via upload
+
+[33mcommit 00554fba44f48883d815f9357de77a5c320e45bd[m
+Author: LouisHurris <127000193+LouisHurris@users.noreply.github.com>
+Date:   Thu Nov 9 09:33:35 2023 +0800
+
+    Add files via upload
+
+[33mcommit ae8331ed9305ce152fc791641c51dec76b3d84f7[m
+Author: fxxxxkuuuu <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Thu Nov 9 09:30:41 2023 +0800
+
+    Add files via upload
+
+[33mcommit be03643361874b030a2c1aabff12639535042fe3[m
+Author: fxxxxkuuuu <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Thu Nov 9 09:27:56 2023 +0800
+
+    Add files via upload
+
+[33mcommit dd98b09e35152d52e08b618a8e86dc948163e0d8[m
+Author: fxxxxkuuuu <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Thu Nov 9 09:17:11 2023 +0800
+
+    Add files via upload
+
+[33mcommit 7fc65c185d6cc7c1ed8ad7ef6bbc887b2c7ded2a[m
+Author: fxxxxkuuuu <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Thu Nov 9 08:34:15 2023 +0800
+
+    Add files via upload
+
+[33mcommit 4d9ff975f676142cbaf73112b0615aab58fb9dd7[m
+Author: Eci-ice <105491868+Eci-ice@users.noreply.github.com>
+Date:   Thu Nov 9 08:25:24 2023 +0800
+
+    Add files via upload
+
+[33mcommit 9138df74fe8fbab2d38a1d0e634d7e3051ca8c4f[m
+Author: Eciice <ice.boiling.water@gmail.com>
+Date:   Wed Nov 8 23:23:02 2023 +0800
+
+    3rd_update
+
+[33mcommit ac4dfbd505498bd4493e3c3c8c568a9c5b91735c[m
+Author: Eciice <ice.boiling.water@gmail.com>
+Date:   Sun Nov 5 21:37:02 2023 +0800
+
+    update
+
+[33mcommit 4a83381c9f415cae7561ef2a1e23561b51394dba[m
+Author: Eci-ice <105491868+Eci-ice@users.noreply.github.com>
+Date:   Thu Nov 2 11:18:01 2023 +0800
+
+    update
+
+[33mcommit 83d2e17eb9dd0637d604612e67441abb9bc1cd3e[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Thu Oct 26 10:01:42 2023 +0800
+
+    Add files via upload
+
+[33mcommit 71d8227a0fad2dbc29788aa16361579d7652938b[m
+Author: Jiangween <145003935+Jiangween@users.noreply.github.com>
+Date:   Thu Oct 26 09:41:24 2023 +0800
+
+    Add files via upload
+
+[33mcommit f9c19dd0efcb34f4cafa9b88250afe5ab76e08e5[m
+Author: fxxxxkuuuu <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Thu Oct 26 09:34:33 2023 +0800
+
+    Add files via upload
+
+[33mcommit 083581dfa178c158922973ef71eaf763c066fb12[m
+Author: fxxxxkuuuu <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Thu Oct 26 09:31:33 2023 +0800
+
+    Add files via upload
+
+[33mcommit 79382b0dc4daf4f449c97dfb3d27f565b1607f86[m
+Author: fxxxxkuuuu <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Thu Oct 26 09:21:20 2023 +0800
+
+    Add files via upload
+
+[33mcommit 448f7d2dbd0eb4efd7acad3ee229467bcf668f34[m
+Author: fxxxxkuuuu <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Thu Oct 26 09:02:31 2023 +0800
+
+    Add files via upload
+
+[33mcommit 1b3407716fe7243ec4e925a3f9f5959a70c3a281[m
+Author: fxxxxkuuuu <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Thu Oct 26 08:56:01 2023 +0800
+
+    update
+
+[33mcommit 61f392d6cbfc344b8147a2f662c54d54b1eaaf7c[m
+Author: LouisHurris <127000193+LouisHurris@users.noreply.github.com>
+Date:   Thu Oct 26 08:54:10 2023 +0800
+
+    Add files via upload
+
+[33mcommit 3b56474802f2d8f4e8717f7ac4ea0bf2c00dff05[m
+Author: LouisHurris <127000193+LouisHurris@users.noreply.github.com>
+Date:   Thu Oct 26 08:53:04 2023 +0800
+
+    Add files via upload
+
+[33mcommit d9fd8bc2a242e42e9830bb468e222500f4896b74[m
+Author: LouisHurris <127000193+LouisHurris@users.noreply.github.com>
+Date:   Thu Oct 26 08:50:44 2023 +0800
+
+    Delete 自动化测试
+
+[33mcommit d89318717e428ce3e15777117ab315af2a62ca03[m
+Author: LouisHurris <127000193+LouisHurris@users.noreply.github.com>
+Date:   Thu Oct 26 08:48:50 2023 +0800
+
+    Create 自动化测试
+
+[33mcommit 2419bc635d60d7824c848de9e93e081cb552938d[m
+Author: fxxxxkuuuu <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Thu Oct 26 08:46:49 2023 +0800
+
+    Add files via upload
+
+[33mcommit a85aaa2f57a0c8e1026db1f5d95b2640c0edd988[m
+Author: fxxxxkuuuu <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Thu Oct 26 08:36:23 2023 +0800
+
+    Add files via upload
+
+[33mcommit 5a92ad3e99c74fffc8a7334354de6b58c87cd551[m
+Author: fxxxxkuuuu <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Thu Oct 26 08:14:40 2023 +0800
+
+    Add files via upload
+
+[33mcommit 2312927a8ad741d5b1a6d53a90ed22a57d716faf[m
+Author: Eci-ice <105491868+Eci-ice@users.noreply.github.com>
+Date:   Thu Oct 26 08:11:43 2023 +0800
+
+    3
+
+[33mcommit 15267476fa42142881dcd6cd92740e0287906cbe[m
+Author: fxxxxkuuuu <132866222+fxxxxkuuuu@users.noreply.github.com>
+Date:   Thu Oct 26 08:04:32 2023 +0800
+
+    Add files via upload
+
+[33mcommit 8c919c410ba77089382393e8d894440881c5cffd[m
+Author: Eciice <ice.boiling.water@gmail.com>
+Date:   Wed Oct 25 22:45:00 2023 +0800
+
+    sys
+
+[33mcommit f93cbbf72cf9e0eaf8f3812cc525eabb2feb73e8[m
+Author: Eci-ice <105491868+Eci-ice@users.noreply.github.com>
+Date:   Wed Oct 25 15:56:22 2023 +0800
+
+    Add files via upload
+    
+    sys
+
+[33mcommit 5c3333883ed53d9b8b4f1f0831d93e55deddd449[m
+Author: Eci-ice <105491868+Eci-ice@users.noreply.github.com>
+Date:   Wed Oct 25 15:25:50 2023 +0800
+
+    Add files via upload
+    
+    sys
+
+[33mcommit 37a8e6226f83f00da754b0c116bf0df065f876e7[m
+Author: Eciice <ice.boiling.water@gmail.com>
+Date:   Wed Oct 11 21:37:33 2023 +0800
+
+    2
+
+[33mcommit 5e566eeb8ef7fdc3d688d56c6312645cef67b34c[m
+Author: Eciice <ice.boiling.water@gmail.com>
+Date:   Sun Oct 8 18:34:02 2023 +0800
+
+    1
+
+[33mcommit 9b715c6f4cc1cd95336560d96c26e3a9d98c3bb3[m
+Author: Eci-ice <105491868+Eci-ice@users.noreply.github.com>
+Date:   Sun Oct 1 22:47:12 2023 +0800
+
+    Delete image/02.png
+
+[33mcommit 3f7dc39d4f1316786981f1a3e5405b7f6ece1ba2[m
+Author: Eciice <ice.boiling.water@gmail.com>
+Date:   Sun Oct 1 22:32:27 2023 +0800
+
+    初次提交
+
+[33mcommit 974d250935869b3600016887efeeb771e2940a86[m
+Author: Eciice <ice.boiling.water@gmail.com>
+Date:   Sun Oct 1 22:07:47 2023 +0800
+
+    初次提交

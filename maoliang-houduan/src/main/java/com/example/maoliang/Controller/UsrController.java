@@ -177,5 +177,10 @@ public class UsrController {
             return new Result(ERROR_PAGE,"BadAnswer","Wrong Answer");
         }
     }
+    @RequestMapping("/UserOrderHistory-control")
+    public Result UserOrderHistoryController(@RequestParam("power") int power, @RequestParam("userid") int userid) {
+
+        return new Result(SUCCESS_PAGE, "查询用户购买历史记录列表成功", usrService.showUserOrderHistory(power, userid));
+    }
 
 }

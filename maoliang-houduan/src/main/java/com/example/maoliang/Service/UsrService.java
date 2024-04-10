@@ -1,5 +1,6 @@
 package com.example.maoliang.Service;
 
+import com.example.maoliang.Entity.Order;
 import com.example.maoliang.Entity.Usr;
 import com.example.maoliang.Repository.UsrListRepository;
 import com.example.maoliang.Repository.UsrRepository;
@@ -44,6 +45,9 @@ public class UsrService {
 
     public void register(Usr usr) throws SQLException {
         usrRepository.register(usr);
+    }
+    public List<Order> showUserOrderHistory(int pow, int userid){
+        return usrListRepository.searchUserOrderHistory(pow,userid);
     }
 
 }

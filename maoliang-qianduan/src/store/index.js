@@ -25,7 +25,7 @@ import ShowSearchGoods from "@/components/ShowSearchGoods.vue";
 import ShowSearchHistoryGoods from "@/components/ShowSearchHistoryGoods.vue";
 import BuyerSearch from "@/components/BuyerSearch.vue";
 import UploadOneGood from "@/components/UploadOneGood.vue";
-import MyCatInformationAdd from "@/components/MyCatInformationAdd.vue";
+import BuyerUploadCat from "@/components/BuyerUploadCat.vue";
 
 
 const routes = [
@@ -43,9 +43,9 @@ const routes = [
     ]
   },
   {
-    path: 'MyCatInformationAdd',
-    name: 'MyCatInformationAdd',
-    component: MyCatInformationAdd
+    path: 'BuyerUploadCat',
+    name: 'MBuyerUploadCat',
+    component: BuyerUploadCat
   },
 
   {
@@ -159,6 +159,7 @@ const routes = [
     name: 'BuyerShop',
     component: BuyerShop
   },
+  
   // ... 其他路由
 ];
 
