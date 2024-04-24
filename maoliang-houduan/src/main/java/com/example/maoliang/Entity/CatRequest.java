@@ -1,15 +1,6 @@
 package com.example.maoliang.Entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
-public class Cat {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CatRequest {
     private int catid;
     private String catname;
     private String description;
@@ -20,7 +11,7 @@ public class Cat {
     private int owner;
 
     // 构造方法
-    public Cat() {
+    public CatRequest() {
     }
 
     // getters and setters

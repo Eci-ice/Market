@@ -5,7 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 public class Good {
@@ -32,17 +31,8 @@ public class Good {
     private int numbermax;
     private int islike;
 
-    private double weight;
     // Getters and Setters
 
-
-    public double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
 
     public int getGoodid() {
         return goodid;
@@ -187,18 +177,4 @@ public class Good {
     public void setIslike(int islike) {
         this.islike = islike;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Good good)) return false;
-        return goodid == good.goodid && Double.compare(price, good.price) == 0 && state == good.state && number == good.number && owner == good.owner && Double.compare(calorie, good.calorie) == 0 && buyingid == good.buyingid && numbermax == good.numbermax && islike == good.islike && Double.compare(weight, good.weight) == 0 && Objects.equals(goodname, good.goodname) && Objects.equals(description, good.description) && Objects.equals(picture, good.picture) && Objects.equals(kind, good.kind) && Objects.equals(subkind, good.subkind) && Objects.equals(createdate, good.createdate) && Objects.equals(catkind, good.catkind) && Objects.equals(catweight, good.catweight) && Objects.equals(catage, good.catage);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(goodid, goodname, description, price, picture, state, number, kind, subkind, createdate, owner, calorie, catkind, catweight, catage, buyingid, numbermax, islike, weight);
-    }
-
-
 }

@@ -83,145 +83,12 @@ public class CartController {
 //    }
     }
 
-//    @GetMapping("/showLike")
-//    public String showLike(Model model) {
-//        Usr user = (Usr) session.getAttribute("admin");
-//
-//        try {
-//            List<GoodList> likeList = goodService.showLike(user.getUserid());
-//            model.addAttribute("likeList", likeList);
-//            return Page.BUYER_LIKE;
-//        } catch (SQLException e) {
-//            // Handle exception
-//            e.printStackTrace();
-//            model.addAttribute("error", "Error retrieving liked items.");
-//            return Page.ERROR_PAGE;
-//        }
-//    }
-//    @PostMapping("/modifyCart")
-//    public String modifyCart(@RequestParam("buyingid") int buyingid, @RequestParam("number") int number, Model model) {
-//        Usr user = (Usr) session.getAttribute("admin");
-//
-//        try {
-//            goodService.modifyBuyNumber(buyingid, number);
-//            List<GoodList> cartList = goodService.showBuyerAll(user.getUserid());
-//            model.addAttribute("cL", cartList);
-//            return Page.BUYER_CART;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            model.addAttribute("error", "Error modifying cart.");
-//            return Page.ERROR_PAGE;
-//        }
-//    }
-//
-//    @GetMapping("/allCart")
-//    public String allCart(Model model) {
-//        Usr user = (Usr) session.getAttribute("admin");
-//
-//        try {
-//            List<GoodList> cartList = goodService.showBuyerAll(user.getUserid());
-//            model.addAttribute("cL", cartList);
-//            return Page.BUYER_CART;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            model.addAttribute("error", "Error retrieving buyer's cart.");
-//            return Page.ERROR_PAGE;
-//        }
-//    }
-
-
-//@GetMapping("/showLike")
-//public String showLike(Model model) {
-//    Usr user = (Usr) session.getAttribute("admin");
-//
-//    if (user != null) {
-//        List<GoodList> likeList = goodService.showLike(user.getUserid());
-//        model.addAttribute("likeList", likeList);
-//        return Page.BUYER_LIKE;
-//    } else {
-//        model.addAttribute("error", "用户未登录或登录信息已过期");
-//        return Page.ERROR_PAGE;
-//    }
-//}
-// /////////////
-//@GetMapping("/showLike")
-//public String showLike(Model model) {
-//    Usr user = (Usr) session.getAttribute("admin");
-//
-//    if (user != null) {
-//        List<Good> likeList = goodService.showLike(user.getUserid());
-//        List<GoodList> convertedList = new ArrayList<>();
-//        for (Good good : likeList) {
-//            GoodList goodList = new GoodList();
-//            goodList.setG(good);
-//            convertedList.add(goodList);
-//        }
-//        model.addAttribute("likeList", convertedList);
-//        return Page.BUYER_LIKE;
-//    } else {
-//        model.addAttribute("error", "用户未登录或登录信息已过期");
-//        return Page.ERROR_PAGE;
-//    }
-//}
-////////////////////////////////
-//@GetMapping("/showLike")
-//public String showLike(Model model) {
-//    Usr user = (Usr) session.getAttribute("admin");
-//
-//    if (user != null) {
-//        List<Good> likeList = goodService.showLike(user.getUserid(), 1); // 获取islike等于1的商品信息
-//        List<GoodList> convertedList = new ArrayList<>();
-//        for (Good good : likeList) {
-//            GoodList goodList = new GoodList();
-//            goodList.setG(good);
-//            convertedList.add(goodList);
-//        }
-//        model.addAttribute("likeList", convertedList);
-//        return Page.BUYER_LIKE;
-//    } else {
-//        model.addAttribute("error", "用户未登录或登录信息已过期");
-//        return Page.ERROR_PAGE;
-//    }
-//}
 
     @PostMapping("/showLike")//展示收藏的商品
     @ResponseBody
     public List<Map<String, Object>> showLike(@RequestParam("userId") int userId, Model model) {
         return goodService.showLike(userId, 1);
     }
-
-
-//////////////////////////////这个是showLike第一版本
-//    @GetMapping("/showLike")
-//    public String showLike(Model model) {
-//        Usr user = (Usr) session.getAttribute("admin");
-//
-////        try {
-//            List<GoodList> likeList = goodService.showLike(user.getUserid());
-//            model.addAttribute("likeList", likeList);
-//            return Page.BUYER_LIKE;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            model.addAttribute("error", "无法获取收藏的商品。请稍后再试。");
-//            return Page.ERROR_PAGE;
-//        }
-//    }
-///////////////////////////zhuyaojie
-//    @PostMapping("/modifyCart")
-//    public String modifyCart(@RequestParam("buyingid") int buyingId, @RequestParam("number") int quantity, Model model) {
-//        Usr user = (Usr) session.getAttribute("admin");
-
-//        try {
-//            goodService.modifyBuyNumber(buyingId, quantity);
-//            List<GoodList> cartList = goodService.showBuyerAll(user.getUserid());
-//            model.addAttribute("cL", cartList);
-//            return Page.BUYER_CART;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            model.addAttribute("error", "无法修改购物车。请稍后再试。");
-//            return Page.ERROR_PAGE;
-//        }
-//    }
 
 
     @GetMapping("/allCart")//展示购物车所有商品
@@ -261,6 +128,5 @@ public class CartController {
         model.addAttribute("to", "buyermain");
         return Page.SUCCESS_PAGE;
     }
-
 
 }

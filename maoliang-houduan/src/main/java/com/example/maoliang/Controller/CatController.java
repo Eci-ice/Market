@@ -3,6 +3,8 @@ package com.example.maoliang.Controller;
 
 import com.example.maoliang.Controller.utils.Page;
 import com.example.maoliang.Controller.utils.Result;
+import com.example.maoliang.Entity.Cat;
+import com.example.maoliang.Entity.CatRequest;
 import com.example.maoliang.Entity.Good;
 import com.example.maoliang.Entity.Usr;
 import com.example.maoliang.Service.CatService;
@@ -31,26 +33,57 @@ public class CatController {
     @Autowired
     public HttpSession session;
 
-    @RequestMapping("/show-cat/{id}")
-    public Result Showcat(@PathVariable int id) {
-        return new Result(null, null, null);
+
+    @RequestMapping("/show-cat")
+    public Result Showcat(@RequestParam int ownerid) {
+        try {
+            List<Cat> catList = catService.getCatsByOwnerId(ownerid);
+            return new Result("success", "获取猫信息成功", catList);
+        } catch (Exception e) {
+            LOGGER.error("获取猫信息出错", e);
+            return new Result("error", "获取猫信息出错，请稍后重试", null);
+        }
     }
 
-    @RequestMapping("/show-recommend/{id}")
-    public Result Showrecommend(@PathVariable int id) {
 
-        return new Result(null, null, catService.showRecommend(id));
+    @RequestMapping("/show-recommend")
+    public Result Showrecommend(@RequestBody int id) {
+        return new Result(null, null, null);
     }
 
     @RequestMapping("/upload-cat")
-    public Result Uploadcat(@RequestBody int id) {
-        return new Result(null, null, null);
+    public Result uploadCat(@RequestBody CatRequest catRequest) {
+        try {
+            catService.addCat(catRequest.getCatid(), catRequest.getCatname(), catRequest.getDescription(),
+                    catRequest.getCatweight(), catRequest.getCatstate(), catRequest.getCatage(),
+                    catRequest.getCatkind(), catRequest.getOwner());
+            return new Result("success", "猫咪信息上传成功", null);
+        } catch (Exception e) {
+            LOGGER.error("上传猫咪信息出错", e);
+            return new Result("error", "上传猫咪信息出错，请稍后重试", null);
+        }
     }
 
-    @RequestMapping("/modify-cat ")
-    public Result Modifycat(@RequestBody int id) {
-        return new Result(null, null, null);
+
+
+    @RequestMapping("/modify-cat")
+    public Result Modifycat(@RequestParam int id, @RequestParam double catweight, @RequestParam int catstate, @RequestParam int catage) {
+        try {
+            // 调用 CatService 中的方法来修改猫的信息
+            catService.updateCatInformation(id, catweight, catstate, catage);
+
+            return new Result("success", "猫咪信息修改成功", null);
+        } catch (Exception e) {
+            LOGGER.error("修改猫咪信息出错", e);
+            return new Result("error", "修改猫咪信息出错，请稍后重试", null);
+        }
     }
+
+
+
+
+
+
 
 
 }
