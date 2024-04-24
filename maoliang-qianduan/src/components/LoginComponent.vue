@@ -7,7 +7,7 @@
     <div v-if="!isLoggedIn" class="login">
       <form @submit.prevent="handleLogin">
         <div class="input">
-          <img src="~@/assets/img/account.png" alt="账号" style="height: 25px; vertical-align: middle;"> 
+          <img src="~@/assets/img/account.png" alt="账号" style="height: 25px; vertical-align: middle;">
           <input type="text" name="username" placeholder="账号" v-model="credentials.username">
         </div>
         <div class="input">

@@ -4,32 +4,32 @@
       <h1>请发布商品</h1>
       <form @submit.prevent="submitForm">
       <div class="container">
-      <div class="left-div" style="height: 300px;">
-        <!-- 左侧div -->
-        <!-- 顶部是一个返回按钮 -->
-        <button type="button" @click="goBack">返回</button>
-        <!-- 中间是一个固定尺寸的预览窗口，用于显示用户上传的图片或视频，最多三个,其中每个图片都支持右上角显示x删除 -->
+        <div class="left-div" style="height: 300px;">
+          <!-- 左侧div -->
+          <!-- 顶部是一个返回按钮 -->
+          <button type="button" @click="goBack">返回</button>
+          <!-- 中间是一个固定尺寸的预览窗口，用于显示用户上传的图片或视频，最多三个,其中每个图片都支持右上角显示x删除 -->
 
-        <div id="preview">
-            <!-- 预览窗口 -->
-            <div v-if="selectedFiles.length > 0">
-              <div v-for="(file, index) in selectedFiles" :key="index" v-show="index === currentPreviewIndex">
-                <img v-if="isImage(file)" :src="getURL(file)" alt="预览图">
-                <video v-else controls :src="getURL(file)"></video>
-                <button @click="removeFile(index)">X</button>
+          <div id="preview">
+              <!-- 预览窗口 -->
+              <div v-if="selectedFiles.length > 0">
+                <div v-for="(file, index) in selectedFiles" :key="index" v-show="index === currentPreviewIndex">
+                  <img v-if="isImage(file)" :src="getURL(file)" alt="预览图">
+                  <video v-else controls :src="getURL(file)"></video>
+                  <button @click="removeFile(index)">X</button>
+                </div>
               </div>
-            </div>
-            <div v-else>
-              没有选择文件
-            </div>
-        </div>
-        <button type="button" @click="prevImage">＜</button>&nbsp;
-        <button type="button" @click="nextImage">＞</button><br>
+              <div v-else>
+                没有选择文件
+              </div>
+          </div>
+          <button type="button" @click="prevImage">＜</button>&nbsp;
+          <button type="button" @click="nextImage">＞</button><br>
 
-        <!-- 底部是一个上传按钮，在上传图片为空的时候时它显示的是“上传图片/视频”，在有内容的时候为“继续上传”-->
-        <input type="file" :disabled="isFileInputDisabled" ref="fileInput" @change="handleFileChange" accept="image/png, image/jpeg, video/mp4" multiple style="display: none;">
-        <!-- 添加自定义的上传按钮 -->
-        <button type="button" @click="triggerFileInput">上传图片/视频</button>
+          <!-- 底部是一个上传按钮，在上传图片为空的时候时它显示的是“上传图片/视频”，在有内容的时候为“继续上传”-->
+          <input type="file" :disabled="isFileInputDisabled" ref="fileInput" @change="handleFileChange" accept="image/png, image/jpeg, video/mp4" multiple style="display: none;">
+          <!-- 添加自定义的上传按钮 -->
+          <button type="button" @click="triggerFileInput">上传图片/视频</button>
       </div>
       <div class="right-div">
             <!-- 右侧div -->
@@ -67,12 +67,37 @@
               <input type="text" v-model="description" placeholder="请输入商品描述" required><br><br>
               <span v-if="errors.description" class="error">{{ errors.description }}</span>
             </div>
-            <div class="form-group">
-              <button type="submit" class="submit-button-container">确认发布</button>
-            </div>
         </div>
-        
       </div>
+        <div class="container">
+          <div class="left-div">
+            <div class="form-group">
+              <label for="description">卡路里：</label>
+              <input type="text" v-model="calorie" placeholder="请输入商品卡路里cal/g" required><br><br>
+              <span v-if="errors.calorie" class="error">{{ errors.calorie }}</span>
+            </div>
+            <div class="form-group">
+              <label for="description">适用品种：</label>
+              <input type="text" v-model="catkind" placeholder="请输入适用猫咪品种" required><br><br>
+              <span v-if="errors.catkind" class="error">{{ errors.catkind }}</span>
+            </div>
+          </div>
+          <div class="right-div">
+            <div class="form-group">
+              <label for="description">适用体重：</label>
+              <input type="text" v-model="catweight" placeholder="请输入适用猫咪体重" required><br><br>
+              <span v-if="errors.catweight" class="error">{{ errors.catweight }}</span>
+            </div>
+            <div class="form-group">
+              <label for="description">适用年龄：</label>
+              <input type="text" v-model="catage" placeholder="请输入适用猫咪年龄" required><br><br>
+              <span v-if="errors.catage" class="error">{{ errors.catage }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="submit-button-container">确认发布</button>
+        </div>
       </form>
   </div>
   </div>
@@ -91,6 +116,10 @@ export default {
       price: '',
       stock: '',
       description: '',
+      calorie: '',
+      catkind: '',
+      catweight: '',
+      catage: '',
       selectedFiles: [],
       selectedKind: '猫咪主粮',  // 设置默认的商品大类
       selectedSubkind: '',       // 商品子类的初始值将在mounted中设置
@@ -105,7 +134,11 @@ export default {
         goodName: null,
         price: null,
         stock: null,
-        description: null
+        description: null,
+        calorie: null,
+        catkind: null,
+        catweight: null,
+        catage: null
       },
       currentUser:null,
     };
@@ -167,6 +200,10 @@ export default {
       formData.append('price', this.price);
       formData.append('number', this.stock);
       formData.append('description', this.description);
+      formData.append('calorie', this.calorie);
+      formData.append('catkind', this.catkind);
+      formData.append('catweight', this.catweight);
+      formData.append('catage', this.catage);
       formData.append('kind', this.selectedKind);
       formData.append('subkind', this.selectedSubkind);
 

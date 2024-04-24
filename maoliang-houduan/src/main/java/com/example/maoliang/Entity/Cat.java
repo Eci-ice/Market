@@ -19,11 +19,6 @@ public class Cat {
     private String catkind;
     private int owner;
 
-    // 构造方法
-    public Cat() {
-    }
-
-    // getters and setters
     public int getCatid() {
         return catid;
     }

@@ -24,6 +24,11 @@
             </td>
         </tr>
         <tr>
+          <td class="head4">
+            <h3 @click="navigateTo('BuyerShowRecommend')" class="head4-1" style="cursor: pointer;">展示推荐商品</h3>
+          </td>
+        </tr>
+        <tr>
             <td class="head4">
               <h3 @click="navigateTo('BuyerMain')" class="head4-1" style="cursor: pointer;">返回主页</h3>
             </td>
@@ -42,7 +47,7 @@
     </a>
     <div class="picture-k">
       <div class="media-container" v-for="(mediaFile, index) in selectedProduct.mediaFiles" :key="index"  v-show="mediaFile.isActive">
-        <img v-if="!mediaFile.isVideo" :src="mediaFile.url" alt="商品图片" class="product-image" style="width: 415.8px;
+        <img v-if="!mediaFile.isVideo" :src="getImageUrl(mediaFile.url)" alt="商品图片" class="product-image" style="width: 415.8px;
         height: 504.9px;">
         <video v-else :src="mediaFile.url" controls class="product-video" style="width:200px;"></video>
         <div class="media-navigation">
@@ -173,6 +178,12 @@ export default {
 
   methods: {
     ...mapActions(['logout']),
+    getImageUrl(picturePath) {
+      // 处理相对路径，转换为完整的图片 URL
+      const imagePath = picturePath.replace(/^\.\//, '').trim(); // 去除相对路径中的 './'
+      //return baseUrl + imagePath;
+      return require(`~@/${imagePath}`);
+    },
     async fetchUsrFromSession() {
       try {
         // 发起 GET 请求到后端接口

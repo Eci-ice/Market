@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const path = require('path');
 
 module.exports = {
   transpileDependencies: true,
@@ -27,7 +28,13 @@ module.exports = {
         __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: "false",
       }),
     ],
+    resolve: {
+      alias: {
+        '~@': path.resolve(__dirname, 'src') // 设置 '@' 别名指向项目的 'src' 目录
+      }
+    }
   },
+
 };
 
 

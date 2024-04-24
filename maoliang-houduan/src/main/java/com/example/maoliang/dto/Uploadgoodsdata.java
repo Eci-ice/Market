@@ -14,4 +14,8 @@ public class Uploadgoodsdata {
     private int number;
     private String kind;
     private String subkind;
+    private double calorie;
+    private String catkind;
+    private String catweight;
+    private String catage;
 }
