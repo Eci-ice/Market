@@ -30,6 +30,10 @@
                     <th>库存</th>
                     <th>单价</th>
                     <th>展示内容</th>
+                  <th>卡路里</th>
+                  <th>适用品种</th>
+                  <th>适用体重</th>
+                  <th>适用年龄</th>
                     <th>状态</th>
                     <th>操作</th>
                 </tr>
@@ -42,8 +46,8 @@
                     <td> 
                         <div class="media-container">
                             <div v-for="(media, index) in good.mediaFiles" :key="index" v-show="media.isActive">
-                            <img v-if="!isVideo(media)" :src="media.url" alt="商品图片" v-show="media.isActive">
-                            <video v-if="isVideo(media)" :src="media.url" controls v-show="media.isActive"></video>
+                            <img v-if="!isVideo(media)" :src="getImageUrl(media.url)" alt="商品图片" v-show="media.isActive">
+                            <video v-if="isVideo(media)" :src="getImageUrl(media.url)" controls v-show="media.isActive"></video>
                             </div>
                         </div>
                         <div>
@@ -51,6 +55,10 @@
                             <button @click="showNextMedia(good)">＞</button>
                         </div>
                     </td>
+                  <td>{{ good.calorie }}</td>
+                  <td>{{ good.catkind }}</td>
+                  <td>{{ good.catweight }}</td>
+                  <td>{{ good.catage }}</td>
                     <td>{{ stateText(good.state) }}</td>
                     <td>
                     <button @click="confirmDelete(good.goodid)">下架</button> | 
@@ -137,6 +145,12 @@ export default {
   },
 
   methods: {
+    getImageUrl(picturePath) {
+      // 处理相对路径，转换为完整的图片 URL
+      const imagePath = picturePath.replace(/^\.\//, '').trim(); // 去除相对路径中的 './'
+      //return baseUrl + imagePath;
+      return require(`~@/${imagePath}`);
+    },
     async fetchUsrFromSession() {
       try {
         // 发起 GET 请求到后端接口

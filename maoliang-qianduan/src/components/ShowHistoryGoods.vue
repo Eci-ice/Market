@@ -24,6 +24,10 @@
           <th>描述</th>
           <th>单价</th>
           <th>展示内容</th>
+          <th>卡路里</th>
+          <th>适用品种</th>
+          <th>适用体重</th>
+          <th>适用年龄</th>
           <th>类别</th>
           <th>子类别</th>
           <th>创建日期</th>
@@ -45,6 +49,10 @@
                 <button @click="showNextMedia(good)">＞</button>
               </div>
             </td>
+          <td>{{ good.calorie }}</td>
+          <td>{{ good.catkind }}</td>
+          <td>{{ good.catweight }}</td>
+          <td>{{ good.catage }}</td>
             <td>{{ good.kind }}</td>
             <td>{{ good.subkind }}</td>
             <td>{{ good.createdate }}</td>

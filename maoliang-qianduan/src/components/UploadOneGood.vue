@@ -69,6 +69,7 @@
             </div>
         </div>
       </div>
+
         <div class="container">
           <div class="left-div">
             <div class="form-group">
@@ -190,6 +191,31 @@ export default {
       // 验证至少上传一个文件
       if (this.selectedFiles.length === 0) {
         alert("请上传至少一个文件");
+        return;
+      }
+
+      // 验证卡路里
+      const calorieValue = parseFloat(this.calorie);
+      if (isNaN(calorieValue) || calorieValue <= 0 || calorieValue >= 100) {
+        alert('卡路里需为大于0小于100的数字');
+        return;
+      }
+
+      // 验证适用品种
+      if (!this.catkind.trim().match(/^[\u4e00-\u9fa5,]+$/)) {
+        alert('适用品种格式不正确');
+        return;
+      }
+
+      // 验证适用体重
+      if (!this.catweight.trim().match(/^\d+(\.\d+)?-\d+(\.\d+)?$/)) {
+        alert('适用体重格式不正确，需为数字-数字');
+        return;
+      }
+
+      // 验证适用年龄
+      if (!this.catage.trim().match(/^\d+(\.\d+)?-\d+(\.\d+)?$/)) {
+        alert('适用年龄格式不正确，需为数字-数字');
         return;
       }
 

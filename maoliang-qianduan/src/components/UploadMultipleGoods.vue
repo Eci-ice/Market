@@ -26,6 +26,26 @@
         <span v-if="errors.description" class="error">{{ errors.description }}</span>
       </div>
       <div class="form-group">
+        <label for="description">卡路里：</label>
+        <input type="text" v-model="calorie" placeholder="请输入商品卡路里cal/g" required><br><br>
+        <span v-if="errors.calorie" class="error">{{ errors.calorie }}</span>
+      </div>
+      <div class="form-group">
+        <label for="description">适用品种：</label>
+        <input type="text" v-model="catkind" placeholder="请输入适用猫咪品种" required><br><br>
+        <span v-if="errors.catkind" class="error">{{ errors.catkind }}</span>
+      </div>
+      <div class="form-group">
+        <label for="description">适用体重：</label>
+        <input type="text" v-model="catweight" placeholder="请输入适用猫咪体重" required><br><br>
+        <span v-if="errors.catweight" class="error">{{ errors.catweight }}</span>
+      </div>
+      <div class="form-group">
+        <label for="description">适用年龄：</label>
+        <input type="text" v-model="catage" placeholder="请输入适用猫咪年龄" required><br><br>
+        <span v-if="errors.catage" class="error">{{ errors.catage }}</span>
+      </div>
+      <div class="form-group">
           <label for="kind">商品大类：</label>
           <select v-model="selectedKind" @change="updateSubcategories">
             <option v-for="kind in kinds" :key="kind.value" :value="kind.value">{{ kind.text }}</option>
@@ -71,6 +91,10 @@
             <th>价格</th>
             <th>数量</th>
             <th>描述</th>
+          <th>卡路里</th>
+          <th>适用品种</th>
+          <th>适用体重</th>
+          <th>适用年龄</th>
             <th>展示内容</th>
             <th>商品类别</th>
             <th>子类别</th>
@@ -82,6 +106,10 @@
         <td>{{ product.price }}</td>
         <td>{{ product.number }}</td>
         <td>{{ product.description }}</td>
+          <td>{{ product.calorie }}</td>
+          <td>{{ product.catkind }}</td>
+          <td>{{ product.catweight }}</td>
+          <td>{{ product.catage }}</td>
         <td>
           <div v-for="(file, index) in product.mediaFiles" :key="index">
             <img v-if="isImage(file)" :src="getURL(file)" alt="Image view" style="max-width: 100px; max-height: 100px; object-fit: contain;">
@@ -112,6 +140,10 @@ export default {
       price: '',
       stock: '',
       description: '',
+      calorie: '',
+      catkind: '',
+      catweight: '',
+      catage: '',
       selectedFiles: [],
       selectedKind: '猫咪主粮',  // 设置默认的商品大类
       selectedSubkind: '',       // 商品子类的初始值将在mounted中设置
@@ -128,7 +160,11 @@ export default {
         goodName: '',
         price: '',
         stock: '',
-        description: ''
+        description: '',
+        calorie: '',
+        catkind: '',
+        catweight: '',
+        catage: '',
       },
       currentUser:null,
       FilesList: new Map()
@@ -201,12 +237,42 @@ export default {
         return;
       }
 
+      // 验证卡路里
+      const calorieValue = parseFloat(this.calorie);
+      if (isNaN(calorieValue) || calorieValue <= 0 || calorieValue >= 100) {
+        alert('卡路里需为大于0小于100的数字');
+        return;
+      }
+
+      // 验证适用品种
+      if (!this.catkind.trim().match(/^[\u4e00-\u9fa5,]+$/)) {
+        alert('适用品种格式不正确');
+        return;
+      }
+
+      // 验证适用体重
+      if (!this.catweight.trim().match(/^\d+(\.\d+)?-\d+(\.\d+)?$/)) {
+        alert('适用体重格式不正确，需为数字-数字');
+        return;
+      }
+
+      // 验证适用年龄
+      if (!this.catage.trim().match(/^\d+(\.\d+)?-\d+(\.\d+)?$/)) {
+        alert('适用年龄格式不正确，需为数字-数字');
+        return;
+      }
+
+
       // 创建新商品对象
       const newProduct = {
         goodname: this.goodName,
         price: this.price,
         number: this.stock,
         description: this.description,
+        calorie: this.calorie,
+        catkind: this.catkind,
+        catweight: this.catweight,
+        catage: this.catage,
         kind: this.selectedKind,
         subkind: this.selectedSubkind,
         mediaFiles: this.selectedFiles
@@ -226,6 +292,10 @@ export default {
       this.price = '';
       this.stock = '';
       this.description = '';
+      this.calorie = '';
+      this.catkind = '';
+      this.catweight = '';
+      this.catage = '';
       this.selectedFiles = [];
       console.log(this.selectedFiles);
       alert("商品已添加"); // 提示用户
@@ -366,6 +436,10 @@ export default {
         formData.append('price', product.price);
         formData.append('number', product.number);
         formData.append('description', product.description);
+        formData.append('calorie', this.calorie);
+        formData.append('catkind', this.catkind);
+        formData.append('catweight', this.catweight);
+        formData.append('catage', this.catage)
         formData.append('kind', product.kind);
         formData.append('subkind', product.subkind);
 
