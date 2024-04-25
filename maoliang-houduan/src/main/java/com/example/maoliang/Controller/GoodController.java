@@ -39,8 +39,8 @@ public class GoodController {
     @Autowired
     public HttpSession session;
 
-    @Value("${upload.directory}")
-    private String uploadDirectory;
+//    @Value("${upload.directory}")
+//    private String uploadDirectory;
 
 
     @RequestMapping("/search-list-control")
@@ -150,6 +150,10 @@ public class GoodController {
         //System.out.println( uploadgoodsdata.getGoodname());
         String  goodname = uploadgoodsdata.getGoodname();
         String  description = uploadgoodsdata.getDescription();
+        Double  calorie = uploadgoodsdata.getCalorie();
+        String  catkind = uploadgoodsdata.getCatkind();
+        String  catweight = uploadgoodsdata.getCatweight();
+        String  catage = uploadgoodsdata.getCatage();
         Double price = uploadgoodsdata.getPrice();
         int state = 0;
         int number = uploadgoodsdata.getNumber();
@@ -169,12 +173,12 @@ public class GoodController {
                 String randomFileName = extraOperations.randomString(20) + extension; // 生成随机文件名
 
                 // 设置上传路径
-                String uploadPath =  uploadDirectory + randomFileName;
+                String uploadPath =  "./img/" + randomFileName;
                 File fileUploadDirectory = new File(uploadPath);
 
                 try {
                     filePart.transferTo(fileUploadDirectory); // 保存文件
-                    fileNames.add("file://" + uploadPath); // 本地测试！将文件路径添加到列表
+                    fileNames.add(uploadPath); // 本地测试！将文件路径添加到列表
                     //TODO:服务器模式的地址调用
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -201,6 +205,11 @@ public class GoodController {
         nowgood.setKind(kind);
         nowgood.setSubkind(subkind);
         nowgood.setOwner(owner);
+        nowgood.setCalorie(calorie);
+        nowgood.setCatkind(catkind);
+        nowgood.setCatweight(catweight);
+        nowgood.setCatage(catage);
+
         goodService.add(nowgood);
 
         return new Result(SUCCESS_PAGE, "上传成功！", SELLER_ALL_GOODS_PAGE);

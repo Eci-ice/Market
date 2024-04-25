@@ -28,6 +28,8 @@ import UploadOneGood from "@/components/UploadOneGood.vue";
 import BuyerShowCat from "@/components/BuyerShowCat.vue";
 import BuyerUploadCat from "@/components/BuyerUploadCat.vue";
 import BuyerShowRecommend from "@/components/BuyerShowRecommend.vue";
+import BuyerAfterSale from "@/components/BuyerAfterSale.vue";
+import BuyerPay from "@/components/BuyerPay.vue";
 
 const routes = [
   { path: '/', component: LoginComponent },
@@ -168,6 +170,18 @@ const routes = [
     path: '/buyer-show-recommend',
     name: 'BuyerShowRecommend',
     component: BuyerShowRecommend,
+
+  },
+  {
+    path: '/buyer-after-sale',
+    name: 'BuyerAfterSale',
+    component: BuyerAfterSale,
+
+  },
+  {
+    path: '/buyer-pay',
+    name: 'BuyerPay',
+    component: BuyerPay,
 
   },
   // ... 其他路由

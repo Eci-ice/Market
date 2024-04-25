@@ -4,7 +4,8 @@
     <div class="left" >
     <!-- 页面头部 -->
     <table class="daohang">
-      <img class="head1" src="~@/assets/img/buyer/head.png" alt="" >	
+      <img class="head1" src="~@/assets/img/buyer/head.png" alt="" >
+
       <tr>
           <td class="head2">{{ getUsername }}</td>
       </tr>
@@ -22,6 +23,11 @@
           <td class="head4">
             <h3 @click="navigateTo('buyerHistory')" class="head4-1" style="cursor: pointer;">历史购买记录</h3>
           </td>
+      </tr>
+      <tr>
+        <td class="head4">
+          <h3 @click="navigateTo('BuyerShowRecommend')" class="head4-1" style="cursor: pointer;">展示推荐商品</h3>
+        </td>
       </tr>
       <tr>
         <td class="head5">
@@ -53,9 +59,10 @@
               <div @click="postToBuyerShop(item.goodid)">
                 <div class="media-container">
                     <div v-for="(media, index) in item.mediaFiles" :key="index" v-show="media.isActive">
-                      <img v-if="!isVideo(media)" :src="media.url" alt="商品图片" v-show="media.isActive">
-                      <video v-else :src="media.url" controls v-show="media.isActive"></video>
+                      <img v-if="!isVideo(media)" :src="getImageUrl(media.url)" alt="商品图片" v-show="media.isActive">
+                      <video v-else :src="getImageUrl(media.url)" controls v-show="media.isActive"></video>
                     </div>
+
                 </div>
               </div>
                 <div class="media-navigation">
@@ -120,8 +127,8 @@
               <div @click="postToBuyerShop(item.goodid)">
                 <div class="media-container">
                     <div v-for="(media, index) in item.mediaFiles" :key="index" v-show="media.isActive">
-                      <img v-if="!isVideo(media)" :src="media.url" alt="商品图片" v-show="media.isActive">
-                      <video v-else :src="media.url" controls v-show="media.isActive"></video>
+                      <img v-if="!isVideo(media)" :src="getImageUrl(media.url)" alt="商品图片" v-show="media.isActive">
+                      <video v-else :src="getImageUrl(media.url)" controls v-show="media.isActive"></video>
                     </div>
                 </div>
               </div>
@@ -205,6 +212,12 @@ export default {
     }
   },
   methods: {
+    getImageUrl(picturePath) {
+      // 处理相对路径，转换为完整的图片 URL
+      const imagePath = picturePath.replace(/^\.\//, '').trim(); // 去除相对路径中的 './'
+      //return baseUrl + imagePath;
+      return require(`~@/${imagePath}`);
+    },
     async fetchUsrFromSession() {
       try {
         // 发起 GET 请求到后端接口

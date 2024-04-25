@@ -22,15 +22,15 @@ public class GoodRepository{
     }
 
     public void add(Good good) {
-        String insertGoodSql = "INSERT INTO MLgood (goodname, description, price, picture, state, number, kind, subkind, owner) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        String insertHistorySql = "INSERT INTO MLhistorygood (goodid, goodname, description, price, picture, number, kind, subkind, createdate, owner) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insertGoodSql = "INSERT INTO MLgood (goodname, description, price, picture, state, number, kind, subkind, owner,calorie,catkind,catweight,catage) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insertHistorySql = "INSERT INTO MLhistorygood (goodid, goodname, description, price, picture, number, kind, subkind, createdate, owner,calorie,catkind,catweight,catage) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
       //  System.out.println(good);
         try {
             jdbcTemplate.update(insertGoodSql, good.getGoodname(), good.getDescription(), good.getPrice(),
                     good.getPicture(), good.getState(), good.getNumber(), good.getKind(), good.getSubkind(),
-                    good.getOwner());
+                    good.getOwner(),good.getCalorie(),good.getCatkind(),good.getCatweight(),good.getCatage());
 
             // 查询刚插入的商品的id 因为是自增，所以是最大
             Integer goodId = jdbcTemplate.queryForObject("SELECT MAX(goodid) FROM MLgood", Integer.class);
@@ -45,7 +45,7 @@ public class GoodRepository{
 
             jdbcTemplate.update(insertHistorySql, goodId, good.getGoodname(), good.getDescription(),
                     good.getPrice(), good.getPicture(), good.getNumber(), good.getKind(), good.getSubkind(),
-                    formattedDateTime, good.getOwner());
+                    formattedDateTime, good.getOwner(),good.getCalorie(),good.getCatkind(),good.getCatweight(),good.getCatage());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -161,7 +161,7 @@ public class GoodRepository{
         StringBuilder setClause = new StringBuilder();
 
         // 构建SET子句
-        setClause.append("goodname = ?, description = ?, price = ?, picture = ?, state = ?, number = ?, kind = ?, subkind = ?, owner = ?");
+        setClause.append("goodname = ?, description = ?, price = ?, picture = ?, state = ?, number = ?, kind = ?, subkind = ?, owner = ?,calorie = ?,catkind = ?,catweight = ?,catage = ?");
         updateQuery += setClause.toString();
 
         updateQuery += " WHERE goodid = ?";
@@ -176,6 +176,10 @@ public class GoodRepository{
                 good.getKind(),
                 good.getSubkind(),
                 good.getOwner(),
+                good.getCalorie(),
+                good.getCatkind(),
+                good.getCatweight(),
+                good.getCatage(),
                 good.getGoodid());
         return rowsAffected > 0; // 返回更新是否成功
     }

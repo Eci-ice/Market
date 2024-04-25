@@ -4,11 +4,11 @@ package com.example.maoliang.Controller;
 import com.example.maoliang.Controller.utils.Page;
 import com.example.maoliang.Controller.utils.Result;
 import com.example.maoliang.Entity.Cat;
-import com.example.maoliang.Entity.CatRequest;
 import com.example.maoliang.Entity.Good;
 import com.example.maoliang.Entity.Usr;
 import com.example.maoliang.Service.CatService;
 import com.example.maoliang.Service.GoodService;
+import com.example.maoliang.dto.CatRequest;
 import com.example.maoliang.dto.Likedata;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -33,7 +33,6 @@ public class CatController {
     @Autowired
     public HttpSession session;
 
-
     @RequestMapping("/show-cat")
     public Result Showcat(@RequestParam int ownerid) {
         try {
@@ -45,13 +44,11 @@ public class CatController {
         }
     }
 
-
-    @RequestMapping("/show-recommend")
-    public Result Showrecommend(@RequestBody int id) {
-        return new Result(null, null, null);
+    @RequestMapping("/show-recommend/{id}")
+    public Result Showrecommend(@PathVariable int id) {
+        return new Result(null, null, catService.showRecommend(id));
     }
 
-    @RequestMapping("/upload-cat")
     public Result uploadCat(@RequestBody CatRequest catRequest) {
         try {
             catService.addCat(catRequest.getCatid(), catRequest.getCatname(), catRequest.getDescription(),
@@ -78,12 +75,6 @@ public class CatController {
             return new Result("error", "修改猫咪信息出错，请稍后重试", null);
         }
     }
-
-
-
-
-
-
 
 
 }

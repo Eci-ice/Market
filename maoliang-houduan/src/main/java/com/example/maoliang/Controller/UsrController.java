@@ -131,8 +131,6 @@ public class UsrController {
             usrService.modifyPwd(username,newpwd);
             return new Result(SELLER_PAGE,"密码修改成功！",null);
         }
-
-
     }
 
     @RequestMapping("/all-buyer")
