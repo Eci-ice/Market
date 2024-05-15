@@ -31,10 +31,26 @@ public class SessionController {
         }
     }
 
+
     @RequestMapping( "/logout-control")
     public void LoginoutControl(){//向前端返回admin
         // 从 session 中获取用户名
         session.invalidate();
+    }
+
+    @RequestMapping("/now-TradeNo")
+    public String TradeNoStatus() {
+        String tradeNo = (String) session.getAttribute("now-TradeNo");
+        if (tradeNo != null) {
+            return tradeNo;
+        } else {
+            return null;
+        }
+    }
+
+    @RequestMapping("/delete-now-TradeNo")
+    public void deleteTradeNoStatus() {
+        session.removeAttribute("now-TradeNo");
     }
 
     @RequestMapping("/searchList")

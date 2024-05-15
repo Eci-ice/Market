@@ -90,7 +90,8 @@ public class Setup {
 			statement.executeUpdate("CREATE TABLE MLinfo  (" +
 					"  userid INTEGER NOT NULL," +
 					"  phone char(11) NOT NULL," +
-					"  address varchar(99) NOT NULL," +
+					"  address varchar(300) NOT NULL," +
+					"  default_address varchar(99) NOT NULL," +
 					"  FOREIGN KEY (userid) REFERENCES MLuser (userid))");
 
 			statement.executeUpdate("DROP TABLE IF EXISTS MLbuying");
@@ -114,6 +115,16 @@ public class Setup {
 					"  catkind varchar(20) NOT NULL," +
 					"  owner INTEGER NOT NULL," +
 					"  FOREIGN KEY (owner) REFERENCES MLuser (userid))");
+
+			statement.executeUpdate("DROP TABLE IF EXISTS MLmail");
+			statement.executeUpdate("CREATE TABLE MLmail (" +
+					"  orderid int NOT NULL," +
+					"  step int NOT NULL," +
+					"  location varchar(100) NOT NULL," +
+					"  tracking_number char(20) NOT NULL," +
+					"  createtime DATETIME NOT NULL" +
+					"  FOREIGN KEY (orderid) REFERENCES MLorder (orderid)");
+
 
 
 

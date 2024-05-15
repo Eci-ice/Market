@@ -20,6 +20,11 @@
           </td>
       </tr>
       <tr>
+        <td class="head4">
+          <h3 @click="navigateTo('BuyerPay')" class="head4-1" style="cursor: pointer;">我的订单</h3>
+        </td>
+      </tr>
+      <tr>
           <td class="head4">
             <h3 @click="navigateTo('buyerHistory')" class="head4-1" style="cursor: pointer;">历史购买记录</h3>
           </td>
@@ -30,10 +35,17 @@
         </td>
       </tr>
       <tr>
-          <td class="head4">
-              <h3 @click="navigateTo('BuyerShowCat')" class="head4-1" style="cursor: pointer;">我的猫咪信息</h3>
-          </td>
+        <td class="head4">
+          <h3 @click="navigateTo('BuyerShowCat')" class="head4-1" style="cursor: pointer;">查看我的猫咪信息</h3>
+        </td>
       </tr>
+      <tr>
+        <td class="head4">
+          <h3 @click="navigateTo('BuyerUploadCat')" class="head4-1" style="cursor: pointer;">添加我的猫咪信息</h3>
+        </td>
+      </tr>
+
+
       <tr>
         <td class="head5">
           <button @click="handleLogout" class="head5-1" style="cursor: pointer;">退出登录</button>

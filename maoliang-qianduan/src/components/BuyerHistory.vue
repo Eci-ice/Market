@@ -2,12 +2,13 @@
 
   <body style="margin: 0px;">
   <div v-if="isLoggedIn">
-    <div class="left">
+    <div class="left" >
       <!-- 页面头部 -->
       <table class="daohang">
-        <img class="head1" src="~@/assets/img/buyer/head.png" alt="">
+        <img class="head1" src="~@/assets/img/buyer/head.png" alt="" >
+
         <tr>
-          <td class="head2">{{ username }}</td>
+          <td class="head2">{{ getUsername }}</td>
         </tr>
         <tr>
           <td class="head4">
@@ -21,14 +22,31 @@
         </tr>
         <tr>
           <td class="head4">
+            <h3 @click="navigateTo('BuyerPay')" class="head4-1" style="cursor: pointer;">我的订单</h3>
+          </td>
+        </tr>
+        <tr>
+          <td class="head4">
             <h3 @click="navigateTo('buyerHistory')" class="head4-1" style="cursor: pointer;">历史购买记录</h3>
           </td>
         </tr>
         <tr>
           <td class="head4">
-            <h3 @click="navigateTo('BuyerMain')" class="head4-1" style="cursor: pointer;">返回主页</h3>
+            <h3 @click="navigateTo('BuyerShowRecommend')" class="head4-1" style="cursor: pointer;">展示推荐商品</h3>
           </td>
         </tr>
+        <tr>
+          <td class="head4">
+            <h3 @click="navigateTo('BuyerShowCat')" class="head4-1" style="cursor: pointer;">查看我的猫咪信息</h3>
+          </td>
+        </tr>
+        <tr>
+          <td class="head4">
+            <h3 @click="navigateTo('BuyerUploadCat')" class="head4-1" style="cursor: pointer;">添加我的猫咪信息</h3>
+          </td>
+        </tr>
+
+
         <tr>
           <td class="head5">
             <button @click="handleLogout" class="head5-1" style="cursor: pointer;">退出登录</button>
@@ -93,18 +111,60 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import {  mapActions } from 'vuex';
 import axios from 'axios'; // 确保已经安装并导入axios
 export default {
   data() {
     return {
-      isLoggedIn: true, // 根据实际登录状态设置
       orders: [
       ],
       currentPage: 1,
       pageSize: 5,
       totalItems: 8,
+      currentUser:null
     };
+  },
+  mounted() {
+    this.fetchOrders();
+    this.filteredUsers = this.orders;
+  },
+  created() {
+    this.fetchUsrFromSession();
+  },
+  computed: {
+    isLoggedIn() {
+      // 根据当前用户数据判断用户是否登录
+      return !!this.currentUser;
+    },
+    isSeller() {
+      // 根据当前用户数据判断用户是否是卖家
+      return this.currentUser && this.currentUser.power === 1;
+    },
+    // 判断用户是否是买家的方法
+    isBuyer() {
+      // 根据当前用户数据判断用户是否是买家
+      return this.currentUser && this.currentUser.power === 0;
+    },
+    getUsername() {
+      // 如果当前用户数据不为空，则返回用户名；否则返回未登录
+      return this.currentUser ? this.currentUser.username : '未登录';
+    },
+    totalPages() {
+      if (1 > Math.ceil(this.orders.length / this.pageSize)) return 1;
+      return Math.ceil(this.orders.length / this.pageSize);
+    },
+    paginatedOrders() {
+      const start = (this.currentPage - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      return this.orders.slice(start, end);
+    },
+    isPrevDisabled() {
+      return this.currentPage === 1;
+    },
+
+    isNextDisabled() {
+      return this.currentPage === this.totalPages;
+    },
   },
   methods: {
     ...mapActions(['logout']),
@@ -210,20 +270,24 @@ export default {
     },
     async fetchUsrFromSession() {
       try {
+        // 发起 GET 请求到后端接口
         const response = await axios.get('/now-usr');
-        this.currentUser = response.data;
-        if (this.currentUser) {
-          this.isLoggedIn = true;
-        }
+
+        // 解析响应数据
+        const usr = response.data;
+
+        // 更新组件的 currentUser 数据
+        this.currentUser = usr;
+        return true;
       } catch (error) {
         console.error('获取用户数据错误:', error);
-        this.isLoggedIn = false;
+        return false;
       }
     },
     async fetchOrders() {
-      console.log(1)
+      // console.log(1)
       await this.fetchUsrFromSession();
-      axios.get('/order/showbuyerorderinfo-control', {
+      axios.get('/order/showbuyerhistoryorderinfo-control', {
         params: {
           name:this.currentUser.username
         }
@@ -244,37 +308,8 @@ export default {
       console.log(2)
     }
   },
-  computed: {
-    ...mapGetters(['isSeller', 'isBuyer']),
-    username() {
-      // 从 Vuex store 获取用户名
-      return this.$store.state.admin ? this.$store.state.admin.username : '未登录';
-    },
-    totalPages() {
-      if (1 > Math.ceil(this.orders.length / this.pageSize)) return 1;
-      return Math.ceil(this.orders.length / this.pageSize);
-    },
-    paginatedOrders() {
-      const start = (this.currentPage - 1) * this.pageSize;
-      const end = start + this.pageSize;
-      return this.orders.slice(start, end);
-    },
-    isSeller() {
-      // 您可以根据实际情况判断用户是否是卖家
-      return this.$store.getters.isSeller;
-    },
-    isPrevDisabled() {
-      return this.currentPage === 1;
-    },
 
-    isNextDisabled() {
-      return this.currentPage === this.totalPages;
-    },
-  },
-  mounted() {
-    this.fetchOrders();
-    this.filteredUsers = this.orders;
-  },
+
 };
 </script>
 

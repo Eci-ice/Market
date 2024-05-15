@@ -2,12 +2,13 @@
 
   <body style="margin: 0px;">
   <div v-if="isLoggedIn">
-    <div class="left">
+    <div class="left" >
       <!-- 页面头部 -->
       <table class="daohang">
-        <img class="head1" src="~@/assets/img/buyer/head.png" alt="">
+        <img class="head1" src="~@/assets/img/buyer/head.png" alt="" >
+
         <tr>
-          <td class="head2">{{ username }}</td>
+          <td class="head2">{{ getUsername }}</td>
         </tr>
         <tr>
           <td class="head4">
@@ -21,14 +22,31 @@
         </tr>
         <tr>
           <td class="head4">
+            <h3 @click="navigateTo('BuyerPay')" class="head4-1" style="cursor: pointer;">我的订单</h3>
+          </td>
+        </tr>
+        <tr>
+          <td class="head4">
             <h3 @click="navigateTo('buyerHistory')" class="head4-1" style="cursor: pointer;">历史购买记录</h3>
           </td>
         </tr>
         <tr>
           <td class="head4">
-            <h3 @click="navigateTo('BuyerMain')" class="head4-1" style="cursor: pointer;">返回主页</h3>
+            <h3 @click="navigateTo('BuyerShowRecommend')" class="head4-1" style="cursor: pointer;">展示推荐商品</h3>
           </td>
         </tr>
+        <tr>
+          <td class="head4">
+            <h3 @click="navigateTo('BuyerShowCat')" class="head4-1" style="cursor: pointer;">查看我的猫咪信息</h3>
+          </td>
+        </tr>
+        <tr>
+          <td class="head4">
+            <h3 @click="navigateTo('BuyerUploadCat')" class="head4-1" style="cursor: pointer;">添加我的猫咪信息</h3>
+          </td>
+        </tr>
+
+
         <tr>
           <td class="head5">
             <button @click="handleLogout" class="head5-1" style="cursor: pointer;">退出登录</button>
@@ -138,7 +156,7 @@ export default {
       currentPage: 1,
       itemsPerPage: 2,
       isEditing: true,
-      currentUser: {}
+      currentUser: null
     };
   },
   computed: {
@@ -148,9 +166,9 @@ export default {
       const end = start + this.itemsPerPage;
       return this.items.slice(start, end);
     },
-    username() {
-      // 从 Vuex store 获取用户名
-      return this.$store.state.admin ? this.$store.state.admin.username : '未登录';
+    getUsername() {
+      // 如果当前用户数据不为空，则返回用户名；否则返回未登录
+      return this.currentUser ? this.currentUser.username : '未登录';
     },
     paginatedItems() {
       // 计算当前页的商品
@@ -178,7 +196,6 @@ export default {
   created() {
     this.cartItems = this.items;
     this.filteredItems = this.cartItems; // 确保 filteredItems 已被初始化
-    this.fetchCartItems(); // 当组件创建时获取购物车数据
     this.fetchCartItems(); // 当组件创建时获取购物车数据
     this.fetchUsrFromSession();
   },
@@ -229,9 +246,46 @@ export default {
         this.$router.push('/');
       }
     },
-    fetchCartItems() {
-      // AJAX 请求获取购物车数据
-      // this.cartItems = fetch('/api/cart').then(response => response.json());
+    async fetchCartItems() {
+      try {
+        // 发起 GET 请求获取商品列表
+        const goodsResponse = await axios.get('/cart/allCart');
+        // 解析响应数据
+        // console.log('goodList:', goodsResponse);
+        const goodList = goodsResponse.data.data;//goodsResponse的数据的data属性
+        // 将商品列表添加到 products 中
+        // 解析picture属性并添加mediaFiles属性
+        //  console.log('goodList:', goodList);
+
+        this.goods = goodList.map( good => {
+          //    console.log('Before trimming:', good.picture); // 添加调试语句
+          const trimmedPicture = good.picture.trim();
+          //     console.log('After trimming:', trimmedPicture); // 添加调试语句
+          const paths = trimmedPicture.split(',');
+          const mediaFiles = paths.map((path, i) => {
+            return {
+              url: path,
+              isActive: i === 0 // 默认第一个是true，其他是false
+            };
+          });
+          return {
+            ...good,
+            mediaFiles,
+            // 保留原始属性
+            goodname: good.goodname.trim(),
+            description: good.description.trim(),
+            price: good.price,
+            number: good.number,
+            kind: good.kind,
+            subkind: good.subkind
+          };
+        });
+        console.log('this.goods:', this.goods);
+        return true;
+      } catch (error) {
+        console.error('获取商品列表数据错误:', error);
+        return false;
+      }
     },
     toggleEdit() {
       this.isEditing = !this.isEditing;

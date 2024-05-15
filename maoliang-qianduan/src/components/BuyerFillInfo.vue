@@ -62,9 +62,10 @@ export default {
   data() {
     return {
       selectedProduct: {},
+      currentUser:null,
       purchase: {
         quantity: 1,
-        buyerName: 'buyer', // 设置默认姓名
+        buyerName: 'guest', // 设置默认姓名
         telephone: '12345678901', // 设置默认电话号码
         address: '`123`' // 设置默认地址
       }
@@ -74,6 +75,7 @@ export default {
     this.fetchGoodFromSession();
     this.fetchUsrFromSession();
   },
+
   methods: {
     async fetchUsrFromSession() {
       try {
@@ -85,6 +87,11 @@ export default {
 
         // 更新组件的 currentUser 数据
         this.currentUser = usr;
+        if (this.currentUser) {
+          this.purchase.buyerName = this.currentUser.username || 'guest';
+          this.purchase.telephone = this.currentUser.phone || '12345678901';
+          this.purchase.address = this.currentUser.address || '123';
+        }
         return true;
       } catch (error) {
         console.error('获取用户数据错误:', error);
@@ -135,11 +142,41 @@ export default {
       // 处理取消购买逻辑
       this.$router.push('/buyer');
     },
-    confirmPurchase() {
+    async confirmPurchase() {
       // 验证表单数据
       if (this.validateForm()) {
-        // 发送购买请求
-        // 例如：this.$axios.post('/api/purchase', this.purchase)
+
+        const orderData = {
+          address: this.purchase.address,
+          telephone: this.purchase.telephone,
+          buyername: this.purchase.buyerName,
+          goodid: this.selectedProduct.goodid,
+          number: this.purchase.number
+        };
+
+// 发起 POST 请求
+        const response = await fetch('/order/create-order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json' // 指定请求体类型为 JSON
+          },
+          body: JSON.stringify(orderData) // 将 JavaScript 对象转换为 JSON 字符串作为请求体
+        });
+
+        // 解析响应数据
+        const responseData = await response.json();
+
+        if (responseData.page === '/error') {
+          // 重定向到错误页面，并将错误消息和重定向目标作为参数传递
+          this.$router.push({ path: '/error', query: { err: responseData.msg, to: responseData.data }})
+        } else if (responseData.page === '/success') {
+          // 重定向到成功界面，并将成功消息和重定向目标作为参数传递
+          this.$router.push({ path: '/success', query: { message: responseData.msg, to: responseData.data }})
+        } else if (responseData.page === null) {
+          console.log("未知页面类型");
+        } else {
+          this.$router.push({ path: responseData.page });
+        }
         alert('成功创建订单！');
         this.$router.push('/buyer');
       }

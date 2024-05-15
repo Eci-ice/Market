@@ -1,12 +1,13 @@
 <template>
   <body style="margin: 0;">
   <div v-if="isLoggedIn">
-    <div class="left">
+    <div class="left" >
       <!-- 页面头部 -->
       <table class="daohang">
-        <img class="head1" src="~@/assets/img/buyer/head.png" alt="">
+        <img class="head1" src="~@/assets/img/buyer/head.png" alt="" >
+
         <tr>
-          <td class="head2">{{ username }}</td>
+          <td class="head2">{{ getUsername }}</td>
         </tr>
         <tr>
           <td class="head4">
@@ -16,6 +17,11 @@
         <tr>
           <td class="head4">
             <h3 @click="navigateTo('BuyerLikes')" class="head4-1" style="cursor: pointer;">我的收藏</h3>
+          </td>
+        </tr>
+        <tr>
+          <td class="head4">
+            <h3 @click="navigateTo('BuyerPay')" class="head4-1" style="cursor: pointer;">我的订单</h3>
           </td>
         </tr>
         <tr>
@@ -30,9 +36,16 @@
         </tr>
         <tr>
           <td class="head4">
-            <h3 @click="navigateTo('BuyerMain')" class="head4-1" style="cursor: pointer;">返回主页</h3>
+            <h3 @click="navigateTo('BuyerShowCat')" class="head4-1" style="cursor: pointer;">查看我的猫咪信息</h3>
           </td>
         </tr>
+        <tr>
+          <td class="head4">
+            <h3 @click="navigateTo('BuyerUploadCat')" class="head4-1" style="cursor: pointer;">添加我的猫咪信息</h3>
+          </td>
+        </tr>
+
+
         <tr>
           <td class="head5">
             <button @click="handleLogout" class="head5-1" style="cursor: pointer;">退出登录</button>
@@ -107,6 +120,10 @@ export default {
     isLoggedIn() {
       return !!this.currentUser;
     },
+    getUsername() {
+      // 如果当前用户数据不为空，则返回用户名；否则返回未登录
+      return this.currentUser ? this.currentUser.username : '未登录';
+    }
   },
   methods: {
     ...mapActions(['logout']),
