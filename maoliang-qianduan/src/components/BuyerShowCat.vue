@@ -39,26 +39,31 @@
       <img src="~@/assets/img/buyer/arrow.png" alt="" width="40" title="返回商品界面">
     </a>
     <div class="picture-k">
-      <div class="media-container" v-for="(mediaFile, index) in selectedProduct.mediaFiles" :key="index"  v-show="mediaFile.isActive">
-        <img v-if="!mediaFile.isVideo" :src="mediaFile.url" alt="商品图片" class="product-image" style="width: 415.8px;
-        height: 504.9px;">
 
-        <div class="media-navigation">
-          <button class="media-navigation-button prev-button" @click="handlePrevious">＜</button>
-          <button class="media-navigation-button next-button" @click="handleNext">＞</button>
+        <div class="media-navigation"><!--两个按钮显示多个猫咪-->
+            <button class="media-navigation-button prev-button" @click="handlePrevious">＜</button>
+            <button class="media-navigation-button next-button" @click="handleNext">＞</button>
         </div>
-      </div>
+<!--      <div class="media-container" v-for="(mediaFile, index) in selectedProduct.mediaFiles" :key="index"  v-show="mediaFile.isActive">-->
+<!--        <img v-if="!mediaFile.isVideo" :src="mediaFile.url" alt="商品图片" class="product-image" style="width: 415.8px;-->
+<!--        height: 504.9px;">-->
+
+<!--        <div class="media-navigation">-->
+<!--          <button class="media-navigation-button prev-button" @click="handlePrevious">＜</button>-->
+<!--          <button class="media-navigation-button next-button" @click="handleNext">＞</button>-->
+<!--        </div>-->
+<!--      </div>-->
 
     </div>
     <table class="good-2">
-      <tr><td class="goodname">姓名：</td>诺诺</tr>
-      <tr><td class="price">年龄：</td>1岁</tr>
-      <tr><td class="goodname">性别：</td>妹妹</tr>
-      <tr><td class="price">体重：</td>2.5kg</tr>
-      <tr><td class="goodname">绝育：</td>是</tr>
-      <tr><td class="goodname">疫苗：</td>一针</tr>
-      <tr><td class="goodname">品种：</td>中华田园猫</tr>
-      <tr><td class="goodname">性格</td>活泼好动</tr>
+      <tr><td class="catname">姓名：</td>诺诺</tr>
+      <tr><td class="catage">年龄：</td>1岁</tr>
+      <tr><td class="catweight">体重：</td>2.5kg</tr>
+      <tr><td class="catstate">状态：</td>疫苗一针</tr>
+      <tr><td class="catkind">品种：</td>中华田园猫</tr>
+      <tr><td class="owner">主人：</td>测试用户</tr>
+      <tr><td class="description">描述：</td>妹妹</tr>
+
     </table>
 
   </div>

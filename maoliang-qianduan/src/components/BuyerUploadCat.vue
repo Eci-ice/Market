@@ -32,45 +32,36 @@
         <!-- 右侧div -->
 
         <div class="form-group">
-          <label for="goodName">猫咪姓名：</label>
-          <input type="text" v-model="goodName" placeholder="请输入猫咪的姓名" required><br><br>
+          <label for="catname">猫咪姓名：</label>
+          <input type="text" v-model="catname" placeholder="请输入猫咪的姓名" required><br><br>
 
         </div>
         <div class="form-group">
-          <label for="price">猫咪年龄：</label>
-          <input type="number" v-model="price" placeholder="请输入猫咪年龄" required><br><br>
+          <label for="catage">猫咪年龄：</label>
+          <input type="number" v-model="catage" placeholder="请输入猫咪年龄" required><br><br>
+        </div>
+        <div class="form-group">
+          <label for="catweight">猫咪体重：</label>
+          <input type="number" v-model="catweight" placeholder="请输入猫咪体重" required><br><br>
+        </div>
+        <div class="form-group">
+          <label for="catstate">状态：</label>
+            <input type="text" v-model="catstate" placeholder="请输入猫咪目前状态" required><br><br>
+        </div>
+
+        <div class="form-group">
+          <label for="catkind">猫咪品种：</label>
+          <input type="text" v-model="catkind" placeholder="请输入猫咪品种" required><br><br>
 
         </div>
         <div class="form-group">
-          <label for="kind">猫咪性别：</label>
-          <select v-model="selectedKind" @change="updateSubcategories">
-            <!--<option v-for="kind in kinds" :key="kind.value" :value="kind.value">{{ kind.text }}</option>-->
-          </select><br><br>
-        </div>
-        <div class="form-group">
-          <label for="price">猫咪体重：</label>
-          <input type="number" v-model="price" placeholder="请输入猫咪体重" required><br><br>
-        </div>
-        <div class="form-group">
-          <label for="kind">是否绝育：</label>
-          <select v-model="selectedKind" @change="updateSubcategories">
-            <!--<option v-for="kind in kinds" :key="kind.value" :value="kind.value">{{ kind.text }}</option>-->
-          </select><br><br>
-        </div>
-        <div class="form-group">
-          <label for="kind">疫苗：</label>
-          <select v-model="selectedKind" @change="updateSubcategories">
-            <!--<option v-for="kind in kinds" :key="kind.value" :value="kind.value">{{ kind.text }}</option>-->
-          </select><br><br>
-        </div>
-        <div class="form-group">
-          <label for="goodName">猫咪品种：</label>
-          <input type="text" v-model="goodName" placeholder="请输入猫咪品种" required><br><br>
+          <label for="owner">主人：</label>
+          <input type="text" v-model="owner" placeholder="请输入猫咪的主人" required><br><br>
 
         </div>
         <div class="form-group">
-          <label for="goodName">猫咪性格：</label>
-          <input type="text" v-model="goodName" placeholder="请描述猫咪性格" required><br><br>
+            <label for="description">描述：</label>
+            <input type="text" v-model="description" placeholder="请描述喵咪" required><br><br>
 
         </div>
 
