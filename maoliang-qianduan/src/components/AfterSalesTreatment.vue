@@ -70,16 +70,9 @@
     </div>
 </template>
 
-<<script>
+<script>
 export default {
-    name: "AfterSaleTreatment",
-    methods: {
-        // 提交售后结果
-        submitResult(id) {
-            // 提交售后结果的逻辑代码
-        },
-        // 其他方法
-    }
+
 };
 </script>
 
