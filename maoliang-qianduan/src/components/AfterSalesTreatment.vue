@@ -72,8 +72,8 @@
 
 <script>
 export default {
-
-};
+    name: "AfterSaleTreatment"
+}
 </script>
 
 <style scoped>

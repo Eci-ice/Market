@@ -118,19 +118,31 @@ public class Setup {
 
 			statement.executeUpdate("DROP TABLE IF EXISTS MLmail");
 			statement.executeUpdate("CREATE TABLE MLmail (" +
-					"  orderid int NOT NULL," +
-					"  step int NOT NULL," +
-					"  location varchar(100) NOT NULL," +
-					"  tracking_number char(20) NOT NULL," +
-					"  createtime DATETIME NOT NULL" +
-					"  FOREIGN KEY (orderid) REFERENCES MLorder (orderid)");
+					"  orderid INT NOT NULL," +
+					"  step INT NOT NULL," +
+					"  location VARCHAR(100) NOT NULL," +
+					"  tracking_number CHAR(20) NOT NULL," +
+					"  createtime DATETIME NOT NULL," +
+					"  FOREIGN KEY (orderid) REFERENCES MLorder(orderid))");
 
+			statement.executeUpdate("DROP TABLE IF EXISTS MLaftersale");
+			statement.executeUpdate("CREATE TABLE MLaftersale(" +
+					"aftersaleid INTEGER PRIMARY KEY AUTO_INCREMENT," +
+					"userid INTEGER," +
+					"goodid INTEGER," +
+					"title varchar(15) NOT NULL," +
+					"description varchar(100) NOT NULL," +
+					"imagepath varchar(200) NOT NULL," +
+					"serviceresult varchar(50) NOT NULL," +
+					"FOREIGN KEY (userid) REFERENCES MLuser(userid)," +
+					"FOREIGN KEY (goodid) REFERENCES MLgood(goodid))"
+			);
 
 
 
 			statement.executeUpdate("INSERT INTO MLuser VALUES (1, '123', '123', 1,'who are you?','Xiaoming')");
 			statement.executeUpdate("INSERT INTO MLuser VALUES (2, '111', '111', 0,'who are you?','Xiaoming')");
-			statement.executeUpdate("INSERT INTO MLinfo VALUES (2, '15911111234','浙江工商大学')");
+			statement.executeUpdate("INSERT INTO MLinfo VALUES (2, '15911111234','浙江工商大学','浙江工商大学')");
 			statement.executeUpdate("INSERT INTO MLgood(goodname, description, price, picture, state, number, kind, subkind, owner,calorie,catkind,catweight,catage)  VALUES ('猫干粮', '美味猫干粮', 13.9,'./assets/img/buyer/food-1.jpg',0,12,'猫咪主粮','猫干粮',1,3.4,'波斯猫','1-7','1-10')");
 			statement.executeUpdate("INSERT INTO MLgood(goodname, description, price, picture, state, number, kind, subkind, owner,calorie,catkind,catweight,catage)  VALUES ('猫湿粮', '美味猫湿粮', 1.0,'./assets/img/buyer/food-2.jpg',0,3,'猫咪主粮','猫湿粮',1,2.1,'波斯猫,布偶猫','1-7','1-10')");
 			statement.executeUpdate("INSERT INTO MLhistorygood VALUES (1, '猫干粮', '美味猫干粮', 13.9,'./assets/img/buyer/food-1.jpg',1,'猫咪主粮','猫干粮','2023-11-11 13:13:13',1,3.4,'波斯猫','1-7','1-10')");

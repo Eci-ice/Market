@@ -6,7 +6,7 @@
       <table class="daohang">
         <img class="head1" src="~@/assets/img/buyer/head.png" alt="">	
         <tr>
-            <td class="head2">{{ username }}</td>
+            <td class="head2">{{ getUsername }}</td>
         </tr>
         <tr>
             <td class="head4">
@@ -58,10 +58,11 @@
       
     </div>
     <table class="good-2">
-      <tr><td colspan="2" class="goodname">{{ selectedProduct.name }}</td></tr>
+      <tr><td colspan="2" class="goodname">{{ selectedProduct.goodname }}</td></tr>
       <tr><td colspan="2" class="description">{{ selectedProduct.description }}</td></tr>
-      <tr><td class="price">价格：</td><td class="price">{{ selectedProduct.price }}</td></tr>
-      <tr><td class="price">剩余库存量：</td><td class="price">{{ selectedProduct.number }}</td></tr>
+      <tr><td class="detail">适用猫咪: {{ selectedProduct.catkind }}</td><td class="detail">适用年龄: {{ selectedProduct.catage }}岁</td></tr>
+      <tr><td class="detail">价格:&nbsp;&nbsp;{{ selectedProduct.price }}</td><td class="detail"> 卡路里：&nbsp;{{ selectedProduct.calorie }}kcal/g</td></tr>
+      <tr><td class="detail">剩余库存量：{{ selectedProduct.number }}</td></tr>
     </table>
     <div class="centered-container">
     <button @click="buyProduct(selectedProduct.id)" class="butt-1" style="cursor: pointer;">购买该商品</button>&nbsp;&nbsp;
@@ -111,8 +112,9 @@
     <table class="good-2">
       <tr><td colspan="2" class="goodname">{{ selectedProduct.goodname }}</td></tr>
       <tr><td colspan="2" class="description">{{ selectedProduct.description }}</td></tr>
-      <tr><td class="price">价格：</td><td class="price">{{ selectedProduct.price }}</td></tr>
-      <tr><td class="price">剩余库存量：</td><td class="price">{{ selectedProduct.number }}</td></tr>
+      <tr><td class="detail">适用猫咪: {{ selectedProduct.catkind }}</td><td class="detail">适用年龄: {{ selectedProduct.catage }}岁</td></tr>
+      <tr><td class="detail">价格:&nbsp;&nbsp;{{ selectedProduct.price }}</td><td class="detail"> 卡路里：&nbsp;{{ selectedProduct.calorie }}kcal/g</td></tr>
+      <tr><td class="detail">剩余库存量：{{ selectedProduct.number }}</td></tr>
     </table>
     <div class="centered-container">
     <button @click="buyProduct(selectedProduct.goodid)" class="butt-1" style="cursor: pointer;">购买该商品</button>&nbsp;&nbsp;
@@ -173,7 +175,11 @@ export default {
     // 计算总页数
     totalPages() {
       return Math.ceil(this.filteredItems.length / this.itemsPerPage);
-    }
+    },
+    getUsername() {
+      // 如果当前用户数据不为空，则返回用户名；否则返回未登录
+      return this.currentUser ? this.currentUser.username : '未登录';
+    },
   },
 
   methods: {
@@ -228,7 +234,10 @@ export default {
           number: good.number,
           kind: good.kind,
           subkind: good.subkind,
-          buyingid: good.buyingid,
+          calorie: good.calorie,
+          catkind: good.catkind,
+          catweight: good.catweight,
+          catage: good.catage,
           numbermax: good.numbermax,
           islike: good.islike
         };
@@ -643,9 +652,9 @@ body {
     text-align: center; /*图片居中*/
 }
 
-.price {
+.detail {
     font-size: 20px;
-    height: 20px;
+    margin-top: 30px;
 }
 .pagination {
         display: flex;
@@ -667,18 +676,12 @@ body {
   height: 600px;
 }
 .goodname {
-  height: 150px;
+  height: 100px;
   font-size: 55px;
 }
 .description {
-  height: 200px;
   background-color: rgba(255, 255, 255, 0.5);
   font-size: 30px;
-}
-.price {
-  font-size: 24px;
-  width: 300px;
-  height: 100px;
 }
 button {
   padding: 5px 10px;

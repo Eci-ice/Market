@@ -1,12 +1,66 @@
 <template>
   <body style="background-color: #FFF9F1; ">
+  <div class="left">
+    <!-- 页面头部 -->
+    <table class="daohang">
+      <img class="head1" src="~@/assets/img/buyer/head.png" alt="">
+      <tr>
+        <td class="head2">{{ getUsername }}</td>
+      </tr>
+      <tr>
+        <td class="head4">
+          <h3 @click="navigateTo('BuyerCart')" class="head4-1" style="cursor: pointer;">我的购物车</h3>
+        </td>
+      </tr>
+      <tr>
+        <td class="head4">
+          <h3 @click="navigateTo('BuyerLikes')" class="head4-1" style="cursor: pointer;">我的收藏</h3>
+        </td>
+      </tr>
+      <tr>
+        <td class="head4">
+          <h3 @click="navigateTo('BuyerPay')" class="head4-1" style="cursor: pointer;">我的订单</h3>
+        </td>
+      </tr>
+      <tr>
+        <td class="head4">
+          <h3 @click="navigateTo('buyerHistory')" class="head4-1" style="cursor: pointer;">历史购买记录</h3>
+        </td>
+      </tr>
+      <tr>
+        <td class="head4">
+          <h3 @click="navigateTo('BuyerShowRecommend')" class="head4-1" style="cursor: pointer;">展示推荐商品</h3>
+        </td>
+      </tr>
+      <tr>
+        <td class="head4">
+          <h3 @click="navigateTo('BuyerShowCat')" class="head4-1" style="cursor: pointer;">查看我的猫咪信息</h3>
+        </td>
+      </tr>
+      <tr>
+        <td class="head4">
+          <h3 @click="navigateTo('BuyerUploadCat')" class="head4-1" style="cursor: pointer;">添加我的猫咪信息</h3>
+        </td>
+      </tr>
+
+
+      <tr>
+        <td class="head5">
+          <button @click="handleLogout" class="head5-1" style="cursor: pointer;">退出登录</button>
+        </td>
+      </tr>
+    </table>
+  </div>
     <hr class="cline" color=#BBBBBB width=1 size=900>
-    <div class="left">
+    <div class="middle">
       <a href="/#/buyer">
         <img src="~@/assets/img/buyer/arrow.png" alt="" width="40" title="返回商品界面">
       </a>
     
       <table class="good-2">
+        <tr>
+          <td colspan="2" class="title">您选择的商品</td>
+        </tr>
         <tr>
             <td colspan="2" class="goodname">{{ selectedProduct.goodname }}</td>
         </tr>
@@ -21,17 +75,21 @@
             <td class="price">剩余库存量：</td>
             <td class="price">{{ selectedProduct.number }}</td>
         </tr>
+
       </table>
 
       <button @click="cancelPurchase"  class="butt-2">取消购买</button>
     </div>
 
     <div class="right">
+      <div class="title">您的购买信息</div>
       <form @submit.prevent="confirmPurchase" class="buy-imf">
+
         <label class="username">
+
         <div class="form-group">
           <label>购买数量：</label>
-          <input type="number" v-model.number="purchase.number" min="1" :max="selectedProduct.number" required style="width:200px;height:66.4px;">
+          <input class="number-lable" type="number" v-model.number="purchase.number" min="1" :max="selectedProduct.number" required style="width:200px;height:66.4px;">
         </div>
 
         <div class="form-group">
@@ -74,6 +132,35 @@ export default {
   created() {
     this.fetchGoodFromSession();
     this.fetchUsrFromSession();
+  },
+  computed: {
+    isLoggedIn() {
+      // 根据当前用户数据判断用户是否登录
+      return !!this.currentUser;
+    },
+    isSeller() {
+      // 根据当前用户数据判断用户是否是卖家
+      return this.currentUser && this.currentUser.power === 1;
+    },
+    // 判断用户是否是买家的方法
+    isBuyer() {
+      // 根据当前用户数据判断用户是否是买家
+      return this.currentUser && this.currentUser.power === 0;
+    },
+    paginatedItems() {
+      // 计算当前页的商品
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = this.currentPage * this.itemsPerPage;
+      return this.filteredItems.slice(start, end);
+    },
+    // 计算总页数
+    totalPages() {
+      return Math.ceil(this.filteredItems.length / this.itemsPerPage);
+    },
+    getUsername() {
+      // 如果当前用户数据不为空，则返回用户名；否则返回未登录
+      return this.currentUser ? this.currentUser.username : '未登录';
+    },
   },
 
   methods: {
@@ -126,6 +213,10 @@ export default {
           number: good.number,
           kind: good.kind,
           subkind: good.subkind,
+          calorie: good.calorie,
+          catkind: good.catkind,
+          catweight: good.catweight,
+          catage: good.catage,
           buyingid: good.buyingid,
           numbermax: good.numbermax,
           islike: good.islike
@@ -206,27 +297,75 @@ export default {
     background-color: #FFF9F1; 
 
 }
-/* .goodname{
-    text-decoration: none;
-    color: rgba(0, 0, 0,1);
-    font-size: 60px;
-    font-family: "微软雅黑";
+.left{
+  /* 买家导航 */
+  width: 287px;
+  background-color: rgba(61, 61, 61, 0.33);
+  position: relative;
+  float: left;
+  align-content: center;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
-.price,.state{color: #000;font-size: 30px;} */
+.head1{
+  background-color: rgba(61, 61, 61, 0);
+  position: relative;
+  top: 30px;
+  left: 38px;
+  z-index: 1;
+}
+.daohang{
+  background-color: rgba(0, 0, 0, 0);
+  width: 200px;/*格子宽度*/
+  position: relative;
+  left: 30px;
+}
+.head2{
+  background-color: rgba(61, 61, 61, 0.33);
+  text-align: center;
+  vertical-align: top;
+  font-size:36px;
+  color: white;
+  height: 100px;/*格子高度*/
+  position: relative;
+  z-index: 2;
+}
+.head4{
+  background-color: rgba(61, 61, 61, 0.33);
+  text-align: center;
+  height: 100px;/*格子高度*/
+}
+.head4-1{
+  background-color: rgba(61, 61, 61, 0);
+  text-decoration: none;
+  color: #ffffff;
+  font-size:28px;
+  font-weight: bold;
+}
+.head5{
+  background-color: rgba(61, 61, 61, 0.33);
+  text-align: center;
+  height: 100px;/*格子高度*/
+  bottom: 0;
+
+}
+.head5-1{
+  background-color: rgba(61, 61, 61, 0);
+  text-decoration: none;
+  color: #585655;
+  font-size:28px;
+  font-weight: bold;
+  border: none;
+}
+
 .cline{
     /* 竖线 */
     position: absolute;
     top: 30px;
     left: 810px;
 }
-.good-1{
-    position: absolute;
-    top: 100px;
-    left: 100px;
-    border-style: none;
-    /* background-color: rgba(121, 115, 115, 0.5); */
-    width: 700px;/*格子宽度*/
-    height: 600px;/*格子高度*/
+.good-2{
+  margin-left: 400px;
 }
 .goodname{
     height: 100px;/*格子高度*/
@@ -239,6 +378,16 @@ export default {
 }
 .description{
 	font-size: 30px;
+}
+
+.title{
+  font-size: 25px;
+  color: #EBC16B;
+  font-weight: bold;
+}
+.number-lable{
+  margin-bottom: 30px;
+  background: white;
 }
 .butt-1{
     /* 取消购买按钮 */
@@ -257,13 +406,12 @@ button {
             cursor: pointer;
   }
 
-.buy-imf{
+.right{
     /* 右侧表单 */
     position: absolute;
-    top: 140px;
+    top: 70px;
     left: 890px;
     font-size: 36px;
-
 }
 
 input[type="text"]{

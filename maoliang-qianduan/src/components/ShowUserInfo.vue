@@ -21,44 +21,21 @@
           <td>{{ order.telephone }}</td>
           <td>{{ order.buyername }}</td>
           <td>{{ order.goodid }}</td>
-<!--          <td>-->
-<!--            <button v-if="order.orderstate === 1"-->
-<!--                    @click="confirmOrder(order.orderid)"-->
-<!--                    class="confirm-btn">确认订单</button>-->
-<!--            <button v-else-if="order.orderstate === 2"-->
-<!--                    @click="confirmOrder(order.orderid)"-->
-<!--                    class="stock-btn">确认备货</button>-->
-<!--            <button v-else-if="order.orderstate === 3"-->
-<!--                    @click="confirmOrder(order.orderid)"-->
-<!--                    class="shipment-btn">确认发货</button>-->
-<!--            <button v-else-if="order.orderstate === 4"-->
-<!--                    class="delivery-btn">发货完成</button>-->
-
-<!--            <button v-if=" order.orderstate <= 4 && order.orderstate > 0" @click="cancelOrder(order.orderid)" class="red-btn">取消订单</button>-->
-<!--            <span v-if="order.orderstate < 0 || order.orderstate > 4">无法操作订单</span>-->
-<!--          </td>-->
-            <td>
-                <button v-if="order.orderstate === 1"
-                        @click="confirmOrder(order.orderid)"
-                        class="confirm-btn">确认订单</button>
-                <button v-else-if="order.orderstate === 2"
-                        @click="confirmOrder(order.orderid)"
-                        class="payment-btn">未支付</button>
-<!--                <button v-else-if="order.orderstate === 3"-->
-<!--                        @click="confirmOrder(order.orderid)"-->
-<!--                        class="payment-btn">已支付</button>-->
-                <button v-else-if="order.orderstate === 3"
-                        @click="confirmOrder(order.orderid)"
-                        class="stock-btn">确认备货</button>
-                <button v-else-if="order.orderstate === 4"
-                        @click="confirmOrder(order.orderid)"
-                        class="shipment-btn">确认发货</button>
-                <button v-else-if="order.orderstate === 5"
-                        class="delivery-btn">发货完成</button>
-
-                <button v-if="order.orderstate <= 5 && order.orderstate > 0" @click="cancelOrder(order.orderid)" class="red-btn">取消订单</button>
-                <span v-if="order.orderstate < 0 || order.orderstate > 5">无法操作订单</span>
-            </td>
+          <td>
+            <button v-if="order.orderstate === 1"
+                    @click="confirmOrder(order.orderid)"
+                    class="confirm-btn">确认订单</button>
+            <button v-else-if="order.orderstate === 2"
+                    @click="confirmOrder(order.orderid)"
+                    class="stock-btn">确认备货</button>
+            <button v-else-if="order.orderstate === 3"
+                    @click="confirmOrder(order.orderid)"
+                    class="shipment-btn">确认发货</button>
+            <button v-else-if="order.orderstate === 4"
+                    class="delivery-btn">发货完成</button>
+            <button v-if=" order.orderstate <= 4 && order.orderstate > 0" @click="cancelOrder(order.orderid)" class="red-btn">取消订单</button>
+            <span v-if="order.orderstate < 0 || order.orderstate > 4">无法操作订单</span>
+          </td>
           <td>
             {{ getOrderStatus(order.orderstate) }}
           </td>
@@ -97,13 +74,10 @@ export default {
       const statusMap = {
         0: '等待客户下单',
         1: '客户已确认，商家待确认',
-        2: '客户未支付，等待支付',//新增支付状态
-
-        3: '客户已支付，等待商家备货',
-        4: '备货已完成，等待商家发货',
-        5: '发货已完成，等待买家确认交易完成',
-        6: '交易已完成', // 假设状态 7 表示交易已完成
-
+        2: '商家已确认，等待商家备货',
+        3: '备货已完成，等待商家发货',
+        4: '发货已完成，等待买家确认交易完成',
+        5: '交易已完成', // 假设状态 5 表示交易已完成
       };
       return statusMap[state] || '订单被取消';
     },

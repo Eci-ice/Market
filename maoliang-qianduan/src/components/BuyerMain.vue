@@ -97,7 +97,7 @@
             <button @click="goToNextPage" class="next" :disabled="currentPage === totalPages">下一页</button>
           </div>
       </div>
-    
+
   </div>
    <div v-else>
     <!-- 用户未登录时显示的内容 -->
@@ -105,7 +105,7 @@
       <div class="left" >
     <!-- 页面头部 -->
     <table class="daohang">
-      <img class="head1" src="~@/assets/img/buyer/head.png" alt="" >	
+      <img class="head1" src="~@/assets/img/buyer/head.png" alt="" >
       <tr>
           <td class="head2">游客</td>
       </tr>
@@ -164,7 +164,7 @@
             <button @click="goToNextPage" class="next" :disabled="currentPage === totalPages">下一页</button>
           </div>
       </div>
-    
+
     </div>
   </div>
 </body>
@@ -442,7 +442,7 @@ export default {
 }
 *{
     background-color: #FFF9F1;
-    
+
 }
 body {
     display: block;
@@ -498,7 +498,7 @@ body {
     text-align: center;
     height: 100px;/*格子高度*/
     bottom: 0;
-    
+
 }
 .head5-1{
     background-color: rgba(61, 61, 61, 0);
@@ -511,13 +511,13 @@ body {
 
 /* 商品 */
 .right{
-    /* 商品显示 
+    /* 商品显示
     width: 1340px;*/
     height: 100vh;
     /* background-color: aquamarine; */
     position: absolute;/*绝对定位*/
-    left: 350px; 
-    
+    left: 350px;
+
     float: right;
 }
 
@@ -562,10 +562,10 @@ form {
 	}
 	input[name="keyword"] {
       width: 100%;
-      padding: 10px; 
-      border: 1px solid #ccc; 
+      padding: 10px;
+      border: 1px solid #ccc;
       border-radius: 4px;
-	}	
+	}
 	#search_list {
 		position: fixed;
 		top: 110px;
@@ -574,9 +574,9 @@ form {
 		background-color: white;
 	}
 
-	
+
 	#search_list div {
-      border-bottom: 1px solid black; 
+      border-bottom: 1px solid black;
 	}
     .media-container {
         position: relative;

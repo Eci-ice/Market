@@ -47,6 +47,7 @@ public class UsrRepository {
                     jdbcTemplate.query(infoSql, new Object[]{usr.getUserid()}, infoRs -> {
                         usr.setPhone(infoRs.getString("phone"));
                         usr.setAddress(infoRs.getString("address"));
+                        usr.setDefault_address(infoRs.getString("default_address"));
                     });
                 }
          //       System.out.println(usr.getUserid());
@@ -85,8 +86,8 @@ public class UsrRepository {
         if (usr.getPower() == 0) { // 买家
             Integer userId = jdbcTemplate.queryForObject("SELECT MAX(userid) FROM MLuser", Integer.class);
             if (userId != null) {
-                sql = "INSERT INTO MLinfo (userid, phone, address) VALUES (?, ?, ?)";
-                jdbcTemplate.update(sql, userId, usr.getPhone(), usr.getAddress());
+                sql = "INSERT INTO MLinfo (userid, phone, address,default_address) VALUES (?, ?, ?, ?)";
+                jdbcTemplate.update(sql, userId, usr.getPhone(), usr.getAddress(),usr.getDefault_address());
             }
         }
     }

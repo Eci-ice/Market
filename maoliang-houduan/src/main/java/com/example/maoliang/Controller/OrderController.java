@@ -7,6 +7,9 @@ import com.example.maoliang.Entity.Usr;
 import com.example.maoliang.Service.GoodService;
 import com.example.maoliang.Service.OrderService;
 import com.example.maoliang.dto.OrderData;
+
+
+
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +18,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 import java.math.BigDecimal;
+
 import static com.example.maoliang.Controller.utils.Page.SUCCESS_PAGE;
 import static com.example.maoliang.Controller.utils.Page.ERROR_PAGE;
 
@@ -107,4 +114,18 @@ public class OrderController {
         return orderService.queryOrderAliPaymentStatus(tradeNo);
     }
 
+    @GetMapping("/unionpay")
+    public String toUnionPay(@RequestParam("orderid") String orderid, @RequestParam("money") String money) throws Exception {
+        return orderService.toUnionPay(orderid, new BigDecimal(money));
+    }
+
+    @RequestMapping("/successRedict")
+    public void backRcvResponse(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        orderService.backRcvResponse(request, response);
+    }
+
+    @RequestMapping( "/backRcvResponse")
+    public void successRedict(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        orderService.successRedict(request, response);
+    }
 }

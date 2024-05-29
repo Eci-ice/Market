@@ -118,9 +118,6 @@ export default {
         // console.log(!this.isSeller);
         // console.log(!this.isLoggedIn || !this.isSeller);
         // console.log("ss");
-        if (!this.isLoggedIn || !this.isSeller) {
-          this.$router.push('/');
-        }
         return true;
       } catch (error) {
         console.error('获取用户数据错误:', error);

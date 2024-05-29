@@ -132,6 +132,7 @@
           </div>
           <div style="display: flex; justify-content: center;">
             <button class="alipay" @click="aliPayment(orderNumber,orderPrice)">支付宝支付</button>
+            <button class="unionpay" @click="unionPayment(orderNumber, orderPrice)">银行卡支付</button>
           </div>
         </div>
       </div>
@@ -277,6 +278,7 @@ export default {
 
     },
     handlePendingPayment(orderId) {
+      axios.get('/delete-now-TradeNo');
       const currentOrder = this.orders.find(order => order.orderid === orderId);
 
       if (currentOrder) {
@@ -332,7 +334,7 @@ export default {
         const responseData = response.data;
 
         // 根据下划线 "_" 进行拆分，获取 subject 和 tradeNo
-        const splitData = responseData.split('_');
+        const splitData = responseData.split('Z');
         const subject = splitData[0];
 
         const response2 = await axios.get(`/order/aliPaymentStatus/${responseData}`);
@@ -400,6 +402,22 @@ export default {
         });
 
 
+    },
+    async unionPayment(orderNumber, orderPrice) {
+      try {
+        const response = await axios.get(`/order/unionpay`, {
+          params: {
+            orderid: orderNumber,
+            money: orderPrice
+          }
+        });
+        const divForm = document.createElement('div');
+        divForm.innerHTML = response.data; // 银联支付接口返回的表单字符串
+        document.body.appendChild(divForm);
+        document.forms[0].submit();
+      } catch (error) {
+        console.error('银联支付出错:', error);
+      }
     },
     async fetchOrders() {
       await this.fetchUsrFromSession();
@@ -731,6 +749,15 @@ input[name="keyword"] {
   padding: 5px 10px;
   justify-content: center;
   background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 20px;
+}
+.unionpay{
+  display: flex;
+  padding: 5px 10px;
+  justify-content: center;
+  background-color: #ff8c00;
   color: white;
   border: none;
   border-radius: 20px;

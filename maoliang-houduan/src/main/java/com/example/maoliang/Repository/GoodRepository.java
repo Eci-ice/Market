@@ -14,7 +14,7 @@ import java.util.Map;
 //连接到MLGood的其他数据库操作方法
 @Repository
 public class GoodRepository{
-// Spring 的 JdbcTemplate方式
+    // Spring 的 JdbcTemplate方式
     private final JdbcTemplate jdbcTemplate;
 
     public GoodRepository(JdbcTemplate jdbcTemplate) {
@@ -26,7 +26,7 @@ public class GoodRepository{
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         String insertHistorySql = "INSERT INTO MLhistorygood (goodid, goodname, description, price, picture, number, kind, subkind, createdate, owner,calorie,catkind,catweight,catage) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-      //  System.out.println(good);
+        //  System.out.println(good);
         try {
             jdbcTemplate.update(insertGoodSql, good.getGoodname(), good.getDescription(), good.getPrice(),
                     good.getPicture(), good.getState(), good.getNumber(), good.getKind(), good.getSubkind(),
@@ -34,7 +34,7 @@ public class GoodRepository{
 
             // 查询刚插入的商品的id 因为是自增，所以是最大
             Integer goodId = jdbcTemplate.queryForObject("SELECT MAX(goodid) FROM MLgood", Integer.class);
-         //   System.out.println(goodId+"aa");
+            //   System.out.println(goodId+"aa");
 
             // 获取当前时间
             LocalDateTime currentTime = LocalDateTime.now();
