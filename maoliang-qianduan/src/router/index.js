@@ -30,6 +30,7 @@ import BuyerUploadCat from "@/components/BuyerUploadCat.vue";
 import BuyerShowRecommend from "@/components/BuyerShowRecommend.vue";
 import BuyerAfterSale from "@/components/BuyerAfterSale.vue";
 import BuyerPay from "@/components/BuyerPay.vue";
+import BuyerCheckLogistics from "@/components/BuyerCheckLogistics.vue";
 
 const routes = [
   { path: '/', component: LoginComponent },
@@ -182,6 +183,11 @@ const routes = [
     path: '/buyer-pay',
     name: 'BuyerPay',
     component: BuyerPay,
+
+  },{
+    path: '/buyer-check-logistics',
+    name: 'BuyerCheckLogistics',
+    component: BuyerCheckLogistics,
 
   },
   // ... 其他路由
