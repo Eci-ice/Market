@@ -39,9 +39,6 @@ public class GoodController {
     @Autowired
     public HttpSession session;
 
-//    @Value("${upload.directory}")
-//    private String uploadDirectory;
-
 
     @RequestMapping("/search-list-control")
     public Result searchList(@RequestBody Searchlistdata searchlistdata) {
@@ -315,6 +312,11 @@ public class GoodController {
         Good g = goodService.showGood(goodid);
         session.setAttribute("now-good", g);
         return new Result(BUYER_SHOP_PAGE, null, null);
+    }
+
+    @RequestMapping("/buyer-get-good/{goodid}")
+    public Result buyerGetGood(@PathVariable int goodid) {
+        return new Result(BUYER_SHOP_PAGE, null, goodService.showGood(goodid));
     }
 
     @RequestMapping("/modify-price")

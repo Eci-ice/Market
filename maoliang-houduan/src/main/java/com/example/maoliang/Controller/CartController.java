@@ -190,7 +190,12 @@ public class CartController {
         return goodService.showLike(userId, 1);
     }
 
+    @RequestMapping("submit-selected-orders")
+    public Result submitSelectedOrders(@RequestParam("selectedOrders") List<Integer> selectedOrders) {
 
+        return new Result("success","提交购物车成功",null);
+
+    }
 //////////////////////////////这个是showLike第一版本
 //    @GetMapping("/showLike")
 //    public String showLike(Model model) {
