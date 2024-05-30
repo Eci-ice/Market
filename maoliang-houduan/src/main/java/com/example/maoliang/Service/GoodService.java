@@ -83,7 +83,7 @@ public class GoodService {
     }
 
     public List<Map<String, Object>> showBuyerCart(int userId) {
-        List<Map<String, Object>> maps = goodListRepository.showBuyerCart(userId);
+        List<Map<String, Object>> maps = goodRepository.showBuyerCart(userId);
         for (Map<String, Object> map : maps) {
             map.put("quantity",0);
         }
@@ -97,9 +97,11 @@ public class GoodService {
 //    }
 
     public List<Map<String, Object>> showLike(int userId, int islike) {
-        List<Map<String, Object>> list = goodListRepository.showLike(userId, islike);
+        List<Map<String, Object>> list = goodRepository.showLike(userId, islike);
         return list;
     }
+
+
 
 
     public void cancelLike(int goodId,int userid) {

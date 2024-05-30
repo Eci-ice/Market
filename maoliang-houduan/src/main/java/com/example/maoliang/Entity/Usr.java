@@ -16,8 +16,6 @@ public class Usr {
     private String address;
     private String question;
     private String answer;
-
-	private String default_address;
     private int power;
 
 
@@ -49,14 +47,6 @@ public class Usr {
 	protected void finalize() throws Throwable {
 		// TODO Auto-generated method stub
 		super.finalize();
-	}
-
-	public String getDefault_address() {
-		return default_address;
-	}
-
-	public void setDefault_address(String default_address) {
-		this.default_address = default_address;
 	}
 
 	public String getPhone() {

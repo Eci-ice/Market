@@ -14,19 +14,20 @@ import java.util.Map;
 //连接到MLGood的其他数据库操作方法
 @Repository
 public class GoodRepository{
-    // Spring 的 JdbcTemplate方式
+// Spring 的 JdbcTemplate方式
     private final JdbcTemplate jdbcTemplate;
 
     public GoodRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+
     public void add(Good good) {
         String insertGoodSql = "INSERT INTO MLgood (goodname, description, price, picture, state, number, kind, subkind, owner,calorie,catkind,catweight,catage) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         String insertHistorySql = "INSERT INTO MLhistorygood (goodid, goodname, description, price, picture, number, kind, subkind, createdate, owner,calorie,catkind,catweight,catage) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        //  System.out.println(good);
+      //  System.out.println(good);
         try {
             jdbcTemplate.update(insertGoodSql, good.getGoodname(), good.getDescription(), good.getPrice(),
                     good.getPicture(), good.getState(), good.getNumber(), good.getKind(), good.getSubkind(),
@@ -34,7 +35,7 @@ public class GoodRepository{
 
             // 查询刚插入的商品的id 因为是自增，所以是最大
             Integer goodId = jdbcTemplate.queryForObject("SELECT MAX(goodid) FROM MLgood", Integer.class);
-            //   System.out.println(goodId+"aa");
+         //   System.out.println(goodId+"aa");
 
             // 获取当前时间
             LocalDateTime currentTime = LocalDateTime.now();
@@ -102,7 +103,14 @@ public class GoodRepository{
         jdbcTemplate.update(updateSql, goodId,buyer);
     }
 
-
+    public List<Map<String, Object>> showBuyerCart(int userId) {
+        String sql = "SELECT g.GOODID as id , g.GOODNAME as name,g.PRICE as price,g.DESCRIPTION as description,g.KIND as kind,g.PICTURE as mediaFiles,g.NUMBER as maxquantity FROM MLbuying b left join MLGOOD g on b.GOODID=g.GOODID  WHERE b.buyer = ?";
+        return jdbcTemplate.queryForList(sql, userId);
+    }
+    public List<Map<String,Object>> showLike(int userId, int islike) {
+        String sql = "SELECT good.GOODID, good.goodname, good.price, good.picture, good.state, good.number,good.description FROM MLbuying buying JOIN MLgood good ON buying.goodid = good.goodid WHERE buying.buyer = ? AND buying.islike = ?";
+        return jdbcTemplate.queryForList(sql, userId, islike);
+    }
 
     public void removebuyingitem(int buyingId,int userid ) {
         String sql = "DELETE FROM MLbuying WHERE goodid = ? and buyer = ?";
