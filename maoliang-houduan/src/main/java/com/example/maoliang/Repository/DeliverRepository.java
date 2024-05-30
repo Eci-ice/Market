@@ -14,24 +14,22 @@ public class DeliverRepository {
 
 
 
-    public static List<Address> add(int userid, String address){
-        String sql="INSERT INTO MLaddress(owner,address)"+"VALUES(?,?)";
-        jdbcTemplate.update(sql,userid,address);
-
-
+    public static List<Address> add(int userid, String address,String default_address){
+        String sql="INSERT INTO MLaddress(owner,address,default_address)"+"VALUES(?,?,?)";
+        jdbcTemplate.update(sql,userid,address,default_address);
         return null;
     }
 
 
-    public static List<Address> delete(int userid, String address) {
-        String sql = "DELETE FROM MLaddress WHERE owner = ? AND address = ?";
-        jdbcTemplate.update(sql, userid, address);
+    public static List<Address> delete(int userid, String address,String default_address) {
+        String sql = "DELETE FROM MLaddress WHERE owner = ? AND address = ? AND default_address=?";
+        jdbcTemplate.update(sql, userid, address,default_address);
         return null;
     }
 
-    public static List<Address> modify(int userid, String oldaddress,String newaddress ) {
-        String sql = "UPDATE MLaddress SET address = ? WHERE owner = ? AND address = ?";
-        jdbcTemplate.update(sql, newaddress, userid, oldaddress);
+    public static List<Address> modify(int userid,String newaddress ) {
+        String sql = "UPDATE MLaddress SET default_address = ? WHERE owner = ? ";
+        jdbcTemplate.update(sql, newaddress, userid);
         return null;
     }
 }

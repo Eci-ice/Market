@@ -27,16 +27,16 @@ public class DeliverController {
     @Autowired
     public HttpSession session;
     @RequestMapping("/add-shipping-address-control")
-    public Result addShppingaddress(@RequestParam("userid") int userid,@RequestParam("address") String address ){
-        return new Result(SUCCESS_PAGE,"添加收货地址成功",deliverService.addAddress(userid,address));
+    public Result addShppingaddress(@RequestParam("userid") int userid,@RequestParam("address") String address ,@RequestParam("default_address") String default_address){
+        return new Result(SUCCESS_PAGE,"添加收货地址成功",deliverService.addAddress(userid,address,default_address));
     }
     @RequestMapping("/delete-shipping-address-control")
-    public Result deleteShppingaddress(@RequestParam("userid") int userid,@RequestParam("address") String address ){
-        return new Result(SUCCESS_PAGE,"删除收货地址成功",deliverService.deleteAddress(userid,address));
+    public Result deleteShppingaddress(@RequestParam("userid") int userid,@RequestParam("address") String address,@RequestParam("default_address") String default_address ){
+        return new Result(SUCCESS_PAGE,"删除收货地址成功",deliverService.deleteAddress(userid,address,default_address));
     }
     @RequestMapping("/modify-shipping-address-control")
-    public Result modifyShppingaddress(@RequestParam("userid") int userid,@RequestParam("oldaddress") String oldaddress ,@RequestParam("newaddress") String newaddress ){
-        return new Result(SUCCESS_PAGE,"修改收货地址成功",deliverService.modifyAddress(userid,oldaddress,newaddress));
+    public Result modifyShppingaddress(@RequestParam("userid") int userid,@RequestParam("default_address") String default_address){
+        return new Result(SUCCESS_PAGE,"修改收货地址成功",deliverService.modifyAddress(userid,default_address));
     }
 
 

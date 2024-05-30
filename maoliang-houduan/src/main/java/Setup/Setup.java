@@ -132,8 +132,9 @@ public class Setup {
 			statement.executeUpdate("DROP TABLE IF EXISTS MLaddress");
 			statement.executeUpdate("CREATE TABLE MLaddress(" +
 					"owner INTEGER," +
-					"address varchar(99) NOT NULL" +
-					")");
+					"address varchar(99) NOT NULL," +
+					"default_address VARCHAR(99) NOT NULL)"
+					);
 
 			statement.executeUpdate("DROP TABLE IF EXISTS MLmail");
 			statement.executeUpdate("CREATE TABLE MLmail (" +
@@ -170,8 +171,8 @@ public class Setup {
 			statement.executeUpdate("INSERT INTO MLorder VALUES (1, '浙江工商大学','15911111234', '张三',1, 1,1,1)");
 			statement.executeUpdate("INSERT INTO MLcat VALUES (1, '嘟嘟可','可爱的白色布偶猫', 1.2,3, 1,'布偶猫',1)");
 			statement.executeUpdate("INSERT INTO MLcat VALUES (2, '蹦蹦','可爱的白色波斯猫', 1.2,4, 1,'波斯猫',2)");
-			statement.executeUpdate("INSERT INTO MLaddress VALUES (1,'浙江工商大学金沙港生活区')");
-			statement.executeUpdate("INSERT INTO MLaddress VALUES (1,'浙江工商大学钱江湾生活区')");
+			statement.executeUpdate("INSERT INTO MLaddress VALUES (1,'浙江工商大学金沙港生活区','1111')");
+			statement.executeUpdate("INSERT INTO MLaddress VALUES (1,'浙江工商大学钱江湾生活区','1111111')");
 
 
 			conn.commit();

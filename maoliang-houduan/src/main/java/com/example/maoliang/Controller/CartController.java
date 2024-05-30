@@ -32,13 +32,6 @@ public class CartController {
 
     @RequestMapping("/modify-like-control")
     public Result modifyLike(@RequestBody Likedata likedata) {
-//        int userId = currentUsr.getUserid();
-//        if (currentUsr == null ) {
-//            // 非法用户，跳转到错误页面
-//            request.setAttribute("message", "非法用户");
-//            return "error";
-//        }
-        // 根据请求参数执行相应的操作
         int goodId=likedata.getGoodId();
         int userId=likedata.getUserId();
         if ("0".equals(likedata.getIsCancel())) {
