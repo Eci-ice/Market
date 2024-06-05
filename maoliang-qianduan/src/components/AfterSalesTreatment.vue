@@ -1,6 +1,6 @@
 <template>
     <div>
-        <!-- 页面头部 卖家 售后处理 -->
+        <!-- 页面头部 -->
         <ul class="daohang">
             <li><b>欢迎进入"喵咪美食坊"!</b></li>
             <li style="float:right" @click="handleLogout" class="logout-button">退出登录</li>
@@ -54,16 +54,15 @@
                         <th>title</th>
                         <th>描述</th>
                         <th>图片</th>
-                        <th>处理结果</th>
+                        <th>服务结果</th>
                     </tr>
-                    <tr v-for="(order, index) in paginatedItems" :key="index">
-                        <!--paginatedItems这个连接有问题，是后端的吗？-->
-                        <td>{{ order.aftersaleid }}</td>
-                        <td>{{ order.goodid }}</td>
-                        <td>{{ order.goodname }}</td>
-                        <td>{{ order.title}}</td>
-                        <td>{{ order.description }}</td>
-                        <td><!--图-->
+                    <tr v-for="afterSale in afterSales" :key="index">
+                        <td>{{ afterSale.aftersaleid }}</td>
+                        <td>{{ afterSale.userid }}</td>
+                        <td>{{ afterSale.goodid }}</td>
+                        <td>{{ afterSale.title }}</td>
+                        <td>{{ afterSale.description }}</td>
+                        <td>
                             <div class="media-container">
                                 <div v-for="(media, index) in good.mediaFiles" :key="index" v-show="media.isActive">
                                     <img v-if="!isVideo(media)" :src="media.url" alt="商品图片" v-show="media.isActive">
@@ -75,24 +74,18 @@
                                 <button @click="showNextMedia(good)">＞</button>
                             </div>
                         </td>
+                        <td>
+                            <button v-if="order.orderstate === 4" class="green-btn"
+                                    @click="handleOrderAction(order.orderid, 'confirmCompletion')"
+                                    style="background-color: transparent; color: #f44336; border: 2px solid #f44336; padding: 5px 10px; border-radius: 4px; cursor: pointer;">无</button>
+                            <button v-if="order.orderstate >= 0 && order.orderstate < 4" class="red-btn"
+                                    @click="handleOrderAction(order.orderid, 'cancel')"
+                                    style="background-color: transparent; color: #f44336; border: 2px solid #f44336; padding: 5px 10px; border-radius: 4px; cursor: pointer;">同意售后</button>
+                            <span v-if="order.orderstate > 4 || order.orderstate === -1">无法操作订单</span>
+                        </td>
 
                         <td>
-                            <button v-if="order.orderstate === 1"
-                                    @click="confirmOrder(order.orderid)"
-                                    class="confirm-btn">确认订单</button>
-                            <button v-else-if="order.orderstate === 2"
-                                    @click="confirmOrder(order.orderid)"
-                                    class="stock-btn">确认备货</button>
-                            <button v-else-if="order.orderstate === 3"
-                                    @click="confirmOrder(order.orderid)"
-                                    class="shipment-btn">确认发货</button>
-                            <button v-else-if="order.orderstate === 4"
-                                    class="delivery-btn">发货完成</button>
-                            <button v-if=" order.orderstate <= 4 && order.orderstate > 0" @click="cancelOrder(order.orderid)" class="red-btn">取消订单</button>
-                            <span v-if="order.orderstate < 0 || order.orderstate > 4">无法操作订单</span>
-                        </td>
-                        <td>
-                            {{ getOrderStatus(order.orderstate) }}
+                            <button @click="submitResult(afterSale.id)">提交</button>
                         </td>
                     </tr>
                 </table>
@@ -106,7 +99,6 @@ import axios from "axios";
 
 export default {
     name: "AfterSaleTreatment",
-
     methods: {
         async fetchUsrFromSession() {
             try {
@@ -134,7 +126,7 @@ export default {
                 // 解析picture属性并添加mediaFiles属性
                 //  console.log('goodList:', goodList);
 
-                this.goods = goodList.map(good => {
+                this.goods = goodList.map( good => {
                     //    console.log('Before trimming:', good.picture); // 添加调试语句
                     const trimmedPicture = good.picture.trim();
                     //     console.log('After trimming:', trimmedPicture); // 添加调试语句
@@ -190,12 +182,27 @@ export default {
             console.log(`Is media a video: ${isMediaVideo}`);
             return isMediaVideo;
         },
-
-
-
-    }
-
-};
+        goToPrevPage() {
+            // 实现翻页逻辑
+            if (this.currentPage > 1) {
+                this.currentPage--;
+            }
+        },
+        goToNextPage() {
+            // 实现翻页逻辑
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+            }
+        },
+        // 每次搜索结果变化后重置当前页码
+        resetPage() {
+            this.currentPage = 1;
+        },
+        fetchProducts() {
+            // 从后端获取产品列表
+        }
+    },
+}
 </script>
 
 <style scoped>
@@ -327,7 +334,20 @@ th {
 tr:nth-child(even) {
     background-color: #f2f2f2;
 }
-
+.media-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+}
+.media-container img, .media-container video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 /* 按钮样式 */
 .red-btn {
     background-color: red;

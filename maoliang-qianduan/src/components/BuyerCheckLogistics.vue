@@ -2,7 +2,7 @@
     <body style="margin: 0px;">
     <div v-if="isLoggedIn">
         <div class="left">
-            <!-- 页面头部 -->
+            <!-- 页面头部 买家物流查看-->
             <table class="daohang">
                 <img class="head1" src="~@/assets/img/buyer/head.png" alt="">
 
@@ -45,6 +45,11 @@
                     </td>
                 </tr>
                 <tr>
+                    <td class="head4">
+                        <h3 @click="navigateTo('BuyerCheckLogistics')" class="head4-1" style="cursor: pointer;">查看物流</h3>
+                    </td>
+                </tr>
+                <tr>
                     <td class="head5">
                         <button @click="handleLogout" class="head5-1" style="cursor: pointer;">退出登录</button>
                     </td>
@@ -61,36 +66,22 @@
                 <table class="logistics-table">
                     <thead>
                     <tr>
-                        <th>商品名称</th>
-                        <th>地址</th>
-                        <th>时间</th>
+                        <th>物流ID</th>
+                        <th>商品ID</th>
                         <th>状态</th>
+                        <th>地址</th>
+                        <th>订单编号(查询号)</th>
+                        <th>时间</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>美味干猫粮</td>
-                        <td>浙江下沙宝龙广场17幢菜鸟驿站</td>
-                        <td>2024-05-14 13:53:47</td>
-                        <td>已签收</td>
-                    </tr>
-                    <tr>
-                        <td>美味干猫粮</td>
-                        <td>浙江下沙宝龙广场17幢菜鸟驿站</td>
-                        <td>2024-05-12 09:31:21</td>
-                        <td>待取件</td>
-                    </tr>
-                    <tr>
-                        <td>美味干猫粮</td>
-                        <td>浙江省上虞转运中心</td>
-                        <td>2024-05-11 18:04:22</td>
-                        <td>派送中</td>
-                    </tr>
-                    <tr>
-                        <td>美味干猫粮</td>
-                        <td>浙江省绍兴市诸暨市</td>
-                        <td>2024-05-11 10:21:37</td>
-                        <td>已揽件</td>
+                    <tr v-for="good in paginatedGoods" :key="good.goodid"><!--paginatedGoods后端的？-->
+                        <td>{{ good.orderid }}</td>
+                        <td>{{ good.goodid }}</td>
+                        <td>{{ good.step }}</td>
+                        <td>{{ good.location}}</td>
+                        <td>{{ good.tracking_number }}</td>
+                        <td>{{ good.createtime }}</td>
                     </tr>
                     </tbody>
                 </table>

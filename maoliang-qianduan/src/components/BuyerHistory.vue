@@ -424,37 +424,6 @@ body {
   float: right;
 }
 
-
-.goods {
-  display: flex;
-  /*使用flex布局*/
-  flex-wrap: wrap;
-  /*允许元素换行*/
-  justify-content: space-between;
-  /*元素之间留有空隙*/
-  border: 1px solid #000;
-  /*添加边框*/
-}
-
-.show-1 {
-  flex: 0 0 30%;
-  /*每个元素占用30%的宽度，这样每行就可以放3个元素*/
-  border: 1px solid #000;
-  /*添加边框*/
-  margin-bottom: 10px;
-  /*添加底部边距*/
-}
-
-.picture {
-  text-align: center;
-  /*图片居中*/
-}
-
-.price {
-  font-size: 20px;
-  height: 20px;
-}
-
 .pagination {
   display: flex;
   justify-content: center;
@@ -486,25 +455,13 @@ input[name="keyword"] {
   border-radius: 4px;
 }
 
-#search_list {
-  position: fixed;
-  top: 110px;
-  left: 350px;
-  width: 400px;
-  background-color: white;
-}
 
 
 #search_list div {
   border-bottom: 1px solid black;
 }
 
-.media-container {
-  position: relative;
-  width: 100px;
-  height: 100px;
-  overflow: hidden;
-}
+
 
 .media-container img,
 .media-container video {
