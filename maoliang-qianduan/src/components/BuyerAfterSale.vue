@@ -1,38 +1,48 @@
 <template>
-  <!-- 页面头部 -->
-    <ul class="daohang">
-        <li><b>欢迎进入"喵咪美食坊"!</b></li>
-        <li style="float:right" @click="handleLogout" class="logout-button">退出登录</li>
-    </ul>
-  <!-- 左侧导航 -->
-    <div class="content">
-        <div class="content-left">
-            <!--菜单栏导航-->
-            <div class="nav">
-                <!--每一个菜单栏项-->
-                <div class="nav-menu">
-                    <!--主标题-->
-                    <div class="nav-info">
-                        <div class="user-image" style="left: -40px;">
-                            <img src="@/assets/img/catbackground.png" alt="用户头像" style="width: 50px;height: 50px;left: 8.9%;position: absolute;"/>
-                        </div>
-                        <div class="username" style="margin-right: 100px;">{{ getUsername }}</div>
-                        <img src="~@/assets/img/line.png" alt="分割线" class="separator-line"><!-- 新增图片 -->
-                    </div>
-                    <!--子标题-->
-                    <div class="">
-                        <!-- 导航链接 -->
-                        <h3 @click="navigateTo('BuyerCart')" class="black-text" style="cursor: pointer;">我的购物车</h3>
-                        <h3 @click="navigateTo('BuyerLikes')" class="black-text" style="cursor: pointer;">我的收藏</h3>
-                        <h3 @click="navigateTo('buyerHistory')" class="black-text" style="cursor: pointer;">历史购买记录</h3>
-                        <h3 @click="navigateTo('BuyerShowCat')" class="black-text" style="cursor: pointer;">查看我的猫咪信息</h3>
-                        <h3 @click="navigateTo('BuyerUploadCat')" class="black-text" style="cursor: pointer;">添加我的猫咪信息</h3>
-                        <h3 @click="navigateTo('BuyerAfterSale')" class="black-text" style="cursor: pointer;">我的售后</h3><!-- 本页新增 -->
-                        <!-- 其他导航项 -->
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- 页面头部 买家 售后申请处理与查看的页面 -->
+    <div class="left" >
+        <!-- 页面头部 -->
+        <table class="daohang">
+            <img class="head1" src="~@/assets/img/buyer/head.png" alt="">
+            <tr>
+                <td class="head2">{{ getUsername }}</td>
+            </tr>
+            <tr>
+                <td class="head4">
+                    <h3 @click="navigateTo('BuyerCart')" class="head4-1" style="cursor: pointer;">我的购物车</h3>
+                </td>
+            </tr>
+            <tr>
+                <td class="head4">
+                    <h3 @click="navigateTo('BuyerLikes')" class="head4-1" style="cursor: pointer;">我的收藏</h3>
+                </td>
+            </tr>
+            <tr>
+                <td class="head4">
+                    <h3 @click="navigateTo('buyerHistory')" class="head4-1" style="cursor: pointer;">历史购买记录</h3>
+                </td>
+            </tr>
+            <tr>
+                <td class="head4">
+                    <h3 @click="navigateTo('BuyerShowRecommend')" class="head4-1" style="cursor: pointer;">展示推荐商品</h3>
+                </td>
+            </tr>
+            <tr>
+                <td class="head4">
+                    <h3 @click="navigateTo('BuyerAfterSale')" class="head4-1" style="cursor: pointer;">我的售后</h3>
+                </td>
+            </tr> <!-- 跳转 买家 售后申请处理与查看的页面 -->
+            <tr>
+                <td class="head4">
+                    <h3 @click="navigateTo('BuyerMain')" class="head4-1" style="cursor: pointer;">返回主页</h3>
+                </td>
+            </tr>
+            <tr>
+                <td class="head5">
+                    <button @click="handleLogout" class="head5-1" style="cursor: pointer;">退出登录</button>
+                </td>
+            </tr>
+        </table>
     </div>
   <!-- 右侧内容区域 -->
     <div class="right" style="width: 75%;">
@@ -86,45 +96,75 @@ export default {
     position: relative;
     left: 30px;
 }
-.content {
-    width: 100%;
-    height: 100%;
+*{
+    background-color: #FFF9F1;
+
 }
-.content-left {
-    width: 19%;
-    height:850px;
+body {
+    display: block;
+    background-color: #FFF9F1 !important;
+    background-image: none;
+    height: 1000px;
+}
+.left{
+    /* 买家导航 */
+    width: 287px;
+    height:100vh;
     background-color: rgba(61, 61, 61, 0.33);
+    position: relative;
     float: left;
+    align-content: center;
 }
-
-.nav {
-    /*上下5,左右0*/
-    margin: 5px 0;
+.head1{
+    background-color: rgba(61, 61, 61, 0);
+    position: relative;
+    top: 30px;
+    left: 38px;
+    z-index: 1;
 }
-
-.nav-info {
-    color: #000000;
-    display: flex;        /* 新增：使用flex布局 */
-    align-items: center;  /* 新增：使内容垂直居中 */
-    flex-direction: column;
+.daohang{
+    background-color: rgba(0, 0, 0, 0);
+    width: 200px;/*格子宽度*/
+    position: relative;
+    left: 30px;
 }
-.black-text {
+.head2{
+    background-color: rgba(61, 61, 61, 0.33);
+    text-align: center;
+    vertical-align: top;
+    font-size:36px;
     color: white;
+    height: 100px;/*格子高度*/
+    position: relative;
+    z-index: 2;
 }
-.user-image {
-    width: 50px;
-    height: 50px;
-    background-size: cover;
-    border-radius: 50%;
-    margin-left: 95px;
-    margin-right: 10px;
+.head4{
+    background-color: rgba(61, 61, 61, 0.33);
+    text-align: center;
+    height: 100px;/*格子高度*/
 }
-.username {
-    font-size: 14px;
-    color: #000;
-    margin-left: 110px;
+.head4-1{
+    background-color: rgba(61, 61, 61, 0);
+    text-decoration: none;
+    color: #ffffff;
+    font-size:28px;
+    font-weight: bold;
 }
+.head5{
+    background-color: rgba(61, 61, 61, 0.33);
+    text-align: center;
+    height: 100px;/*格子高度*/
+    bottom: 0;
 
+}
+.head5-1{
+    background-color: rgba(61, 61, 61, 0);
+    text-decoration: none;
+    color: #585655;
+    font-size:28px;
+    font-weight: bold;
+    border: none;
+}
 
 /* 右侧内容区域样式 */
 .right {

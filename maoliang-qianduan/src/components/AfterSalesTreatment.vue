@@ -1,6 +1,6 @@
 <template>
     <div>
-        <!-- 页面头部 -->
+        <!-- 页面头部 卖家 售后处理 -->
         <ul class="daohang">
             <li><b>欢迎进入"喵咪美食坊"!</b></li>
             <li style="float:right" @click="handleLogout" class="logout-button">退出登录</li>
@@ -48,20 +48,51 @@
                 </div>
                 <table>
                     <tr>
-                        <th>商品名称</th>
-                        <th>物流状态</th>
-                        <th>客户售后</th>
-                        <th>结果提交</th>
+                        <th>售后ID</th>
+                        <th>购买人ID</th>
+                        <th>商品ID</th>
+                        <th>title</th>
+                        <th>描述</th>
+                        <th>图片</th>
+                        <th>处理结果</th>
                     </tr>
-                    <tr v-for="afterSale in afterSales" :key="afterSale.id">
-                        <td>{{ afterSale.productName }}</td>
-                        <td>已发货</td>
+                    <tr v-for="(order, index) in paginatedItems" :key="index">
+                        <!--paginatedItems这个连接有问题，是后端的吗？-->
+                        <td>{{ order.aftersaleid }}</td>
+                        <td>{{ order.goodid }}</td>
+                        <td>{{ order.goodname }}</td>
+                        <td>{{ order.title}}</td>
+                        <td>{{ order.description }}</td>
+                        <td><!--图-->
+                            <div class="media-container">
+                                <div v-for="(media, index) in good.mediaFiles" :key="index" v-show="media.isActive">
+                                    <img v-if="!isVideo(media)" :src="media.url" alt="商品图片" v-show="media.isActive">
+                                    <video v-if="isVideo(media)" :src="media.url" controls v-show="media.isActive"></video>
+                                </div>
+                            </div>
+                            <div>
+                                <button @click="showPrevMedia(good)">＜</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button @click="showNextMedia(good)">＞</button>
+                            </div>
+                        </td>
+
                         <td>
-                            <button v-if="!afterSale.afterSaleApplied" class="red-btn" @click="applyForAfterSale(afterSale.id)">无</button>
-                            <button v-else class="green-btn" @click="navigateTo('BuyerAfterSaleDetails')">查看</button>
+                            <button v-if="order.orderstate === 1"
+                                    @click="confirmOrder(order.orderid)"
+                                    class="confirm-btn">确认订单</button>
+                            <button v-else-if="order.orderstate === 2"
+                                    @click="confirmOrder(order.orderid)"
+                                    class="stock-btn">确认备货</button>
+                            <button v-else-if="order.orderstate === 3"
+                                    @click="confirmOrder(order.orderid)"
+                                    class="shipment-btn">确认发货</button>
+                            <button v-else-if="order.orderstate === 4"
+                                    class="delivery-btn">发货完成</button>
+                            <button v-if=" order.orderstate <= 4 && order.orderstate > 0" @click="cancelOrder(order.orderid)" class="red-btn">取消订单</button>
+                            <span v-if="order.orderstate < 0 || order.orderstate > 4">无法操作订单</span>
                         </td>
                         <td>
-                            <button @click="submitResult(afterSale.id)">提交</button>
+                            {{ getOrderStatus(order.orderstate) }}
                         </td>
                     </tr>
                 </table>
@@ -71,9 +102,100 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-    name: "AfterSaleTreatment"
-}
+    name: "AfterSaleTreatment",
+
+    methods: {
+        async fetchUsrFromSession() {
+            try {
+                // 发起 GET 请求到后端接口
+                const response = await axios.get('/now-usr');
+                // 解析响应数据
+                const usr = response.data;
+                // 更新组件的 currentUser 数据
+                this.currentUser = usr;
+
+                return true;
+            } catch (error) {
+                console.error('获取用户数据错误:', error);
+                return false;
+            }
+        },
+        async fetchgoodListSession() {
+            try {
+                // 发起 GET 请求获取商品列表
+                const goodsResponse = await axios.get('/good/seller-all-historygood-list-control');
+                // 解析响应数据
+                // console.log('goodList:', goodsResponse);
+                const goodList = goodsResponse.data.data;//goodsResponse的数据的data属性
+                // 将商品列表添加到 products 中
+                // 解析picture属性并添加mediaFiles属性
+                //  console.log('goodList:', goodList);
+
+                this.goods = goodList.map(good => {
+                    //    console.log('Before trimming:', good.picture); // 添加调试语句
+                    const trimmedPicture = good.picture.trim();
+                    //     console.log('After trimming:', trimmedPicture); // 添加调试语句
+                    const paths = trimmedPicture.split(',');
+                    const mediaFiles = paths.map((path, i) => {
+                        return {
+                            url: path,
+                            isActive: i === 0 // 默认第一个是true，其他是false
+                        };
+                    });
+                    return {
+                        ...good,
+                        mediaFiles,
+                        // 保留原始属性
+                        goodname: good.goodname.trim(),
+                        description: good.description.trim(),
+                        price: good.price,
+                        number: good.number,
+                        kind: good.kind,
+                        subkind: good.subkind,
+                        createdate: good.createdate
+                    };
+                });
+                console.log('this.goods:', this.goods);
+                return true;
+            } catch (error) {
+                console.error('获取商品列表数据错误:', error);
+                return false;
+            }
+        },
+        showPrevMedia(good) {
+            const currentIndex = good.mediaFiles.findIndex(media => media.isActive);
+            console.log('Current active index:', currentIndex);
+
+            if (currentIndex >= 0) {
+                const prevIndex = (currentIndex - 1 + good.mediaFiles.length) % good.mediaFiles.length;
+                console.log('Previous index:', prevIndex);
+                this.setActiveMedia(good, prevIndex);
+            }
+        },
+        showNextMedia(good) {
+            const currentIndex = good.mediaFiles.findIndex(media => media.isActive);
+            console.log('Current active index:', currentIndex);
+
+            if (currentIndex >= 0) {
+                const nextIndex = (currentIndex + 1) % good.mediaFiles.length;
+                console.log('Next index:', nextIndex);
+                this.setActiveMedia(good, nextIndex);
+            }
+        },
+        isVideo(media) {
+            const isMediaVideo = media.url.endsWith('.mp4');
+            console.log(`Is media a video: ${isMediaVideo}`);
+            return isMediaVideo;
+        },
+
+
+
+    }
+
+};
 </script>
 
 <style scoped>
