@@ -31,7 +31,9 @@
               <h3 @click="navigateTo('ShowHistoryGoods')" class="black-text" style="cursor: pointer;">查看历史商品</h3>
               <h3 @click="navigateTo('ShowGoods')" class="black-text" style="cursor: pointer;">查看全部商品</h3>
               <h3 @click="navigateTo('ShowAllUsers')" class="black-text" style="cursor: pointer;">查看客户信息</h3>
-              <!-- 其他导航项 -->
+              <h3 @click="navigateTo('AfterSalesTreatment')" class="black-text" style="cursor: pointer;">售后处理</h3>
+              <h3 @click="navigateTo('ManageLogistics')" class="black-text" style="cursor: pointer;">物流管理</h3>
+                <!-- 其他导航项 -->
             </div>
           </div>
         </div>
@@ -255,7 +257,7 @@ line-height: 50px;
 text-align: center;
 color: black;
 text-decoration: none;
-            }
+}
 .seg {
 height: 1px;
 width: 100%;
