@@ -146,10 +146,12 @@ export default {
 
   methods: {
     getImageUrl(picturePath) {
-      // 处理相对路径，转换为完整的图片 URL
-      const imagePath = picturePath.replace(/^\.\//, '').trim(); // 去除相对路径中的 './'
-      //return baseUrl + imagePath;
-      return require(`~@/${imagePath}`);
+      if (picturePath.startsWith('./')) {
+        const imagePath = picturePath.replace(/^\.\//, '').trim();
+        return require(`~@/${imagePath}`);
+      } else {
+        return picturePath; // 替换为你的默认路径
+      }
     },
     async fetchUsrFromSession() {
       try {

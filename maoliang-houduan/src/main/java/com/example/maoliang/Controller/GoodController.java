@@ -39,6 +39,9 @@ public class GoodController {
     @Autowired
     public HttpSession session;
 
+//    @Value("${upload.directory}")
+//    private String uploadDirectory;
+
 
     @RequestMapping("/search-list-control")
     public Result searchList(@RequestBody Searchlistdata searchlistdata) {
@@ -158,6 +161,7 @@ public class GoodController {
         String subkind = uploadgoodsdata.getSubkind();
         int owner = currentUsr.getUserid();
 
+
         if (goodService.isUnique(goodname) != 0) { // 与数据库中商品名重复
             return new Result(ERROR_PAGE, "请勿上传重名商品！", SELLER_UPLOAD_GOOD_PAGE);
         }
@@ -169,13 +173,12 @@ public class GoodController {
                 String extension = fileName.substring(fileName.lastIndexOf(".")); // 获取文件的扩展名
                 String randomFileName = extraOperations.randomString(20) + extension; // 生成随机文件名
 
-                // 设置上传路径
-                String uploadPath =  "./img/" + randomFileName;
-                File fileUploadDirectory = new File(uploadPath);
+                String uploadPath =  "./img/";
+                File fileUploadDirectory = new File(new File(uploadPath).getAbsolutePath()+"/" + randomFileName);
 
                 try {
                     filePart.transferTo(fileUploadDirectory); // 保存文件
-                    fileNames.add(uploadPath); // 本地测试！将文件路径添加到列表
+                    fileNames.add("http://localhost:8080/img/" + randomFileName); // 返回可以被前端访问的 URL
                     //TODO:服务器模式的地址调用
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -185,7 +188,7 @@ public class GoodController {
 
         String picture = String.join(",", fileNames);
         if(picture == null || "".equals(picture)) {
-            picture="./img/food-1.png";//设置默认值
+            picture="./assets/img/buyer/food-2.jpg";//设置默认值
         }
 
         if (subkind == null || "".equals(subkind)) {
@@ -299,7 +302,6 @@ public class GoodController {
     public Result deleteGood(@PathVariable int goodid) {
         orderService.deletegood(goodid);//删除对应订单
         if ( goodService.remove(goodid) > 0) {
-
             return new Result(SUCCESS_PAGE, "商品删除成功！", SELLER_ALL_GOODS_PAGE);
         } else {
             // 商品不存在或删除失败

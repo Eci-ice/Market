@@ -41,10 +41,10 @@
                     <td>{{ good.price }}</td>
                     <td> 
                         <div class="media-container">
-                            <div v-for="(media, index) in good.mediaFiles" :key="index" v-show="media.isActive">
-                            <img v-if="!isVideo(media)" :src="media.url" alt="商品图片" v-show="media.isActive">
-                            <video v-if="isVideo(media)" :src="media.url" controls v-show="media.isActive"></video>
-                            </div>
+                          <div v-for="(media, index) in good.mediaFiles" :key="index" v-show="media.isActive">
+                            <img v-if="!isVideo(media)" :src="getImageUrl(media.url)" alt="商品图片" v-show="media.isActive">
+                            <video v-if="isVideo(media)" :src="getImageUrl(media.url)" controls v-show="media.isActive"></video>
+                          </div>
                         </div>
                         <div class="media-navigation">
                             <button @click="showPrevMedia(good)">＜</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -137,6 +137,14 @@ export default {
   },
 
   methods: {
+    getImageUrl(picturePath) {
+      if (picturePath.startsWith('./')) {
+        const imagePath = picturePath.replace(/^\.\//, '').trim();
+        return require(`~@/${imagePath}`);
+      } else {
+        return picturePath; // 替换为你的默认路径
+      }
+    },
     async fetchUsrFromSession() {
       try {
         // 发起 GET 请求到后端接口
